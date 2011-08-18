@@ -119,7 +119,9 @@ inline int SpeciesList_rmv_extinct2(SpeciesList *list, ivector *lifespan, int da
 	
 	while (Species_is_extant(node->species) == false)
 	{
+		ivector_add(lifespan, date - node->next->species->birth);
 		SpeciesList_rmv_next(list, NULL);
+		++extinctions;
 		node = list->head;
 	}
 	while (node->next != NULL)
