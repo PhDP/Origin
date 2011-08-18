@@ -1,9 +1,11 @@
 Project:         Hon
 Author:          Philippe Desjardins-Proulx <philippe.d.proulx@gmail.com>
-Dependencies:    Seshat, GNU Scientific Library
 License:         GPL
-
-A collection of models to study the origin of communities.
+Description: 
+	A collection of models to study the origin of communities.
+Dependencies: 
+	(1) The gnu scientific library must be installed (which is why this project is under the GPL license).
+	(2) The Seshat library (https://github.com/PhDP/seshat).
 
 TODO list:
   Model: Rosindell & Phillimore's neutral theory of island biogeography.
