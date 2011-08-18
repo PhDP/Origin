@@ -575,6 +575,7 @@ void *sim(void *parameters)
 	{
 		fprintf(out, "%.2f ", octaves[i]);
 	}
+	fprintf(out, "\n\n");
 
 	// Print info on all vertices
 	for (int c = 0; c < communities; ++c)
@@ -613,6 +614,7 @@ void *sim(void *parameters)
 		{
 			fprintf(out, "%.2f ", octaves[i]);
 		}
+		fprintf(out, "\n\n");
 	}
 
 	//////////////////////////////////////////////////
