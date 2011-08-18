@@ -1,0 +1,13 @@
+Project:         Hon
+Author:          Philippe Desjardins-Proulx <philippe.d.proulx@gmail.com>
+Dependencies:    Seshat, GNU Scientific Library
+License:         GPL
+
+A collection of models to study the origin of communities.
+
+TODO list:
+  Model: Rosindell & Phillimore's neutral theory of island biogeography.
+  Model: Niche/Cascade/basic food web models.
+  Makefile
+
+
