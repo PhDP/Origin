@@ -13,7 +13,6 @@ void graph_init(graph *g, int vertices)
 	g->capacity = (int*)malloc(vertices * sizeof(int));
 	g->adj_list = (int**)malloc(vertices * sizeof(int*));
 	g->w_list = (double**)malloc(vertices * sizeof(double*));
-	g->weighted = weighted;
 
 	for (int i = 0; i < vertices; ++i) 
 	{
@@ -74,7 +73,6 @@ inline int graph_outdegree(const graph *g, int u)
 	return g->num_e[u];
 }
 
-/** Number of ingoing edges for vertex \f$v\f$. \f$O(|V||E|)\f$.*/
 inline int graph_indegree(const graph *g, int u)
 {
 	const int num_v = g->num_v;
@@ -105,7 +103,7 @@ inline bool graph_is_balanced(const graph *g)
 	return true;
 }
 
-inline void graph_add_w_edge(graph *g, int u, int v, double weight)
+inline void graph_add_edge(graph *g, int u, int v, double weight)
 {
 	if (g->num_e[u] == g->capacity[u]) 
 	{
@@ -118,8 +116,8 @@ inline void graph_add_w_edge(graph *g, int u, int v, double weight)
 
 void graph_add_sym_edges(graph *g, int u, int v, double weight) 
 {
-	graph_add_w_edge(g, u, v, weight);
-	graph_add_w_edge(g, v, u, weight);
+	graph_add_edge(g, u, v, weight);
+	graph_add_edge(g, v, u, weight);
 }
 
 bool graph_rmv_edge(graph *g, int u, int v)

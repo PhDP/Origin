@@ -50,11 +50,8 @@ int graph_indegree(const graph *g, int u);
 /** Return true if the graph is balanced (i.e.: for each vertex \f$v\f$, indegree(v) == outdegree(v)). \f$O(|V||E|)\f$. */
 bool graph_is_balanced(const graph *g);
 
-/** Add an edge between vertices 'u' and 'v'. O(1), worst-case O(|N|). */
-void graph_add_edge(graph *g, int u, int v);
-
 /** Add an edge between vertices 'u' and 'v' with weight. O(1), worst-case O(|N|). */
-void graph_add_w_edge(graph *g, int u, int v, double weight);
+void graph_add_edge(graph *g, int u, int v, double weight);
 
 /** Add an edge between vertices 'u' and 'v' and vice-versa. */
 void graph_add_sym_edges(graph *g, int u, int v, double weight);
