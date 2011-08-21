@@ -128,23 +128,6 @@ double dkutorsis(const double *x, int length)
 	return (length * m4) / (m2 * m2) - 3;
 }
 
-void dquartiles(const double *x, int length, double *q1, double *median, double *q3)
-{
-	const int l_q1 = (int)(length / 4.0 + 0.5);
-	const int l_m = (int)(length / 2 + 0.5);
-	const int l_q3 = (int)(3 * length / 4.0 + 0.5);
-	
-	double *sorted = (double*)malloc(length * sizeof(double));
-	memcpy((void*)sorted, (void*)x, length * sizeof(double));
-	qsort((void*)sorted, length, sizeof(double), compare_double_asc);
-
-	(*q1) = (sorted[l_q1 - 1] + sorted[l_q1]) / 2.0;
-	(*median) = (sorted[l_m - 1] + sorted[l_m]) / 2.0;
-	(*q3) = (sorted[l_q3 - 1] + sorted[l_q3]) / 2.0;
-
-	free(sorted);
-}
-
 double dmedian(const double *x, int length)
 {
 	if (length == 0)
@@ -186,10 +169,4 @@ double imedian(const int *x, int length)
 
 	free(sorted);	
 	return answer;
-}
-
-// TODO: Implement (dah !)
-void iquartiles(const int *x, int length, double *q1, double *median, double *q3)
-{
-	//...
 }

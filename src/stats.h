@@ -39,14 +39,8 @@ double dvar(const double *x, int length);
 /** Timothy B. Terriberry's online algorithm to compute kutorsis. */
 double dkutorsis(const double *x, int length);
 
-/** Compute the quartiles (q1, median, q3). */
-void dquartiles(const double *x, int length, double *q1, double *median, double *q3); // UNTESTED
-
 /** Return the median. Unlike GSL's function, this function works on unsorted arrays. It will copy the array, sort it, compute the median, and free the memory of the copy before returning the median. */
 double dmedian(const double *x, int length);
-
-/** Compute the quartiles (q1, median, q3). */
-void iquartiles(const int *x, int length, double *q1, double *median, double *q3); // UNTESTED
 
 /** Return the median. Unlike GSL's function, this function works on unsorted arrays. It will copy the array, sort it, compute the median, and free the memory of the copy before returning the median. */
 double imedian(const int *x, int length);
