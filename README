@@ -1,9 +1,9 @@
 Project:         Hon
 Author:          Philippe Desjardins-Proulx <philippe.d.proulx@gmail.com>
-License:         GPL
-Dependencies:    gsl (gnu scientific library)... which is why this project is under the GPL license.
+License:         GPLv2
+Dependencies:    gsl (gnu scientific library)... which is why the project is under the GPL license.
 Description: 
-	A collection of models to study the origin of communities.
+	A collection of models & tools to study the origin of communities.
 
 	The project is developed and tested on Linux x86_64. Stable versions are tagged.
 
