@@ -2,16 +2,17 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <float.h>
-#include "ccbl.h"
+#include "hon.h"
 #include "graph.h"
 #include "utils.h"
 
-void graph_init(graph *g, int vertices, bool weighted)
+void graph_init(graph *g, int vertices)
 {
 	g->num_v = vertices;
 	g->num_e = (int*)malloc(vertices * sizeof(int));
 	g->capacity = (int*)malloc(vertices * sizeof(int));
 	g->adj_list = (int**)malloc(vertices * sizeof(int*));
+	g->w_list = (double**)malloc(vertices * sizeof(double*));
 	g->weighted = weighted;
 
 	for (int i = 0; i < vertices; ++i) 
@@ -19,14 +20,7 @@ void graph_init(graph *g, int vertices, bool weighted)
 		g->num_e[i] = 0;
 		g->capacity[i] = GRAPH_INIT_CAPACITY;
 		g->adj_list[i] = (int*)malloc(GRAPH_INIT_CAPACITY * sizeof(int));
-	}
-	if (weighted)
-	{
-		g->w_list = (double**)malloc(vertices * sizeof(double*));
-		for (int i = 0; i < vertices; ++i) 
-		{
-			g->w_list[i] = (double*)malloc(GRAPH_INIT_CAPACITY * sizeof(double));
-		}
+		g->w_list[i] = (double*)malloc(GRAPH_INIT_CAPACITY * sizeof(double));
 	}
 }
 

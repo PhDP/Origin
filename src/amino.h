@@ -4,7 +4,7 @@
 #define AMINO_H_
 
 #include <stdbool.h>
-#include "seshat.h"
+#include "hon.h"
 
 // For C++ compilers:
 #ifdef __cplusplus

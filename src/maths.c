@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "seshat.h"
+#include "hon.h"
 #include "maths.h"
 
 double hypot(double a, double b)

@@ -2,14 +2,14 @@
 #define GRAPH_H_
 
 #include <stdbool.h>
-#include "seshat.h"
+#include "hon.h"
 
 // For C++ compilers:
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/** A graph represented by an adjacency list. */
+/** A graph represented by an adjacency list (made of dynamic arrays). */
 typedef struct 
 {
 	/** Number of vertices. */
@@ -26,13 +26,11 @@ typedef struct
 	
 	/** Weights. */
 	double **w_list;
-
-	bool weighted;
 } 
 graph;
 
 /** Initialize a graph with a fixed number of vertices. */
-void graph_init(graph *g, int vertices, bool weighted);
+void graph_init(graph *g, int vertices);
 
 /** Number of edges in the entire graph. */
 int graph_edges(const graph *g);

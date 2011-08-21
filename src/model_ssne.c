@@ -33,7 +33,7 @@
 #include <assert.h>
 #include <gsl/gsl_rng.h>
 #include <gsl/gsl_randist.h>
-#include "seshat.h"
+#include "hon.h"
 #include "dvector.h"
 #include "ivector.h"
 #include "species.h"
