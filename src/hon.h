@@ -1,5 +1,5 @@
-#ifndef CCBL_H_
-#define CCBL_H_
+#ifndef HON_H_
+#define HON_H_
 
 // The initial capacity of vectors
 #ifndef VECTOR_INIT_CAPACITY

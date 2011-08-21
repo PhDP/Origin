@@ -24,7 +24,7 @@ void graph_get_rgg(graph *g, int vertices, double r, double *x, double *y, gsl_r
 			d = sqrt((x[i] - x[j]) * (x[i] - x[j]) + (y[i] - y[j]) * (y[i] - y[j]));
 			if (d < r) 
 			{
-				graph_add_w_edge(g, i, j, r - d);
+				graph_add_edge(g, i, j, r - d);
 			}
 		}
 	}
@@ -96,7 +96,7 @@ void graph_get_circle(graph *g, int vertices)
 {
 	graph_init(g, vertices);
 	
-	graph_add_w_edge(g, vertices - 1, vertices - 1, 1.0);
+	graph_add_edge(g, vertices - 1, vertices - 1, 1.0);
 	graph_add_sym_edges(g, 0, vertices - 1, 1.0);
 	
 	for (int u = 0; u < vertices - 1; ++u)

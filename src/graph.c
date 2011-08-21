@@ -439,19 +439,12 @@ void graph_free(graph *g)
 	for (int i = 0; i < num_v; ++i) 
 	{
 		free(g->adj_list[i]);
+		free(g->w_list[i]);
 	}
 	free(g->adj_list);
 	g->adj_list = NULL;
-	
-	if (g->weighted)
-	{
-		for (int i = 0; i < num_v; ++i) 
-		{
-			free(g->w_list[i]);
-		}
-		free(g->w_list);
-		g->w_list = NULL;
-	}
+	free(g->w_list);
+	g->w_list = NULL;
 	free(g->num_e);
 	g->num_e = NULL;
 	free(g->capacity);
