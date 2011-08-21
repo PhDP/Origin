@@ -466,48 +466,20 @@ inline bool is_valid_amino2(char amino)
 
 inline bool is_nonpolar(char amino)
 {
-	if (amino == 'F' || amino == 'L' || amino == 'I' || amino == 'V' || amino == 'G' || amino == 'P' || amino == 'A' || amino == 'M' || amino == 'W')
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	return (amino == 'F' || amino == 'L' || amino == 'I' || amino == 'V' || amino == 'G' || amino == 'P' || amino == 'A' || amino == 'M' || amino == 'W');
 }
 
 inline bool is_polar(char amino)
 {
-	if (amino == 'S' || amino == 'Y' || amino == 'C' || amino == 'T' || amino == 'Q' || amino == 'N')
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	return (amino == 'S' || amino == 'Y' || amino == 'C' || amino == 'T' || amino == 'Q' || amino == 'N');
 }
 
 inline bool is_basic(char amino)
 {
-	if (amino == 'H' || amino == 'K' || amino == 'R')
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	return (amino == 'H' || amino == 'K' || amino == 'R');
 }
 
 inline bool is_acidic(char amino)
 {
-	if (amino == 'D' || amino == 'E')
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	return (amino == 'D' || amino == 'E');
 }
