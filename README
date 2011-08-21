@@ -5,6 +5,8 @@ Dependencies:    gsl (gnu scientific library)... which is why this project is un
 Description: 
 	A collection of models to study the origin of communities.
 
+	The project is developed and tested on Linux x86_64. Stable versions are tagged.
+
 TODO list:
   Model: Rosindell & Phillimore's neutral theory of island biogeography.
   Improve the graph object.
