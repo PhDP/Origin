@@ -1,7 +1,3 @@
-/**
- * Basic functions to analyze sequences
- ****************************************************************/
-
 #ifndef SEQ_H_
 #define SEQ_H_
 
