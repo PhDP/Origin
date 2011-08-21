@@ -6,6 +6,7 @@
 #include <gsl/gsl_randist.h>
 #include "graph.h"
 #include "graphgen.h"
+#include "maths.h"
 
 void graph_get_rgg(graph *g, int vertices, double r, double *x, double *y, gsl_rng *rng)
 {
@@ -21,7 +22,9 @@ void graph_get_rgg(graph *g, int vertices, double r, double *x, double *y, gsl_r
 	{
 		for (int j = 0; j < vertices; ++j) 
 		{
-			d = sqrt((x[i] - x[j]) * (x[i] - x[j]) + (y[i] - y[j]) * (y[i] - y[j]));
+			const double a = x[i] - x[j];
+			const double b = y[i] - y[j];
+			d = hypot(a, b);
 			if (d < r) 
 			{
 				graph_add_edge(g, i, j, r - d);
