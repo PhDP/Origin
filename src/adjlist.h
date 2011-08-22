@@ -109,7 +109,7 @@ void adjlist_free(adjlist *a);
 // 'Private' functions. You shouldn't need those.
 
 /** Recursive function used to test connectivity. */
-void adjlist_test_cc(const adjlist *a, bool *aroup, int u);
+void adjlist_test_cc(const adjlist *a, bool *group, int u);
 
 #ifdef __cplusplus
 }
