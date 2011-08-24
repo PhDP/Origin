@@ -161,25 +161,281 @@ bool adjlist_has_edge(adjlist *a, int u, int v)
 	return false;
 }
 
-bool adjlist_strongly_connected(const adjlist *a);
+bool adjlist_strongly_connected(const adjlist *a)
+{
+	const int num_v = a->num_v;
+	bool *group = (bool*)malloc(num_v * sizeof(bool));
+
+	for (int u = 0; u < num_v; ++u) 
+	{
+		for (int v = 0; v < num_v; ++v) 
+		{
+			group[v] = false;
+		}
+
+		group[u] = true;
+		graph_test_cc(g, group, u); // Call recursive function
+
+		for (int v = 0; v < num_v; ++v) 
+		{
+			if (group[v] == false) 
+			{
+				free(group);
+				return false;
+			}
+		}
+	}
+	free(group);
+	return true;
+}
 
 void adjlist_dijkstra(const adjlist *a, int v);
 
 void adjlist_bellman_ford(const adjlist *a, int v);
 
-double **adjlist_get_gdm(const adjlist *a);
+double **adjlist_get_gdm(const adjlist *a)
+{
+	const double max = DBL_MAX;
+	const int num_v = a->num_v;
+	double **gdm = (double**)malloc(num_v * sizeof(double*));
+	for (int i = 0; i < num_v; ++i)
+	{
+		gdm[i] = (double*)malloc(num_v * sizeof(double));
+	}
+	for (int i = 0; i < num_v; ++i)
+	{
+		for (int j = 0; j < num_v; ++j)
+		{
+			gdm[i][j] = max;
+		}
+	}
+	bool *visited = (bool*)malloc(num_v * sizeof(bool));
+	
+	int current; // The vertex
+	for (int u = 0; u < num_v; ++u)
+	{
+		for (int v = 0; v < num_v; ++v)
+		{
+			visited[v] = false;
+		}
 
-double *adjlist_cls_centrality(const adjlist *a);
+		gdm[u][u] = 0; // By convention
+		current = u;
+		bool has_next = true;
 
-double *adjlist_cls_centrality_scaled(const adjlist *a);
+		while (has_next)
+		{
+			for (edge *e = a->list[u]; e != NULL; e = e->next)
+			{
+				const int head = e->head;
+				if (head != current)
+				{
+					const double w = gdm[u][current] + e->w;
+					if (gdm[u][head] > w)
+					{
+						gdm[u][head] = w;
+					}
+				}
+			}
+			visited[current] = true;
 
-void adjlist_print(const adjlist *a, FILE *out);
+			has_next = false;
+			double tmp = max;
+			for (int v = 0; v < num_v; v++)
+			{
+				if (visited[v] == false && gdm[u][v] < tmp)
+				{
+					current = v;
+					tmp = gdm[u][v];
+					has_next = true;
+				}
+			}
+		}
+	}
+	free(visited);
+	return gdm;
+}
 
-void adjlist_print_w(const adjlist *a, FILE *out);
+double *adjlist_cls_centrality(const adjlist *a)
+{
+	const int num_v = a->num_v;
+	double **gdm = graph_get_gdm(g);
+	double *cls_centrality = (double*)malloc(num_v * sizeof(double));
+	
+	for (int i = 0; i < num_v; ++i)
+	{
+		double sum = 0.0;
+		for (int j = 0; j < num_v; ++j)
+		{
+			sum += gdm[i][j];
+		}
+		cls_centrality[i] = sum / (num_v - 1);
+	}
+	
+	// Free the memory of the geodesic distance matrix:
+	for (int i = 0; i < num_v; ++i)
+	{
+		free(gdm[i]);
+	}
+	free(gdm);
+	
+	return cls_centrality;
+}
 
-void adjlist_print_mat(const adjlist *a, FILE *out);
+double *adjlist_cls_centrality_scaled(const adjlist *a)
+{
+	double *cls_centrality_scaled = graph_cls_centrality(g);
+	scale_0_1(cls_centrality_scaled, g->num_v);
+	return cls_centrality_scaled;
+}
 
-void adjlist_print_w_mat(const adjlist *a, FILE *out);
+void adjlist_print(const adjlist *a, FILE *out)
+{
+	const int num_v = a->num_v;
+	if (out == NULL) 
+	{
+		for (int i = 0; i < num_v; ++i) 
+		{
+			printf("%5d -> ", i);
+			for (edge *e = a->list[u]; e != NULL; e = e->next)
+			{
+				printf("%d ", e->head);
+			}
+			printf("\n");
+		}
+	} 
+	else 
+	{
+		for (int i = 0; i < num_v; ++i) 
+		{
+			fprintf(out, "%5d -> ", i);
+			for (edge *e = a->list[u]; e != NULL; e = e->next)
+			{
+				fprintf(out, "%d ", e->head);
+			}
+			fprintf(out, "\n");
+		}
+	}
+}
+
+void adjlist_print_w(const adjlist *a, FILE *out)
+{
+	const int num_v = a->num_v;
+	if (out == NULL) 
+	{
+		for (int i = 0; i < num_v; ++i) 
+		{
+			printf("%5d -> ", i);
+			for (edge *e = a->list[u]; e != NULL; e = e->next)
+			{
+				printf("%d(%8.2f) ", e->head, e->w);
+			}
+			printf("\n");
+		}
+	} 
+	else 
+	{
+		for (int i = 0; i < num_v; ++i) 
+		{
+			fprintf(out, "%5d -> ", i);
+			for (edge *e = a->list[u]; e != NULL; e = e->next)
+			{
+				fprintf(out, "%d(%8.2f) ", e->head, e->w);
+			}
+			fprintf(out, "\n");
+		}
+	}
+}
+
+void adjlist_print_mat(const adjlist *a, FILE *out)
+{
+	const int num_v = a->num_v;
+	int row[num_v];
+	for (int i = 0; i < num_v; ++i) 
+	{
+		row[i] = 0;
+	}
+	for (int i = 0; i < num_v; ++i) 
+	{
+		for (edge *e = a->list[u]; e != NULL; e = e->next)
+		{
+			row[e->head] += 1;
+		}
+		// Print the row
+		if (out == NULL) 
+		{
+			for (int j = 0; j < num_v; ++j) 
+			{
+				printf("%d ", row[j]);
+			}
+		} 
+		else 
+		{
+			for (int j = 0; j < num_v; ++j) 
+			{
+				fprintf(out, "%d ", row[j]);
+			}
+		}
+		// Set all edges back to 0
+		for (edge *e = a->list[u]; e != NULL; e = e->next)
+		{
+			row[e->head] -= 1;
+		}
+		if (out == NULL) 
+		{
+			printf("\n");
+		}
+		else
+		{
+			fprintf(out, "\n");
+		}
+	}
+}
+
+void adjlist_print_w_mat(const adjlist *a, FILE *out)
+{
+	const int num_v = a->num_v;
+	double row[num_v];
+	for (int i = 0; i < num_v; ++i) 
+	{
+		row[i] = 0.0;
+	}
+	for (int i = 0; i < num_v; ++i) 
+	{
+		for (edge *e = a->list[u]; e != NULL; e = e->next)
+		{
+			row[e->head] = e->w;
+		}
+		// Print the row
+		if (out == NULL) 
+		{
+			for (int j = 0; j < num_v; ++j) 
+			{
+				printf("%.4f ", row[j]);
+			}
+		} 
+		else 
+		{
+			for (int j = 0; j < num_v; ++j) 
+			{
+				fprintf(out, "%.4f ", row[j]);
+			}
+		}
+		// Set all edges back to 0
+		for (edge *e = a->list[u]; e != NULL; e = e->next)
+		{
+			row[e->head] = 0.0;
+		}
+		if (out == NULL) 
+		{
+			printf("\n");
+		}
+		else
+		{
+			fprintf(out, "\n");
+		}
+	}
+}
 
 void edge_free(edge *e)
 {
@@ -201,6 +457,7 @@ void adjlist_free(adjlist *a)
 		}
 	}
 	free(a->list);
+	a->list = NULL;
 	free(a);
 }
 
@@ -208,4 +465,15 @@ void adjlist_free(adjlist *a)
 // Private functions             //
 ///////////////////////////////////
 
-void adjlist_test_cc(const adjlist *a, bool *aroup, int u);
+void adjlist_test_cc(const adjlist *a, bool *aroup, int u)
+{
+	for (edge *e = a->list[u]; e != NULL; e = e->next) 
+	{
+		const int head = e->head;
+		if (head != u && group[head] == false)
+		{
+			group[head] = true;
+			graph_test_cc(g, group, head);
+		}
+	}
+}

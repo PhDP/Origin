@@ -72,12 +72,6 @@ bool adjlist_has_edge(adjlist *a, int u, int v);
 /** Return true if the adjlist is strongly connected. */
 bool adjlist_strongly_connected(const adjlist *a);
 
-/** Dijkstra's algorithm for shortest path. */
-void adjlist_dijkstra(const adjlist *a, int v);
-
-/** Bellman-Ford's algorithm for shortest path. */
-void adjlist_bellman_ford(const adjlist *a, int v);
-
 /** Get the geodesic distances between all pairs of vertices using Johnson's algorithm. O(V^2 log V + VE). */
 double **adjlist_get_gdm(const adjlist *a);
 
