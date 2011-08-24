@@ -22,7 +22,7 @@ int main(int argc, const char *argv[])
 	gsl_rng_set(rng, seed);
 
 	const int vertices = 10; // Number of vertices in the graph
-	const double r = 0.9;
+	const double r = 0.20;
 	int trials = 0;
 	double *x = (double*)malloc(vertices * sizeof(double));
 	double *y = (double*)malloc(vertices * sizeof(double));
@@ -66,9 +66,14 @@ int main(int argc, const char *argv[])
 	}
 
 	adjlist_print(&a, NULL);
+	printf("\n");
 	adjlist_print_w(&a, NULL);
+	printf("\n");
 	adjlist_print_mat(&a, NULL);
+	printf("\n");
 	adjlist_print_w_mat(&a, NULL);
-
+	printf("\n");
+	printf("Trials: %d\n", trials);
+	
 	return EXIT_SUCCESS; // yeppie !
 }

@@ -189,10 +189,6 @@ bool adjlist_strongly_connected(const adjlist *a)
 	return true;
 }
 
-void adjlist_dijkstra(const adjlist *a, int v);
-
-void adjlist_bellman_ford(const adjlist *a, int v);
-
 double **adjlist_get_gdm(const adjlist *a)
 {
 	const double max = DBL_MAX;
@@ -328,7 +324,7 @@ void adjlist_print_w(const adjlist *a, FILE *out)
 			printf("%5d -> ", i);
 			for (edge *e = a->list[i]; e != NULL; e = e->next)
 			{
-				printf("%d(%8.2f) ", e->head, e->w);
+				printf("%d(%.2f) ", e->head, e->w);
 			}
 			printf("\n");
 		}
@@ -458,7 +454,6 @@ inline void adjlist_free(adjlist *a)
 	}
 	free(a->list);
 	a->list = NULL;
-	free(a);
 }
 
 ///////////////////////////////////
