@@ -1,4 +1,4 @@
-// Generate random geometric graphs until a connected one if found.
+// Generate random geometric graphs until a connected one is found.
 //
 // gcc -O3 -std=c99 -lm -lgsl -lgslcblas -o adjlisttest adjlist_tests.c adjlist.c utils.c maths.c
 
@@ -22,10 +22,10 @@ int main(int argc, const char *argv[])
 	gsl_rng_set(rng, seed);
 
 	const int vertices = 10; // Number of vertices in the graph
-	const double r = 0.20;
-	int trials = 0;
-	double *x = (double*)malloc(vertices * sizeof(double));
-	double *y = (double*)malloc(vertices * sizeof(double));
+	const double r = 0.20; // Min. radius
+	int trials = 0; // Number of attempts before a connected graph is found
+	double *x = (double*)malloc(vertices * sizeof(double)); // x-coordinates
+	double *y = (double*)malloc(vertices * sizeof(double)); // x-coordinates
 
 	adjlist a; // The graph.
 	bool is_connected = false;
