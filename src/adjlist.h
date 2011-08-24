@@ -12,7 +12,7 @@ extern "C" {
 /** A adjlist represented by an adjacency list (made of dynamic arrays). */
 typedef struct edge_
 {
-	edge_ *next; /**< Pointer to the next edge in the list. */
+	struct edge_ *next; /**< Pointer to the next edge in the list. */
 	
 	int head; /**< Head of the edge (the ID of the vertex pointed). */
 	
@@ -37,7 +37,7 @@ void adjlist_init(adjlist *a, int vertices);
 int adjlist_edges(const adjlist *a);
 
 /** Allocate memory for an edge and return a pointer to it. */
-edge *create_edge(int head, double weight);
+edge *create_edge(int head, double weight, edge *next);
 
 /** Number of proper edges in the entire adjlist. */
 int adjlist_proper_edges(const adjlist *a);

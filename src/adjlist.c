@@ -12,10 +12,10 @@ void adjlist_init(adjlist *a, int vertices)
 	a->list = (edge**)calloc(vertices, sizeof(edge*));
 }
 
-int adjlist_edges(const adjlist *a)
+inline int adjlist_edges(const adjlist *a)
 {
 	int sum = 0;
-	const int num_v = a->num_v:
+	const int num_v = a->num_v;
 	for (int i = 0; i < num_v; ++i)
 	{
 		for (edge *e = a->list[i]; e != NULL; e = e->next) 
@@ -26,7 +26,7 @@ int adjlist_edges(const adjlist *a)
 	return sum;
 }
 
-edge *create_edge(int head, double weight, edge *next)
+inline edge *create_edge(int head, double weight, edge *next)
 {
 	edge *e = (edge*)malloc(sizeof(edge));
 	
@@ -37,10 +37,10 @@ edge *create_edge(int head, double weight, edge *next)
 	return e;
 }
 
-int adjlist_proper_edges(const adjlist *a)
+inline int adjlist_proper_edges(const adjlist *a)
 {
 	int sum = 0;
-	const int num_v = a->num_v:
+	const int num_v = a->num_v;
 	for (int i = 0; i < num_v; ++i)
 	{
 		for (edge *e = a->list[i]; e != NULL; e = e->next) 
@@ -51,10 +51,10 @@ int adjlist_proper_edges(const adjlist *a)
 	return sum;
 }
 
-int adjlist_loops(const adjlist *a)
+inline int adjlist_loops(const adjlist *a)
 {
 	int sum = 0;
-	const int num_v = a->num_v:
+	const int num_v = a->num_v;
 	for (int i = 0; i < num_v; ++i)
 	{
 		for (edge *e = a->list[i]; e != NULL; e = e->next) 
@@ -65,20 +65,20 @@ int adjlist_loops(const adjlist *a)
 	return sum;
 }
 
-int adjlist_outdegree(const adjlist *a, int u)
+inline int adjlist_outdegree(const adjlist *a, int u)
 {
 	int sum = 0;
-	for (edge *e = a->list[i]; e != NULL; e = e->next) 
+	for (edge *e = a->list[u]; e != NULL; e = e->next) 
 	{
 		++sum;
 	}
 	return sum;
 }
 
-int adjlist_indegree(const adjlist *a, int u)
+inline int adjlist_indegree(const adjlist *a, int u)
 {
 	int sum = 0;
-	const int num_v = a->num_v:
+	const int num_v = a->num_v;
 	for (int i = 0; i < num_v; ++i)
 	{
 		for (edge *e = a->list[i]; e != NULL; e = e->next) 
@@ -94,7 +94,7 @@ inline bool adjlist_is_balanced(const adjlist *a)
 	const int num_v = a->num_v;
 	for (int i = 0; i < num_v; ++i)
 	{
-		if (adjlist_indegree(g, i) != adjlist_outdegree(g, i))
+		if (adjlist_indegree(a, i) != adjlist_outdegree(a, i))
 		{
 			return false;
 		}
@@ -107,7 +107,7 @@ inline void adjlist_add_edge(adjlist *a, int u, int v, double weight)
 	a->list[u] = create_edge(v, weight, a->list[u]);
 }
 
-inline void adjlist_add_sym_edges(adjlist *a, int u, int v, double weight);
+inline void adjlist_add_sym_edges(adjlist *a, int u, int v, double weight)
 {
 	a->list[u] = create_edge(v, weight, a->list[u]);
 	a->list[v] = create_edge(u, weight, a->list[v]);
@@ -128,14 +128,14 @@ inline bool adjlist_rmv_edge(adjlist *a, int u, int v)
 		return true;
 	}
 
-	edge *e = a->list[i];
+	edge *e = a->list[u];
 	while (e->next != NULL)
 	{
 		if (e->next->head == v)
 		{
 			edge *temp = e->next;
 			e->next = e->next->next;
-			temp->next = NULL
+			temp->next = NULL;
 			edge_free(temp);
 			return true;
 		}
@@ -144,12 +144,12 @@ inline bool adjlist_rmv_edge(adjlist *a, int u, int v)
 	return false;
 }
 
-bool adjlist_rmv_sym_edges(adjlist *a, int u, int v)
+inline bool adjlist_rmv_sym_edges(adjlist *a, int u, int v)
 {
-	return (adjlist_rmv_edge(g, u, v) && adjlist_rmv_edge(g, v, u));
+	return (adjlist_rmv_edge(a, u, v) && adjlist_rmv_edge(a, v, u));
 }
 
-bool adjlist_has_edge(adjlist *a, int u, int v)
+inline bool adjlist_has_edge(adjlist *a, int u, int v)
 {
 	for (edge *e = a->list[u]; e != NULL; e = e->next) 
 	{
@@ -174,7 +174,7 @@ bool adjlist_strongly_connected(const adjlist *a)
 		}
 
 		group[u] = true;
-		graph_test_cc(g, group, u); // Call recursive function
+		adjlist_test_cc(a, group, u); // Call recursive function
 
 		for (int v = 0; v < num_v; ++v) 
 		{
@@ -259,7 +259,7 @@ double **adjlist_get_gdm(const adjlist *a)
 double *adjlist_cls_centrality(const adjlist *a)
 {
 	const int num_v = a->num_v;
-	double **gdm = graph_get_gdm(g);
+	double **gdm = adjlist_get_gdm(a);
 	double *cls_centrality = (double*)malloc(num_v * sizeof(double));
 	
 	for (int i = 0; i < num_v; ++i)
@@ -284,8 +284,8 @@ double *adjlist_cls_centrality(const adjlist *a)
 
 double *adjlist_cls_centrality_scaled(const adjlist *a)
 {
-	double *cls_centrality_scaled = graph_cls_centrality(g);
-	scale_0_1(cls_centrality_scaled, g->num_v);
+	double *cls_centrality_scaled = adjlist_cls_centrality(a);
+	scale_0_1(cls_centrality_scaled, a->num_v);
 	return cls_centrality_scaled;
 }
 
@@ -297,7 +297,7 @@ void adjlist_print(const adjlist *a, FILE *out)
 		for (int i = 0; i < num_v; ++i) 
 		{
 			printf("%5d -> ", i);
-			for (edge *e = a->list[u]; e != NULL; e = e->next)
+			for (edge *e = a->list[i]; e != NULL; e = e->next)
 			{
 				printf("%d ", e->head);
 			}
@@ -309,7 +309,7 @@ void adjlist_print(const adjlist *a, FILE *out)
 		for (int i = 0; i < num_v; ++i) 
 		{
 			fprintf(out, "%5d -> ", i);
-			for (edge *e = a->list[u]; e != NULL; e = e->next)
+			for (edge *e = a->list[i]; e != NULL; e = e->next)
 			{
 				fprintf(out, "%d ", e->head);
 			}
@@ -326,7 +326,7 @@ void adjlist_print_w(const adjlist *a, FILE *out)
 		for (int i = 0; i < num_v; ++i) 
 		{
 			printf("%5d -> ", i);
-			for (edge *e = a->list[u]; e != NULL; e = e->next)
+			for (edge *e = a->list[i]; e != NULL; e = e->next)
 			{
 				printf("%d(%8.2f) ", e->head, e->w);
 			}
@@ -338,7 +338,7 @@ void adjlist_print_w(const adjlist *a, FILE *out)
 		for (int i = 0; i < num_v; ++i) 
 		{
 			fprintf(out, "%5d -> ", i);
-			for (edge *e = a->list[u]; e != NULL; e = e->next)
+			for (edge *e = a->list[i]; e != NULL; e = e->next)
 			{
 				fprintf(out, "%d(%8.2f) ", e->head, e->w);
 			}
@@ -357,7 +357,7 @@ void adjlist_print_mat(const adjlist *a, FILE *out)
 	}
 	for (int i = 0; i < num_v; ++i) 
 	{
-		for (edge *e = a->list[u]; e != NULL; e = e->next)
+		for (edge *e = a->list[i]; e != NULL; e = e->next)
 		{
 			row[e->head] += 1;
 		}
@@ -377,7 +377,7 @@ void adjlist_print_mat(const adjlist *a, FILE *out)
 			}
 		}
 		// Set all edges back to 0
-		for (edge *e = a->list[u]; e != NULL; e = e->next)
+		for (edge *e = a->list[i]; e != NULL; e = e->next)
 		{
 			row[e->head] -= 1;
 		}
@@ -402,7 +402,7 @@ void adjlist_print_w_mat(const adjlist *a, FILE *out)
 	}
 	for (int i = 0; i < num_v; ++i) 
 	{
-		for (edge *e = a->list[u]; e != NULL; e = e->next)
+		for (edge *e = a->list[i]; e != NULL; e = e->next)
 		{
 			row[e->head] = e->w;
 		}
@@ -422,7 +422,7 @@ void adjlist_print_w_mat(const adjlist *a, FILE *out)
 			}
 		}
 		// Set all edges back to 0
-		for (edge *e = a->list[u]; e != NULL; e = e->next)
+		for (edge *e = a->list[i]; e != NULL; e = e->next)
 		{
 			row[e->head] = 0.0;
 		}
@@ -437,7 +437,7 @@ void adjlist_print_w_mat(const adjlist *a, FILE *out)
 	}
 }
 
-void edge_free(edge *e)
+inline void edge_free(edge *e)
 {
 	if (e->next != NULL)
 	{
@@ -446,7 +446,7 @@ void edge_free(edge *e)
 	free(e);
 }
 
-void adjlist_free(adjlist *a)
+inline void adjlist_free(adjlist *a)
 {
 	const int num_v = a->num_v;
 	for (int i = 0; i < num_v; ++i)
@@ -465,7 +465,7 @@ void adjlist_free(adjlist *a)
 // Private functions             //
 ///////////////////////////////////
 
-void adjlist_test_cc(const adjlist *a, bool *aroup, int u)
+inline void adjlist_test_cc(const adjlist *a, bool *group, int u)
 {
 	for (edge *e = a->list[u]; e != NULL; e = e->next) 
 	{
@@ -473,7 +473,7 @@ void adjlist_test_cc(const adjlist *a, bool *aroup, int u)
 		if (head != u && group[head] == false)
 		{
 			group[head] = true;
-			graph_test_cc(g, group, head);
+			adjlist_test_cc(a, group, head);
 		}
 	}
 }
