@@ -8,9 +8,9 @@ Description:
 	The project is developed and tested on Linux x86_64. Stable versions are tagged.
 
 TODO list:
-  Model: Rosindell & Phillimore's neutral theory of island biogeography.
-  Improve the graph object.
-  Model: Niche/Cascade/basic food web models.
-  CMake
+	Makefile (!).
+	Model: Rosindell & Phillimore's neutral theory of island biogeography.
+	Model: Niche/Cascade/basic food web models.
+	Unweighted graphs.
 
 
