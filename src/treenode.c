@@ -26,6 +26,21 @@ inline void treenode_set_children(treenode *t, treenode *l, treenode *r)
 	t->r = r;
 }
 
+int treenode_numedges(treenode *t)
+{
+	return (t->l == NULL) ? 0 : 2 + treenode_numedges(t->l) + treenode_numedges(t->r);
+}
+
+int treenode_numleaves(treenode *t)
+{
+  return 1 + treenode_numedges(t) / 2;
+}
+
+int treenode_toroot(treenode *t)
+{
+	return (t->p == NULL) ? 0 : 1 + treenode_toroot(t->p);
+}
+
 bool treenode_sbinary(treenode *t)
 {
 	if (t->l == NULL && t->r == NULL)

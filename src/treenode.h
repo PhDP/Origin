@@ -35,6 +35,15 @@ treenode *treenode_init(treenode *p, char *name, void *data);
 /** Set the children of the node. */
 void treenode_set_children(treenode *t, treenode *l, treenode *r); // TODO: Replace by a define (and test!)
 
+/** Number of edges in the subtree. */
+int treenode_numedges(treenode *t);
+
+/** Number of leaves in the subtree. */
+int treenode_numleaves(treenode *t);
+
+/** Number of nodes between this node and the root */
+int treenode_toroot(treenode *t);
+
 /** Check if the subtree is really a strictly binary tree. */
 bool treenode_sbinary(treenode *t);
 
