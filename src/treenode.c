@@ -5,24 +5,22 @@
 #include <stdbool.h>
 #include <string.h>
 #include "hon.h"
-#include "tnode.h"
-
-/*
+#include "treenode.h"
 
 treenode *treenode_init(treenode *p, char *name, void *data)
 {
-	treenode *temp = (treenode*)malloc(sizeof(treenode));
-	
-	temp->name = name;
-	temp->p = p;
-	temp->l = NULL;
-	temp->r = NULL;
-	temp->data = NULL;
-	
-	return temp;
+	treenode *t = (treenode*)malloc(sizeof(treenode));
+
+	t->name = name;
+	t->p = p;
+	t->l = NULL;
+	t->r = NULL;
+	t->data = NULL;
+
+	return t;
 }
 
-void treenode_set_children(treenode *t, treenode *l, treenode *r)
+inline void treenode_set_children(treenode *t, treenode *l, treenode *r)
 {
 	t->l = l;
 	t->r = r;
@@ -44,47 +42,60 @@ bool treenode_sbinary(treenode *t)
 	}
 }
 
-bool treenode_leaf(treenode *t)
+inline bool treenode_leaf(treenode *t)
 {
 	return (t->l == NULL);
 }
 
-bool treenode_root(treenode *t);
+inline bool treenode_root(treenode *t);
 {
 	return (t->p == NULL);
 }
 
-bool treenode_internal(treenode *t);
+inline bool treenode_internal(treenode *t);
 {
 	return (t->p != NULL && t->l != NULL);
 }
 
 char *treenode_simple_newick(treenode *t)
 {
-	sprintf (char *str, const char *format, ...);
-	
+	char *str;
 	if (treenode_leaf(t))
 	{
-		const int name_length = strlen(t->name);
-		char *newick = (char*)malloc(name_length + 20);
+		str = (char*)malloc(strlen(t->name));
+		sprintf(str, "%s", t->name);
 	}
 	else
 	{
-		char *l_newick = hontnode_simple_newick(t);
-		char *r_newick = hontnode_simple_newick(r);
+		char *lnewick = treenode_simple_newick(t->l);
+		char *rnewick = treenode_simple_newick(t->r);
+		const int lrlength = strlen(lnewick) + strlen(rnewick);
+		str = (char*)malloc(lrlength + strlen(t->name) + 6);
+		if (t->p == NULL)
+		{
+			sprintf(str, "(%s,%s):%s", lnewick, rnewick, t->name);
+		}
+		else
+		{
+			sprintf(str, "(%s,%s):%s;", lnewick, rnewick, t->name);
+		}
+		free(lnewick);
+		free(rnewick);
 	}
+	return str;
 }
 
 void treenode_free(treenode *t)
 {
-	treenode_free(t->l);
-	treenode_free(t->r);
+	if (t->l != NULL)
+	{
+		treenode_free(t->l);
+	}
+	if (t->r != NULL)
+	{
+		treenode_free(t->r);
+	}
 	free(t->name);
-	t->p = NULL;
-	t->l = NULL;
-	t->r = NULL;
 	t->data = NULL;
 	free(t);
 }
-
-*/

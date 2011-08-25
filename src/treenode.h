@@ -16,13 +16,13 @@ typedef struct treenode_
 	char *name;
 	
 	/** Pointer to the parent. */
-	treenode_ *p;
+	struct treenode_ *p;
 	
 	/** Pointer to the 'left' child. */
-	treenode_ *l;
+	struct treenode_ *l;
 	
 	/** Pointer to the 'right' child. */
-	treenode_ *r;
+	struct treenode_ *r;
 	
 	/** Data inside the node. */
 	void *data;
@@ -32,7 +32,8 @@ treenode;
 /** Initialize a treenode object. */
 treenode *treenode_init(treenode *p, char *name, void *data);
 
-void treenode_set_children(treenode *t, treenode *l, treenode *r);
+/** Set the children of the node. */
+void treenode_set_children(treenode *t, treenode *l, treenode *r); // TODO: Replace by a define (and test!)
 
 /** Check if the subtree is really a strictly binary tree. */
 bool treenode_sbinary(treenode *t);
