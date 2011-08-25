@@ -34,7 +34,7 @@ bool treenode_sbinary(treenode *t)
 	}
 	else if (t->l != NULL && t->r != NULL)
 	{
-		return (treenode_sbinary(l) && treenode_sbinary(r));
+		return (treenode_sbinary(t->l) && treenode_sbinary(t->r));
 	}
 	else
 	{
@@ -47,12 +47,12 @@ inline bool treenode_leaf(treenode *t)
 	return (t->l == NULL);
 }
 
-inline bool treenode_root(treenode *t);
+inline bool treenode_root(treenode *t)
 {
 	return (t->p == NULL);
 }
 
-inline bool treenode_internal(treenode *t);
+inline bool treenode_internal(treenode *t)
 {
 	return (t->p != NULL && t->l != NULL);
 }
@@ -62,8 +62,15 @@ char *treenode_simple_newick(treenode *t)
 	char *str;
 	if (treenode_leaf(t))
 	{
-		str = (char*)malloc(strlen(t->name));
-		sprintf(str, "%s", t->name);
+		str = (char*)malloc(strlen(t->name) + 2);
+		if (t->p == NULL)
+		{
+			sprintf(str, "%s;", t->name);
+		}
+		else
+		{
+			sprintf(str, "%s", t->name);
+		}
 	}
 	else
 	{
@@ -73,11 +80,11 @@ char *treenode_simple_newick(treenode *t)
 		str = (char*)malloc(lrlength + strlen(t->name) + 6);
 		if (t->p == NULL)
 		{
-			sprintf(str, "(%s,%s):%s", lnewick, rnewick, t->name);
+			sprintf(str, "(%s,%s):%s;", lnewick, rnewick, t->name);
 		}
 		else
 		{
-			sprintf(str, "(%s,%s):%s;", lnewick, rnewick, t->name);
+			sprintf(str, "(%s,%s):%s", lnewick, rnewick, t->name);
 		}
 		free(lnewick);
 		free(rnewick);
