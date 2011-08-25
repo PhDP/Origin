@@ -27,7 +27,7 @@ void **mat_alloc(int nrows, int ncols, size_t size);
  * <br>// ...
  * <br>mat_free((void***)(&x), 1000);
  */
-void mat_free(void*** mat, int nrows);
+void mat_free(void **mat, int nrows);
 
 /** Find the min and the max values in an array of double. */
 void dmin_max(double *x, int length, double *min, double *max);

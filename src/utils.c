@@ -20,13 +20,13 @@ void **mat_alloc(int nrows, int ncols, size_t size)
 	return matrix;
 }
 
-void mat_free(void*** mat, int nrows)
+void mat_free(void **mat, int nrows)
 {
 	for (int i = 0; i < nrows; ++i)
 	{
-		free((*mat)[i]);
+		free(mat[i]);
 	}
-	free(*mat);
+	free(mat);
 }
 
 void dmin_max(double *x, int length, double *min, double *max)
