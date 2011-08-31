@@ -5,7 +5,7 @@
 #include <string.h>
 #include <gsl/gsl_rng.h>
 #include <gsl/gsl_randist.h>
-#include "hon.h"
+#include "origin.h"
 #include "gcode.h"
 #include "seq.h"
 #include "amino.h"
