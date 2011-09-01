@@ -87,8 +87,8 @@ int main(int argc, const char *argv[])
 	p.init_species = 20;
 	p.k_gen = 100;
 	p.mu = 1e-4;
-	p.omega = 1e-3;
-	p.s = 0.05;
+	p.omega = 5e-4;
+	p.s = 0.15;
 	p.r = 0.25;
 	p.w = 0.25;
 	p.ofilename = (char*)malloc(50);
