@@ -23,8 +23,8 @@
  * ...developed and tested on Linux x86_64.
  *****************************************************************************/
 
-#define SSNE_DATE       "2011.08.15"
-#define SSNE_VERSION    "2.4"
+#define SSNE_DATE       "2011.09.01"
+#define SSNE_VERSION    "2.5"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -61,6 +61,7 @@ typedef struct
 	double omega;      // Weight of the links between communities.
 	double s;          // Selection coefficient.
 	double r;          // Radius (for random geometric graphs).
+	double w;          // Width (for rectangle random geometric graphs).
 	char *ofilename;   // Name of the output files.
 	char *shape;       // Shape of the metacommunity.
 }
@@ -89,6 +90,7 @@ int main(int argc, const char *argv[])
 	p.omega = 1e-3;
 	p.s = 0.05;
 	p.r = 0.25;
+	p.w = 0.25;
 	p.ofilename = (char*)malloc(50);
 	p.shape = (char*)malloc(20);
 
@@ -121,18 +123,23 @@ int main(int argc, const char *argv[])
 			printf("    default:      1\n");
 			printf("  -shape\n");
 			printf("    description:  Set the shape of the metacommunity.\n");
-			printf("    values:       circle, complete, random, star.\n");
+			printf("    values:       circle, complete, random, rectangle, star.\n");
 			printf("    default:      random\n");
 			printf("  -r\n");
 			printf("    description:  Threshold radius for random geometric\n");
 			printf("                  graphs.\n");
 			printf("    values:       Any double greater than 0.\n");
 			printf("    default:      0.25\n");
+			printf("  -w\n");
+			printf("    description:  The width of a rectangle random geometric\n");
+			printf("                  graph.\n");
+			printf("    values:       0 < w < 1\n");
+			printf("    default:      0.25\n");
 			printf("  -g\n");
 			printf("    description:  Number of generations in thousands.\n");
 			printf("    values:       Any positive integer.\n");
 			printf("    default:      100 (i.e.: 100 000 generations)\n");
-			printf("  -n\n");
+			printf("  -c\n");
 			printf("    description:  Number of local communities.\n");
 			printf("    values:       Any integer greater than 0.\n");
 			printf("    default:      10\n");
@@ -148,7 +155,7 @@ int main(int argc, const char *argv[])
 			printf("  -s\n");
 			printf("    description:  Set the selection coefficient (model 1 only).\n");
 			printf("    values:       Any double in the (-1.0, 1.0) interval.\n");
-			printf("    default:      0.05\n");
+			printf("    default:      0.15\n");
 			printf("  -mu\n");
 			printf("    description:  Set the mutation rate.\n");
 			printf("    values:       Any positive double.\n");
@@ -156,7 +163,7 @@ int main(int argc, const char *argv[])
 			printf("  -omega\n");
 			printf("    description:  The weight of the proper edges.\n");
 			printf("    values:       Any nonnegative double.\n");
-			printf("    default:      1e-3\n");
+			printf("    default:      5e-4\n");
 			printf("  -o\n");
 			printf("    description:  Name of the output files.\n");
 			printf("    values:       Any string.\n");
@@ -181,12 +188,13 @@ int main(int argc, const char *argv[])
 	read_opt_i("g", argv, argc, &p.k_gen);
 	read_opt_i("jpc", argv, argc, &p.j_per_c);
 	read_opt_i("model", argv, argc, &p.m);
-	read_opt_i("n", argv, argc, &p.communities);
+	read_opt_i("c", argv, argc, &p.communities);
 	read_opt_i("sp", argv, argc, &p.init_species);
 	read_opt_i("x", argv, argc, &n_threads);
 	read_opt_d("mu", argv, argc, &p.mu);
 	read_opt_d("omega", argv, argc, &p.omega);
 	read_opt_d("r", argv, argc, &p.r);
+	read_opt_d("w", argv, argc, &p.w);
 	read_opt_d("s", argv, argc, &p.s);
 	if (read_opt_s("o", argv, argc, p.ofilename) == false)
 	{
@@ -221,8 +229,13 @@ int main(int argc, const char *argv[])
 	printf("  Omega: %.2e\n", p.omega);
 	if (p.shape[0] == 'r')
 	{
-		printf("  r: %.4f\n\n", p.r);
+		printf("  r: %.4f\n", p.r);
 	}
+	if (p.shape[0] == 'r' && p.shape[1] == 'e')
+	{
+		printf("  width: %.4f\n", p.w);
+	}
+	printf("\n");
 
 	// The threads:
 	pthread_t threads[n_threads];
@@ -263,6 +276,7 @@ void *sim(void *parameters)
 	const double mu = P.mu;
 	const double s = P.s;
 	const double radius = P.r;
+	const double width = P.w;
 
 	// GSL's Taus generator:
 	gsl_rng *rng = gsl_rng_alloc(gsl_rng_taus2);
@@ -339,6 +353,10 @@ void *sim(void *parameters)
 			graph_get_circle(&g, communities);
 			break;
 		}
+	case 'r':
+		shape = "rectangle";
+		graph_get_rec_crgg(&g, communities, width, radius, x, y, rng);
+		break;
 	default:
 		shape = "random";
 		graph_get_crgg(&g, communities, radius, x, y, rng);
@@ -381,6 +399,10 @@ void *sim(void *parameters)
 	if (shape[0] == 'r')
 	{
 		fprintf(out, "radius: %.4f\n", radius);
+	}
+	if (shape[0] == 'r' && shape[1] == 'e')
+	{
+		fprintf(out, "width: %.4f\n", width);
 	}
 
 	// To select the species and genotypes to pick and replace:

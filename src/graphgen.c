@@ -55,7 +55,6 @@ void graph_get_rec_rgg(graph *g, int vertices, double width, double r, double *x
 		x[i] = gsl_rng_uniform(rng) * length;
 		y[i] = gsl_rng_uniform(rng) * width;
 	}
-	
 	double d;
 	for (int i = 0; i < vertices; ++i) 
 	{
