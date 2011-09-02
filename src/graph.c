@@ -261,9 +261,8 @@ double *graph_cls_centrality(const graph *g)
 		{
 			sum += gdm[i][j];
 		}
-		cls_centrality[i] = sum / (num_v - 1);
+		cls_centrality[i] = (num_v - 1) / sum;
 	}
-	
 	// Free the memory of the geodesic distance matrix:
 	for (int i = 0; i < num_v; ++i)
 	{
@@ -279,6 +278,42 @@ double *graph_cls_centrality_scaled(const graph *g)
 	double *cls_centrality_scaled = graph_cls_centrality(g);
 	scale_0_1(cls_centrality_scaled, g->num_v);
 	return cls_centrality_scaled;
+}
+
+double *graph_har_cls_centrality(const graph *g)
+{
+	const int num_v = g->num_v;
+	double **gdm = graph_get_gdm(g);
+	double *har_cls_centrality = (double*)malloc(num_v * sizeof(double));
+	
+	for (int i = 0; i < num_v; ++i)
+	{
+		double sum = 0.0;
+		for (int j = 0; j < num_v; ++j)
+		{
+			if (i != j)
+			{
+				sum += 1 / gdm[i][j];
+			}
+		}
+		har_cls_centrality[i] = sum / (num_v - 1);
+	}
+	
+	// Free the memory of the geodesic distance matrix:
+	for (int i = 0; i < num_v; ++i)
+	{
+		free(gdm[i]);
+	}
+	free(gdm);
+	
+	return har_cls_centrality;
+}
+
+double *graph_har_cls_centrality_scaled(const graph *g)
+{
+	double *har_cls_centrality_scaled = graph_har_cls_centrality(g);
+	scale_0_1(har_cls_centrality_scaled, g->num_v);
+	return har_cls_centrality_scaled;
 }
 
 void graph_print(const graph *g, FILE *out)

@@ -373,9 +373,11 @@ void *sim(void *parameters)
 	double **cumul = setup_cumulative_list(&g, omega);
 	
 	// Closeness centrality array
-	double *cls_centrality = graph_cls_centrality(&g);;
+	double *cls_centrality = graph_cls_centrality(&g);
 	double *cls_centrality_scaled = graph_cls_centrality_scaled(&g);
-
+	double *har_cls_centrality = graph_har_cls_centrality(&g);
+	double *har_cls_centrality_scaled = graph_har_cls_centrality_scaled(&g);
+	
 	fprintf(out, "author:   Philippe Desjardins-Proulx\n");
 	fprintf(out, "email:    <philippe.d.proulx@gmail.com>\n");
 	fprintf(out, "web:      http://phdp.huginn.info/\n");
@@ -617,6 +619,8 @@ void *sim(void *parameters)
 		fprintf(out, "  Degree: %d\n", g.num_e[c] + 1);
 		fprintf(out, "  Closeness centrality: %.8f\n", cls_centrality[c]);
 		fprintf(out, "  Scaled closeness centrality: %.8f\n", cls_centrality_scaled[c]);
+		fprintf(out, "  Harmonic closeness centrality: %.8f\n", har_cls_centrality[c]);
+		fprintf(out, "  Scaled harmonic closeness centrality: %.8f\n", har_cls_centrality_scaled[c]);
 		fprintf(out, "  Speciation events: %d\n", speciation_per_c[c]);
 
 		int vertex_richess = 0;
@@ -644,7 +648,13 @@ void *sim(void *parameters)
 			fprintf(out, "%.2f ", octaves[i]);
 		}
 		fprintf(out, "\n\n");
+		#ifdef EXTRAPRINT
+		printf("%d\t%.8f\t%.8f\t%.8f\t%.8f\t%d\t%d\n", graph_outdegree(&g, c) - 1, cls_centrality[c], cls_centrality_scaled[c], har_cls_centrality[c], har_cls_centrality_scaled[c], species_distribution.size, speciation_per_c[c]);
+		#endif
 	}
+	#ifdef EXTRAPRINT
+	printf("Simulation %u\t%d\t%.2f\t%.2f\t%.4f\t%.4f\t%d\t%.2f\t%.2f\n", seed, communities, radius, s, (double)graph_edges(&g) / communities, omega, total_species[k_gen-1], imedian(lifespan.array, lifespan.size), imedian(pop_size.array, pop_size.size));
+	#endif
 
 	//////////////////////////////////////////////////
 	// EPILOGUE...                                  //
@@ -659,6 +669,8 @@ void *sim(void *parameters)
 	free(extinction_events);
 	free(cls_centrality);
 	free(cls_centrality_scaled);
+	free(har_cls_centrality);
+	free(har_cls_centrality_scaled);
 	// Free structs;
 	SpeciesList_free(list);
 	ivector_free(&species_distribution);

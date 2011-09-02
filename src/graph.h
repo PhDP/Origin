@@ -83,6 +83,12 @@ double *graph_cls_centrality(const graph *g);
 /** Return a scaled array with the closeness centrality for all vertices. */
 double *graph_cls_centrality_scaled(const graph *g);
 
+/** Return an array with the harmonic closeness centrality for all vertices. */
+double *graph_har_cls_centrality(const graph *g);
+
+/** Return a scaled array with the harmonic closeness centrality for all vertices. */
+double *graph_har_cls_centrality_scaled(const graph *g);
+
 /** Print the adjacency list. Use NULL for the file pointer to print to the console. */
 void graph_print(const graph *g, FILE *out);
 
