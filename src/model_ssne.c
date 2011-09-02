@@ -474,6 +474,7 @@ void *sim(void *parameters)
 					{
 						++v1;
 					}
+					v1 = g.adj_list[c][v1];
 					// Species of the new individual
 					position = (int)(gsl_rng_uniform(rng) * j_per_c);
 					s1 = list->head;
