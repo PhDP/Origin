@@ -12,7 +12,7 @@
  *
  * references:
  *    Desjardins-Proulx, P. and Gravel, D. How likely is speciation in
- *  neutral ecology ? arXiv: 1102.2634.
+ *  neutral ecology ? The American Naturalist (accepted).
  *
  *    Desjardins-Proulx, P. and Gravel, D. Neutral biodiversity in 
  * complex landscapes.
