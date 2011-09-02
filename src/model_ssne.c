@@ -432,9 +432,9 @@ void *sim(void *parameters)
 		/////////////////////////////////////////////
 		// 1 000 generations                       //
 		/////////////////////////////////////////////
-		for (int g = 0; g < 1000; ++g)
+		for (int gen = 0; gen < 1000; ++gen)
 		{
-			const int current_date = (k * 1000) + g;
+			const int current_date = (k * 1000) + gen;
 			/////////////////////////////////////////////
 			// A single generation                     //
 			/////////////////////////////////////////////
