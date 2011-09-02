@@ -352,9 +352,18 @@ void *sim(void *parameters)
 			break;
 		}
 	case 'r':
-		shape = "rectangle";
-		graph_get_rec_crgg(&g, communities, width, radius, x, y, rng);
-		break;
+		if (shape[1] = 'e')
+		{
+			shape = "rectangle";
+			graph_get_rec_crgg(&g, communities, width, radius, x, y, rng);
+			break;
+		}
+		else
+		{
+			shape = "random";
+			graph_get_crgg(&g, communities, radius, x, y, rng);
+			break;
+		}
 	default:
 		shape = "random";
 		graph_get_crgg(&g, communities, radius, x, y, rng);
