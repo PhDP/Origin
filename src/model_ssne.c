@@ -3,8 +3,8 @@
  * author:    Philippe Desjardins-Proulx
  * email:     <philippe.d.proulx@gmail.com>
  * website:   http://phdp.huginn.info
- * date:      2011.08.15
- * version:   2.4
+ * date:      2011.09.01
+ * version:   2.5
  * 
  * description:
  *   Spatially explicit speciation in neutral ecology. Type ssne --help 
