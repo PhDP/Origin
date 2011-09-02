@@ -67,11 +67,9 @@ typedef struct
 }
 Params;
 
-/////////////////////////////////////////////////////////////
-// Prototype for the function used by the threads          //
-void *sim(void *parameters);                              //
-/////////////////////////////////////////////////////////////
-
+// Prototype for the function used by the threads
+void *sim(void *parameters);
+// The function used to setup the cumulative jagged array from the graph.
 double **setup_cumulative_list(const graph *g, double omega);
 
 /////////////////////////////////////////////////////////////
