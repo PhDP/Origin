@@ -407,7 +407,7 @@ void *sim(void *parameters)
 
 	// To select the species and genotypes to pick and replace:
 	SLNode *s0 = list->head; // Species0
-	SLNode *s1 = list->head; // Species0
+	SLNode *s1 = list->head; // Species1
 	int g0 = 0;
 	int g1 = 0;
 	int v1 = 0; // Vertex of the individual 1
@@ -482,7 +482,7 @@ void *sim(void *parameters)
 						const int AB = s1->species->genotypes[v1][2];
 
 						// The total fitness of the population 'W':
-						const double w = aa + Ab * (1.0 + s) + AB * (1.0 + s + s + s * s);
+						const double w = aa + Ab * (1.0 + s) + AB * (1.0 + s) * (1.0 + s);
 
 						if (r < aa / w)
 						{
@@ -714,5 +714,18 @@ double **setup_cumulative_list(const graph *g, double omega)
 		}
 		cumul[i][num_e - 1] = 1.0;
 	}
+
+	/*
+	graph_print(g, NULL);
+	for (int i = 0; i < num_v; ++i)
+	{
+		const int num_e = g->num_e[i];
+		for (int j = 0; j < num_e; ++j)
+		{
+			printf("%.4f   ", cumul[i][j]);
+		}
+		printf("\n");
+	}
+	*/
 	return cumul;
 }
