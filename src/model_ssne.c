@@ -301,7 +301,7 @@ void *sim(void *parameters)
 	// Store the population size at speciation event:
 	ivector pop_size;
 	ivector_init0(&pop_size);
-	// (x, y) coordinates for spatial graphs:
+	// (x, y) coordinates for the spatial graph:
 	double *restrict x = (double*)malloc(communities * sizeof(double));
 	double *restrict y = (double*)malloc(communities * sizeof(double));
 	for (int i = 0; i < communities; ++i)
@@ -372,7 +372,7 @@ void *sim(void *parameters)
 	// Setup the cumulative jagged array for migration:
 	double **cumul = setup_cumulative_list(&g, omega);
 	
-	// Closeness centrality array
+	// Closeness centrality arrays
 	double *cls_centrality = graph_cls_centrality(&g);
 	double *cls_centrality_scaled = graph_cls_centrality_scaled(&g);
 	double *har_cls_centrality = graph_har_cls_centrality(&g);
