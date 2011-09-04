@@ -23,7 +23,7 @@ void graph_init(graph *g, int vertices)
 	}
 }
 
-inline int graph_edges(const graph *g)
+ORIGIN_INLINE int graph_edges(const graph *g)
 {
 	const int num_v = g->num_v;
 	int sum = 0;
@@ -34,7 +34,7 @@ inline int graph_edges(const graph *g)
 	return sum;
 }
 
-inline int graph_proper_edges(const graph *g)
+ORIGIN_INLINE int graph_proper_edges(const graph *g)
 {
 	const int num_v = g->num_v;
 	int sum = 0;
@@ -51,7 +51,7 @@ inline int graph_proper_edges(const graph *g)
 	return sum;
 }
 
-inline int graph_loops(const graph *g)
+ORIGIN_INLINE int graph_loops(const graph *g)
 {
 	const int num_v = g->num_v;
 	int sum = 0;
@@ -68,12 +68,12 @@ inline int graph_loops(const graph *g)
 	return sum;
 }
 
-inline int graph_outdegree(const graph *g, int u)
+ORIGIN_INLINE int graph_outdegree(const graph *g, int u)
 {
 	return g->num_e[u];
 }
 
-inline int graph_indegree(const graph *g, int u)
+ORIGIN_INLINE int graph_indegree(const graph *g, int u)
 {
 	const int num_v = g->num_v;
 	int sum = 0;
@@ -90,7 +90,7 @@ inline int graph_indegree(const graph *g, int u)
 	return sum;
 }
 
-inline bool graph_is_balanced(const graph *g)
+ORIGIN_INLINE bool graph_is_balanced(const graph *g)
 {
 	const int num_v = g->num_v;
 	for (int u = 0; u < num_v; ++u)
@@ -103,7 +103,7 @@ inline bool graph_is_balanced(const graph *g)
 	return true;
 }
 
-inline void graph_add_edge(graph *g, int u, int v, double weight)
+ORIGIN_INLINE void graph_add_edge(graph *g, int u, int v, double weight)
 {
 	if (g->num_e[u] == g->capacity[u]) 
 	{

@@ -10,7 +10,7 @@
 #include "ivector.h"
 #include "species.h"
 
-inline SpeciesList *SpeciesList_init()
+ORIGIN_INLINE SpeciesList *SpeciesList_init()
 {
 	SpeciesList *temp = (SpeciesList*)malloc(sizeof(SpeciesList));
 	
@@ -22,7 +22,7 @@ inline SpeciesList *SpeciesList_init()
 }
 
 // Always add the species at the end;
-inline void SpeciesList_add(SpeciesList *list, Species *s)
+ORIGIN_INLINE void SpeciesList_add(SpeciesList *list, Species *s)
 {
 	// Create the SLNode object to contain the species
 	SLNode *new_node = (SLNode*)malloc(sizeof(SLNode));
@@ -43,7 +43,7 @@ inline void SpeciesList_add(SpeciesList *list, Species *s)
 	list->size++;
 }
 
-inline bool SpeciesList_rmv_next(SpeciesList *list, SLNode *node)
+ORIGIN_INLINE bool SpeciesList_rmv_next(SpeciesList *list, SLNode *node)
 {
 	SLNode *old_node;
 
@@ -79,7 +79,7 @@ inline bool SpeciesList_rmv_next(SpeciesList *list, SLNode *node)
 	return true;
 }
 
-inline int SpeciesList_rmv_extinct(SpeciesList *list)
+ORIGIN_INLINE int SpeciesList_rmv_extinct(SpeciesList *list)
 {
 	if (list->size == 0)
 	{
@@ -108,7 +108,7 @@ inline int SpeciesList_rmv_extinct(SpeciesList *list)
 	return extinctions;
 }
 
-inline int SpeciesList_rmv_extinct2(SpeciesList *list, ivector *lifespan, int date)
+ORIGIN_INLINE int SpeciesList_rmv_extinct2(SpeciesList *list, ivector *lifespan, int date)
 {
 	if (list->size == 0)
 	{
@@ -140,7 +140,7 @@ inline int SpeciesList_rmv_extinct2(SpeciesList *list, ivector *lifespan, int da
 	return extinctions;
 }
 
-inline SLNode *SpeciesList_get(SpeciesList *list, int n)
+ORIGIN_INLINE SLNode *SpeciesList_get(SpeciesList *list, int n)
 {
 	if (n < 0 || n >= list->size)
 	{
@@ -164,7 +164,7 @@ inline SLNode *SpeciesList_get(SpeciesList *list, int n)
 	return node;
 }
 
-inline void SpeciesList_print_pop(SpeciesList *list, FILE *out)
+ORIGIN_INLINE void SpeciesList_print_pop(SpeciesList *list, FILE *out)
 {
 	SLNode *node = list->head;
 	const int subpopulations = node->species->subpops;
@@ -207,7 +207,7 @@ inline void SpeciesList_print_pop(SpeciesList *list, FILE *out)
 	}
 }
 
-inline void SpeciesList_free(SpeciesList *list)
+ORIGIN_INLINE void SpeciesList_free(SpeciesList *list)
 {
 	while (SpeciesList_rmv_next(list, NULL));
 	free(list);

@@ -33,7 +33,7 @@ void vvector_set(vvector *v, int n, void *x)
 }
 #endif
 
-inline void vvector_add(vvector *v, void *x)
+ORIGIN_INLINE void vvector_add(vvector *v, void *x)
 {
 	// If the internal array is full, double its size;
 	if (v->size == v->capacity)
@@ -45,7 +45,7 @@ inline void vvector_add(vvector *v, void *x)
 	v->size++;
 }
 
-inline void vvector_sub(vvector *v, int x)
+ORIGIN_INLINE void vvector_sub(vvector *v, int x)
 {
 	if (v->size >= x)
 	{
@@ -57,7 +57,7 @@ inline void vvector_sub(vvector *v, int x)
 	}
 }
 
-inline void vvector_sub1(vvector *v)
+ORIGIN_INLINE void vvector_sub1(vvector *v)
 {
 	if (v->size > 0)
 	{
@@ -65,7 +65,7 @@ inline void vvector_sub1(vvector *v)
 	}
 }
 
-inline void **vvector_get_array(vvector *v)
+ORIGIN_INLINE void **vvector_get_array(vvector *v)
 {
 	const int size = v->size;
 	void **new_array = (void**)malloc(size * sizeof(void*)); // Only allocate memory for the active elements
@@ -78,7 +78,7 @@ inline void **vvector_get_array(vvector *v)
 	return new_array;
 }
 
-inline void vvector_grow0(vvector *v, int new_capacity)
+ORIGIN_INLINE void vvector_grow0(vvector *v, int new_capacity)
 {
 	// The new array
 	void **new_array = (void**)malloc(new_capacity * sizeof(void*));
@@ -95,7 +95,7 @@ inline void vvector_grow0(vvector *v, int new_capacity)
 	free(swap); // Free the memory of the old a
 }
 
-inline void vvector_grow1(vvector *v)
+ORIGIN_INLINE void vvector_grow1(vvector *v)
 {
 	if (v->capacity == 0)
 	{
@@ -107,7 +107,7 @@ inline void vvector_grow1(vvector *v)
 	}
 }
 
-inline void vvector_free(vvector *v)
+ORIGIN_INLINE void vvector_free(vvector *v)
 {
 	free(v->array); // Free the memory of the vector
 	v->array = NULL;

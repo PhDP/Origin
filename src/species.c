@@ -68,7 +68,7 @@ Species *Species_init1(int subpopulations, int fill, int time_of_birth, int n_ge
 	return temp;
 }
 
-inline bool Species_is_extant(const Species *s)
+ORIGIN_INLINE bool Species_is_extant(const Species *s)
 {
 	for (int i = 0; i < s->subpops; ++i)
 	{
@@ -80,7 +80,7 @@ inline bool Species_is_extant(const Species *s)
 	return false;
 }
 
-inline bool Species_is_extinct(const Species *s)
+ORIGIN_INLINE bool Species_is_extinct(const Species *s)
 {
 	for (int i = 0; i < s->subpops; ++i)
 	{
@@ -92,7 +92,7 @@ inline bool Species_is_extinct(const Species *s)
 	return true;
 }
 
-inline int Species_total(const Species *s)
+ORIGIN_INLINE int Species_total(const Species *s)
 {
 	int sum = 0;
 	

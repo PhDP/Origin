@@ -8,7 +8,7 @@
 #include "stats.h"
 #include "utils.h"
 
-inline double dnaivesum(const double *x, int length)
+ORIGIN_INLINE double dnaivesum(const double *x, int length)
 {
 	double sum = 0.0;
 
@@ -19,7 +19,7 @@ inline double dnaivesum(const double *x, int length)
 	return sum;
 }
 
-inline double dsortsum(const double *x, int length)
+ORIGIN_INLINE double dsortsum(const double *x, int length)
 {
 	// Copy the array & sort it with quicksort.
 	double *sorted = (double*)malloc(length * sizeof(double));
@@ -33,7 +33,7 @@ inline double dsortsum(const double *x, int length)
 }
 
 // So simple with integers...
-inline int isum(const int *x, int length)
+ORIGIN_INLINE int isum(const int *x, int length)
 {
 	int sum = 0;
 
@@ -44,7 +44,7 @@ inline int isum(const int *x, int length)
 	return sum;
 }
 
-inline long lsum(const long *x, int length)
+ORIGIN_INLINE long lsum(const long *x, int length)
 {
 	long sum = 0;
 

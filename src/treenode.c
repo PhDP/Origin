@@ -20,7 +20,7 @@ treenode *treenode_init(treenode *p, char *name, void *data)
 	return t;
 }
 
-inline void treenode_set_children(treenode *t, treenode *l, treenode *r)
+ORIGIN_INLINE void treenode_set_children(treenode *t, treenode *l, treenode *r)
 {
 	t->l = l;
 	t->r = r;
@@ -57,17 +57,17 @@ bool treenode_sbinary(treenode *t)
 	}
 }
 
-inline bool treenode_leaf(treenode *t)
+ORIGIN_INLINE bool treenode_leaf(treenode *t)
 {
 	return (t->l == NULL);
 }
 
-inline bool treenode_root(treenode *t)
+ORIGIN_INLINE bool treenode_root(treenode *t)
 {
 	return (t->p == NULL);
 }
 
-inline bool treenode_internal(treenode *t)
+ORIGIN_INLINE bool treenode_internal(treenode *t)
 {
 	return (t->p != NULL && t->l != NULL);
 }

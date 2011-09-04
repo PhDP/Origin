@@ -33,7 +33,7 @@ void ivector_init2(ivector *v, int *x, int size, int initial_capacity)
 	}
 }
 
-inline void ivector_grow0(ivector *v, int new_capacity)
+ORIGIN_INLINE void ivector_grow0(ivector *v, int new_capacity)
 {
 	// The new array
 	int *new_array = (int*)malloc(new_capacity * sizeof(int));
@@ -51,7 +51,7 @@ inline void ivector_grow0(ivector *v, int new_capacity)
 	free(swap); // Free the memory of the old a
 }
 
-inline void ivector_grow1(ivector *v)
+ORIGIN_INLINE void ivector_grow1(ivector *v)
 {
 	// Double the internal storage
 	if (v->capacity == 0)
@@ -65,20 +65,20 @@ inline void ivector_grow1(ivector *v)
 }
 
 #ifndef NDEBUG
-inline int ivector_get(ivector *v, int n)
+ORIGIN_INLINE int ivector_get(ivector *v, int n)
 {
 	assert(n < v->size);
 	return v->array[n];
 }
 
-inline void ivector_set(ivector *v, int n, int x)
+ORIGIN_INLINE void ivector_set(ivector *v, int n, int x)
 {
 	assert(n < v->size);
 	v->array[n] = x;
 }
 #endif
 
-inline void ivector_add(ivector *v, int x)
+ORIGIN_INLINE void ivector_add(ivector *v, int x)
 {
 	// If the internal array is full, double its size;
 	if (v->size == v->capacity)
@@ -90,7 +90,7 @@ inline void ivector_add(ivector *v, int x)
 	v->size++;
 }
 
-inline void ivector_add_array(ivector *v, int *a, int size)
+ORIGIN_INLINE void ivector_add_array(ivector *v, int *a, int size)
 {
 	// If there isn't enough space, double the size until it can contain 'a'
 	const int old_size = v->size;
@@ -105,7 +105,7 @@ inline void ivector_add_array(ivector *v, int *a, int size)
 	v->size += size;
 }
 
-inline void ivector_sub(ivector *v, int x)
+ORIGIN_INLINE void ivector_sub(ivector *v, int x)
 {
 	if (v->size >= x)
 	{
@@ -117,12 +117,12 @@ inline void ivector_sub(ivector *v, int x)
 	}
 }
 
-inline void ivector_sub_all(ivector *v)
+ORIGIN_INLINE void ivector_sub_all(ivector *v)
 {
 	v->size = 0;
 }
 
-inline void ivector_sub1(ivector *v)
+ORIGIN_INLINE void ivector_sub1(ivector *v)
 {
 	if (v->size > 0)
 	{
@@ -130,7 +130,7 @@ inline void ivector_sub1(ivector *v)
 	}
 }
 
-inline int *ivector_get_array(ivector *v)
+ORIGIN_INLINE int *ivector_get_array(ivector *v)
 {
 	const int size = v->size;
 	int *new_array = (int*)malloc(size * sizeof(int)); // Only allocate memory for the active elements
@@ -143,17 +143,17 @@ inline int *ivector_get_array(ivector *v)
 	return new_array;
 }
 
-inline void ivector_sort_asc(ivector *v)
+ORIGIN_INLINE void ivector_sort_asc(ivector *v)
 {
 	qsort((void*)v->array, v->size, sizeof(int), compare_int_asc);
 }
 
-inline void ivector_sort_des(ivector *v)
+ORIGIN_INLINE void ivector_sort_des(ivector *v)
 {
 	qsort((void*)v->array, v->size, sizeof(int), compare_int_des);
 }
 
-inline int ivector_trim_small(ivector *v, int smallest)
+ORIGIN_INLINE int ivector_trim_small(ivector *v, int smallest)
 {
 	int i = 0;
 	int j = 0;
@@ -172,7 +172,7 @@ inline int ivector_trim_small(ivector *v, int smallest)
 	return removed;
 }
 
-inline int ivector_trim_large(ivector *v, int largest)
+ORIGIN_INLINE int ivector_trim_large(ivector *v, int largest)
 {
 	int i = 0;
 	int j = 0;
@@ -209,7 +209,7 @@ void ivector_print(ivector *v, FILE *out)
 	}
 }
 
-inline void ivector_free(ivector *v)
+ORIGIN_INLINE void ivector_free(ivector *v)
 {
 	free(v->array); // Free the memory of the vector
 	v->array = NULL;

@@ -11,6 +11,12 @@
 #define VECTOR_GROW_RATE 2
 #endif
 
+#ifdef OINLINING
+#define ORIGIN_INLINE inline
+#else
+#define ORIGIN_INLINE
+#endif
+
 // The initial capacity of lists in graphs
 #ifndef GRAPH_INIT_CAPACITY
 #define GRAPH_INIT_CAPACITY 16

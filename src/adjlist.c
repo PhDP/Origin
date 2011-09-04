@@ -12,7 +12,7 @@ void adjlist_init(adjlist *a, int vertices)
 	a->list = (edge**)calloc(vertices, sizeof(edge*));
 }
 
-inline int adjlist_edges(const adjlist *a)
+ORIGIN_INLINE int adjlist_edges(const adjlist *a)
 {
 	int sum = 0;
 	const int num_v = a->num_v;
@@ -26,7 +26,7 @@ inline int adjlist_edges(const adjlist *a)
 	return sum;
 }
 
-inline edge *create_edge(int head, double weight, edge *next)
+ORIGIN_INLINE edge *create_edge(int head, double weight, edge *next)
 {
 	edge *e = (edge*)malloc(sizeof(edge));
 	
@@ -37,7 +37,7 @@ inline edge *create_edge(int head, double weight, edge *next)
 	return e;
 }
 
-inline int adjlist_proper_edges(const adjlist *a)
+ORIGIN_INLINE int adjlist_proper_edges(const adjlist *a)
 {
 	int sum = 0;
 	const int num_v = a->num_v;
@@ -51,7 +51,7 @@ inline int adjlist_proper_edges(const adjlist *a)
 	return sum;
 }
 
-inline int adjlist_loops(const adjlist *a)
+ORIGIN_INLINE int adjlist_loops(const adjlist *a)
 {
 	int sum = 0;
 	const int num_v = a->num_v;
@@ -65,7 +65,7 @@ inline int adjlist_loops(const adjlist *a)
 	return sum;
 }
 
-inline int adjlist_outdegree(const adjlist *a, int u)
+ORIGIN_INLINE int adjlist_outdegree(const adjlist *a, int u)
 {
 	int sum = 0;
 	for (edge *e = a->list[u]; e != NULL; e = e->next) 
@@ -75,7 +75,7 @@ inline int adjlist_outdegree(const adjlist *a, int u)
 	return sum;
 }
 
-inline int adjlist_indegree(const adjlist *a, int u)
+ORIGIN_INLINE int adjlist_indegree(const adjlist *a, int u)
 {
 	int sum = 0;
 	const int num_v = a->num_v;
@@ -89,7 +89,7 @@ inline int adjlist_indegree(const adjlist *a, int u)
 	return sum;
 }
 
-inline bool adjlist_is_balanced(const adjlist *a)
+ORIGIN_INLINE bool adjlist_is_balanced(const adjlist *a)
 {
 	const int num_v = a->num_v;
 	for (int i = 0; i < num_v; ++i)
@@ -102,18 +102,18 @@ inline bool adjlist_is_balanced(const adjlist *a)
 	return true;
 }
 
-inline void adjlist_add_edge(adjlist *a, int u, int v, double weight)
+ORIGIN_INLINE void adjlist_add_edge(adjlist *a, int u, int v, double weight)
 {
 	a->list[u] = create_edge(v, weight, a->list[u]);
 }
 
-inline void adjlist_add_sym_edges(adjlist *a, int u, int v, double weight)
+ORIGIN_INLINE void adjlist_add_sym_edges(adjlist *a, int u, int v, double weight)
 {
 	a->list[u] = create_edge(v, weight, a->list[u]);
 	a->list[v] = create_edge(u, weight, a->list[v]);
 }
 
-inline bool adjlist_rmv_edge(adjlist *a, int u, int v)
+ORIGIN_INLINE bool adjlist_rmv_edge(adjlist *a, int u, int v)
 {
 	if (a->list[u] == NULL)
 	{
@@ -144,12 +144,12 @@ inline bool adjlist_rmv_edge(adjlist *a, int u, int v)
 	return false;
 }
 
-inline bool adjlist_rmv_sym_edges(adjlist *a, int u, int v)
+ORIGIN_INLINE bool adjlist_rmv_sym_edges(adjlist *a, int u, int v)
 {
 	return (adjlist_rmv_edge(a, u, v) && adjlist_rmv_edge(a, v, u));
 }
 
-inline bool adjlist_has_edge(adjlist *a, int u, int v)
+ORIGIN_INLINE bool adjlist_has_edge(adjlist *a, int u, int v)
 {
 	for (edge *e = a->list[u]; e != NULL; e = e->next) 
 	{
@@ -433,7 +433,7 @@ void adjlist_print_w_mat(const adjlist *a, FILE *out)
 	}
 }
 
-inline void edge_free(edge *e)
+ORIGIN_INLINE void edge_free(edge *e)
 {
 	if (e->next != NULL)
 	{
@@ -442,7 +442,7 @@ inline void edge_free(edge *e)
 	free(e);
 }
 
-inline void adjlist_free(adjlist *a)
+ORIGIN_INLINE void adjlist_free(adjlist *a)
 {
 	const int num_v = a->num_v;
 	for (int i = 0; i < num_v; ++i)
@@ -460,7 +460,7 @@ inline void adjlist_free(adjlist *a)
 // Private functions             //
 ///////////////////////////////////
 
-inline void adjlist_test_cc(const adjlist *a, bool *group, int u)
+ORIGIN_INLINE void adjlist_test_cc(const adjlist *a, bool *group, int u)
 {
 	for (edge *e = a->list[u]; e != NULL; e = e->next) 
 	{

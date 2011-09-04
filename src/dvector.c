@@ -34,7 +34,7 @@ void dvector_set(dvector *v, int n, double x)
 }
 #endif
 
-inline void dvector_add(dvector *v, int x)
+ORIGIN_INLINE void dvector_add(dvector *v, int x)
 {
 	// If the internal array is full, double its size;
 	if (v->size == v->capacity)
@@ -46,7 +46,7 @@ inline void dvector_add(dvector *v, int x)
 	v->size++;
 }
 
-inline void dvector_sub(dvector *v, int x)
+ORIGIN_INLINE void dvector_sub(dvector *v, int x)
 {
 	if (v->size >= x)
 	{
@@ -58,7 +58,7 @@ inline void dvector_sub(dvector *v, int x)
 	}
 }
 
-inline void dvector_sub1(dvector *v)
+ORIGIN_INLINE void dvector_sub1(dvector *v)
 {
 	if (v->size > 0)
 	{
@@ -66,7 +66,7 @@ inline void dvector_sub1(dvector *v)
 	}
 }
 
-inline double *dvector_get_array(dvector *v)
+ORIGIN_INLINE double *dvector_get_array(dvector *v)
 {
 	const int size = v->size;
 	double *new_array = (double*)malloc(size * sizeof(double)); // Only allocate memory for the active elements
@@ -79,7 +79,7 @@ inline double *dvector_get_array(dvector *v)
 	return new_array;
 }
 
-inline void dvector_grow0(dvector *v, int new_capacity)
+ORIGIN_INLINE void dvector_grow0(dvector *v, int new_capacity)
 {
 	// The new array
 	double *new_array = (double*)malloc(new_capacity* sizeof(double));
@@ -96,7 +96,7 @@ inline void dvector_grow0(dvector *v, int new_capacity)
 	free(swap); // Free the memory of the old a
 }
 
-inline void dvector_grow1(dvector *v)
+ORIGIN_INLINE void dvector_grow1(dvector *v)
 {
 	if (v->capacity == 0)
 	{
@@ -108,23 +108,23 @@ inline void dvector_grow1(dvector *v)
 	}
 }
 
-inline void dvector_sort_asc(dvector *v)
+ORIGIN_INLINE void dvector_sort_asc(dvector *v)
 {
 	qsort((void*)v->array, v->size, sizeof(double), compare_double_asc);
 }
 
-inline void dvector_sort_des(dvector *v)
+ORIGIN_INLINE void dvector_sort_des(dvector *v)
 {
 	qsort((void*)v->array, v->size, sizeof(double), compare_double_des);
 }
 
-inline void dvector_free(dvector *v)
+ORIGIN_INLINE void dvector_free(dvector *v)
 {
 	free(v->array); // Free the memory of the vector
 	v->array = NULL;
 }
 
-inline void dvector_print(dvector *v, FILE *out)
+ORIGIN_INLINE void dvector_print(dvector *v, FILE *out)
 {
 	const int size = v->size;
 	if (out == NULL)

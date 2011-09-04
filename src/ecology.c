@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "ecology.h"
 
-inline int biodiversity_octaves(const int *a, int array_size, double **octaves)
+ORIGIN_INLINE int biodiversity_octaves(const int *a, int array_size, double **octaves)
 {
 	// Find the largest number in the supplied array:
 	int largest = a[0];  
