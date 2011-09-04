@@ -5,6 +5,7 @@
 #include <assert.h>
 #include <time.h>
 #include <math.h>
+#include "common.h"
 #include "stats.h"
 #include "utils.h"
 

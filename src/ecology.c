@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "common.h"
 #include "ecology.h"
 
 ORIGIN_INLINE int biodiversity_octaves(const int *a, int array_size, double **octaves)

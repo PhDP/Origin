@@ -6,6 +6,7 @@
 #include <string.h>
 #include <math.h>
 #include <pthread.h>
+#include "common.h"
 #include "species.h"
 
 Species *Species_init0(int subpopulations, int time_of_birth, int n_genotypes)

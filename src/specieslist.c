@@ -6,6 +6,7 @@
 #include <string.h>
 #include <math.h>
 #include <pthread.h>
+#include "common.h"
 #include "specieslist.h"
 #include "ivector.h"
 #include "species.h"
