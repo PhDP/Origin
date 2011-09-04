@@ -49,7 +49,8 @@ void graph_get_rec_rgg(graph *g, int vertices, double width, double r, double *x
 {
 	graph_init(g, vertices);
 	
-	double length = 1.0 / width; // A = l * w so l = 1 / w
+	const double length = 1.0 / width; // A = l * w so l = 1 / w
+
 	for (int i = 0; i < vertices; ++i) 
 	{
 		x[i] = gsl_rng_uniform(rng) * length;
