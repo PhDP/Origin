@@ -4,7 +4,7 @@
 #include <assert.h>
 #include <stdbool.h>
 #include <string.h>
-#include "origin.h"
+#include "common.h"
 #include "treenode.h"
 
 treenode *treenode_init(treenode *p, char *name, void *data)

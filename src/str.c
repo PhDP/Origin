@@ -4,7 +4,7 @@
 #include <string.h>
 #include <assert.h>
 #include <time.h>
-#include "origin.h"
+#include "common.h"
 #include "str.h"
 
 char *get_opt_s(const char *arg)

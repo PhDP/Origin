@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <float.h>
-#include "origin.h"
+#include "common.h"
 #include "graph.h"
 #include "utils.h"
 

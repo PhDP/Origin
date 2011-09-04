@@ -1,0 +1,6 @@
+CC = gcc451
+CFLAGS = -lm -std=c99 -lpthread -O3
+
+SSNE: main.c
+	$(CC) $(CFLAGS) -o SSNE main.c species.c ivector.c dvector.c specieslist.c metacommunity.c well1024.c utils.c ecology.c
+

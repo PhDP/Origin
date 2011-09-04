@@ -1,5 +1,5 @@
-#ifndef ORIGIN_H_
-#define ORIGIN_H_
+#ifndef COMMON_H_
+#define COMMON_H_
 
 // The initial capacity of vectors
 #ifndef VECTOR_INIT_CAPACITY

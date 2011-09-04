@@ -2,7 +2,7 @@
 #define GRAPH_H_
 
 #include <stdbool.h>
-#include "origin.h"
+#include "common.h"
 
 // For C++ compilers:
 #ifdef __cplusplus
