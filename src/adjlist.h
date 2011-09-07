@@ -76,10 +76,10 @@ bool adjlist_strongly_connected(const adjlist *a);
 double **adjlist_get_gdm(const adjlist *a);
 
 /** Return an array with the closeness centrality for all vertices. */
-double *adjlist_cls_centrality(const adjlist *a);
+double *adjlist_cls(const adjlist *a);
 
-/** Return a scaled array with the closeness centrality for all vertices. */
-double *adjlist_cls_centrality_scaled(const adjlist *a);
+/** Print the graph in graphml format. */
+void adjlist_graphml(const adjlist *a, FILE *out, const char *id);
 
 /** Print the adjacency list. Use NULL for the file pointer to print to the console. */
 void adjlist_print(const adjlist *a, FILE *out);

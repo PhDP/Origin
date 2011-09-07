@@ -252,7 +252,7 @@ double **adjlist_get_gdm(const adjlist *a)
 	return gdm;
 }
 
-double *adjlist_cls_centrality(const adjlist *a)
+double *adjlist_cls(const adjlist *a)
 {
 	const int num_v = a->num_v;
 	double **gdm = adjlist_get_gdm(a);
@@ -278,11 +278,37 @@ double *adjlist_cls_centrality(const adjlist *a)
 	return cls_centrality;
 }
 
-double *adjlist_cls_centrality_scaled(const adjlist *a)
+void adjlist_graphml(const adjlist *a, FILE *out, const char *id)
 {
-	double *cls_centrality_scaled = adjlist_cls_centrality(a);
-	scale_0_1(cls_centrality_scaled, a->num_v);
-	return cls_centrality_scaled;
+	const int num_v = a->num_v;
+	fprintf(out, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+	fprintf(out, "<graphml xmlns=\"http://graphml.graphdrawing.org/xmlns\"\n");
+	fprintf(out, "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n");
+	fprintf(out, "xsi:schemaLocation=\"http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd\">\n");
+
+	if (id != NULL)
+	{
+		fprintf(out, "  <graph id=\"%s\" edgedefault=\"directed\">\n", id);
+	}
+	else
+	{
+		fprintf(out, "  <graph id=\"G\" edgedefault=\"directed\">\n");
+	}
+	int i;
+	for (i = 0; i < num_v; ++i)
+	{
+		fprintf(out, "    <node id=\"v%d\"/>\n", i);
+	}
+	for (i = 0; i < num_v; ++i)
+	{
+		edge *e;
+		for (e = a->list[i]; e != NULL; e = e->next)
+		{
+			fprintf(out, "    <edge source=\"v%d\" target=\"v%d\"/>\n", i, e->head);
+		}
+	}
+	fprintf(out, "  </graph>\n");
+	fprintf(out, "</graphml>\n");
 }
 
 void adjlist_print(const adjlist *a, FILE *out)

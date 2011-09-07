@@ -316,6 +316,31 @@ double *graph_har_cls_centrality_scaled(const graph *g)
 	return har_cls_centrality_scaled;
 }
 
+void graph_graphml(const graph *g, FILE *out, unsigned int id)
+{
+	const int num_v = g->num_v;
+	fprintf(out, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+	fprintf(out, "<graphml xmlns=\"http://graphml.graphdrawing.org/xmlns\"\n");
+	fprintf(out, "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n");
+	fprintf(out, "xsi:schemaLocation=\"http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd\">\n");
+
+	fprintf(out, "  <graph id=\"%u\" edgedefault=\"directed\">\n", id);
+	int i, e;
+	for (i = 0; i < num_v; ++i)
+	{
+		fprintf(out, "    <node id=\"v%d\"/>\n", i);
+	}
+	for (i = 0; i < num_v; ++i)
+	{
+		for (e = 0; e < g->num_e[i]; ++e) 
+		{
+			fprintf(out, "    <edge source=\"v%d\" target=\"v%d\"/>\n", i, g->adj_list[i][e]);
+		}
+	}
+	fprintf(out, "  </graph>\n");
+	fprintf(out, "</graphml>\n");
+}
+
 void graph_print(const graph *g, FILE *out)
 {
 	if (out == NULL) 

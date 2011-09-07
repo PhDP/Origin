@@ -92,6 +92,9 @@ double *graph_har_cls_centrality_scaled(const graph *g);
 /** Print the adjacency list. Use NULL for the file pointer to print to the console. */
 void graph_print(const graph *g, FILE *out);
 
+/** Print the graph in GraphML format. */
+void graph_graphml(const graph *g, FILE *out, unsigned int id);
+
 /** Print the adjacency list & the weights. Use NULL for the file pointer to print to the console. */
 void graph_print_w(const graph *g, FILE *out);
 

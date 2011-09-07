@@ -64,7 +64,7 @@ void graph_get_rec_rgg(graph *g, int vertices, double width, double r, double *x
 			const double a = x[i] - x[j];
 			const double b = y[i] - y[j];
 			d = hypot(a, b);
-			if (d < r)
+			if (d < r) 
 			{
 				graph_add_edge(g, i, j, r - d);
 			}
