@@ -3,8 +3,8 @@
  * author:    Philippe Desjardins-Proulx
  * email:     <philippe.d.proulx@gmail.com>
  * website:   http://phdp.huginn.info
- * date:      2011.09.01
- * version:   2.5
+ * date:      2011.09.07
+ * version:   2.6
  * 
  * description:
  *   Spatially explicit speciation in neutral ecology. Type ssne --help 
@@ -20,8 +20,8 @@
  * ...developed and tested on Linux x86_64.
  *****************************************************************************/
 
-#define SSNE_DATE       "2011.09.01"
-#define SSNE_VERSION    "2.5"
+#define SSNE_DATE       "2011.09.07"
+#define SSNE_VERSION    "2.6"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -292,6 +292,8 @@ void *sim(void *parameters)
 	int *restrict extinction_events = (int*)malloc(k_gen * sizeof(int));
 	// Number of speciation events/vertex:
 	int *restrict speciation_per_c = (int*)malloc(communities * sizeof(int));
+	// Number of local extinction events/vertex:
+	int *restrict extinction_per_c = (int*)malloc(communities * sizeof(int))
 	// Store the lifespan of the extinct species:
 	ivector lifespan;
 	ivector_init0(&lifespan);
@@ -304,6 +306,7 @@ void *sim(void *parameters)
 	for (int i = 0; i < communities; ++i)
 	{
 		speciation_per_c[i] = 0;
+		extinction_per_c[i] = 0;
 	}
 
 	// Initialize an empty list of species:
@@ -519,9 +522,16 @@ void *sim(void *parameters)
 					s1->species->genotypes[c][g1]++;
 
 					////////////////////////////////////////////
+					// Check for local extinction             //
+					////////////////////////////////////////////
+					if (s0->species->n[c] == 0)
+					{
+						extinction_per_c[c]++;
+					}
+					////////////////////////////////////////////
 					// Check for speciation                   //
 					////////////////////////////////////////////
-					if (s0->species->genotypes[c][2] > 0 && s0->species->genotypes[c][0] == 0 && s0->species->genotypes[c][1] == 0)
+					else if (s0->species->genotypes[c][2] > 0 && s0->species->genotypes[c][0] == 0 && s0->species->genotypes[c][1] == 0)
 					{
 						SpeciesList_add(list, Species_init1(communities, 0, current_date, 3)); // Add the new species
 
@@ -620,7 +630,8 @@ void *sim(void *parameters)
 		fprintf(out, "  Harmonic closeness centrality: %.8f\n", har_cls_centrality[c]);
 		fprintf(out, "  Scaled harmonic closeness centrality: %.8f\n", har_cls_centrality_scaled[c]);
 		fprintf(out, "  Speciation events: %d\n", speciation_per_c[c]);
-
+		fprintf(out, "  Extinction events: %d\n", extinction_per_c[c]);
+		
 		int vertex_richess = 0;
 		ivector_sub_all(&species_distribution);
 		it = list->head;
@@ -647,22 +658,30 @@ void *sim(void *parameters)
 		}
 		fprintf(out, "\n\n");
 		#ifdef EXTRAPRINT
-		printf("%d\t%.8f\t%.8f\t%.8f\t%.8f\t%d\t%d\n", graph_outdegree(&g, c) - 1, cls_centrality[c], cls_centrality_scaled[c], har_cls_centrality[c], har_cls_centrality_scaled[c], species_distribution.size, speciation_per_c[c]);
+		printf("%d\t%.8f\t%.8f\t%.8f\t%.8f\t%d\t%d\t%d\n", graph_outdegree(&g, c) - 1, cls_centrality[c], cls_centrality_scaled[c], har_cls_centrality[c], har_cls_centrality_scaled[c], species_distribution.size, speciation_per_c[c], extinction_per_c[c]);
 		#endif
 	}
 	#ifdef EXTRAPRINT
 	printf("Simulation %u\t%d\t%.2f\t%.2f\t%.4f\t%.4f\t%d\t%.2f\t%.2f\n", seed, communities, radius, s, (double)graph_edges(&g) / communities, omega, total_species[k_gen-1], imedian(lifespan.array, lifespan.size), imedian(pop_size.array, pop_size.size));
 	#endif
 
+	// GraphML output:
+	sprintf(buffer, "%u.graphml", seed);
+	FILE *gml = fopen(buffer, "w");
+	graph_graphml(g, gml, seed);
+
 	//////////////////////////////////////////////////
 	// EPILOGUE...                                  //
 	//////////////////////////////////////////////////
-	// Close file;
+	// Close files;
 	fclose(out);
+	fclose(gml);
 	// Free arrays;
 	free(buffer);
 	free(total_species);
 	free(octaves);
+	free(speciation_per_c);
+	free(extinction_per_c);
 	free(speciation_events);
 	free(extinction_events);
 	free(cls_centrality);
