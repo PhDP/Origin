@@ -68,12 +68,6 @@ bool graph_has_edge(graph *g, int u, int v);
 /** Return true if the graph is strongly connected. */
 bool graph_strongly_connected(const graph *g);
 
-/** Dijkstra's algorithm for shortest path. */
-void graph_dijkstra(const graph *g, int v);
-
-/** Bellman-Ford's algorithm for shortest path. */
-void graph_bellman_ford(const graph *g, int v);
-
 /** Get the geodesic distances between all pairs of vertices using Johnson's algorithm. O(V^2 log V + VE). */
 double **graph_get_gdm(const graph *g);
 
