@@ -293,7 +293,7 @@ void *sim(void *parameters)
 	// Number of speciation events/vertex:
 	int *restrict speciation_per_c = (int*)malloc(communities * sizeof(int));
 	// Number of local extinction events/vertex:
-	int *restrict extinction_per_c = (int*)malloc(communities * sizeof(int))
+	int *restrict extinction_per_c = (int*)malloc(communities * sizeof(int));
 	// Store the lifespan of the extinct species:
 	ivector lifespan;
 	ivector_init0(&lifespan);
@@ -667,15 +667,15 @@ void *sim(void *parameters)
 
 	// GraphML output:
 	sprintf(buffer, "%u.graphml", seed);
-	FILE *gml = fopen(buffer, "w");
-	graph_graphml(g, gml, seed);
+	FILE *outgml = fopen(buffer, "w");
+	graph_graphml(&g, outgml, seed);
 
 	//////////////////////////////////////////////////
 	// EPILOGUE...                                  //
 	//////////////////////////////////////////////////
 	// Close files;
 	fclose(out);
-	fclose(gml);
+	fclose(outgml);
 	// Free arrays;
 	free(buffer);
 	free(total_species);
