@@ -5,7 +5,7 @@ Dependencies:    gsl (gnu scientific library)... which is why the project is und
 Description: 
 	Tools & models to study speciation in complex spatial networks.
 
-	The project is developed and tested on Linux x86_64 with the open source PathScale compiler. Stable versions are tagged.
+	The project is developed and tested on Linux x86_64. Stable versions are tagged.
 
 TODO list:
 	Better makefile (!).

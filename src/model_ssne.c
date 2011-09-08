@@ -352,7 +352,7 @@ void *sim(void *parameters)
 			break;
 		}
 	case 'r':
-		if (shape[1] = 'e')
+		if (shape[1] == 'e')
 		{
 			shape = "rectangle";
 			graph_get_rec_crgg(&g, communities, width, radius, x, y, rng);
