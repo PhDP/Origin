@@ -1,6 +1,6 @@
 Project:         origin
 Author:          Philippe Desjardins-Proulx <philippe.d.proulx@gmail.com>
-License:         GPLv2
+License:         GPL
 Dependencies:    gsl (gnu scientific library)... which is why the project is under the GPL license.
 Description: 
 	Tools & models to study speciation in complex spatial networks.
