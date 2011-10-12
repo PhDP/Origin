@@ -1,20 +1,13 @@
 /**
- * file:      model_ssne.c
- * author:    Philippe Desjardins-Proulx
- * email:     <philippe.d.proulx@gmail.com>
- * website:   http://phdp.huginn.info
- * date:      2011.09.07
- * version:   2.6
+ * file:      model_ros11.c
+ * date:      2011.09.14
+ * version:   0.1
  * description:
  *   Spatially explicit speciation in neutral ecology. Type ssne --help 
  * for more information on how to run the program.
  *
  * references:
- *    Desjardins-Proulx, P. and Gravel, D. How likely is speciation in
- *  neutral ecology ? The American Naturalist (accepted).
- *
- *    Desjardins-Proulx, P. and Gravel, D. Neutral biodiversity in 
- * complex landscapes.
+ *    Rosindell, J. and Phillimore, X. 2011. ...
  *
  * ...developed and tested on Linux x86_64.
  *****************************************************************************/
