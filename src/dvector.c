@@ -21,16 +21,34 @@ void dvector_init1(dvector *v, int initial_capacity)
 }
 
 #ifndef NDEBUG 
-double dvector_get(dvector *v, int n)
+O_INLINE double dvector_get(dvector *v, int n)
 {
     assert(n < v->size);
     return v->array[n];
 }
 
-void dvector_set(dvector *v, int n, double x)
+O_INLINE void dvector_set(dvector *v, int n, double x)
 {
     assert(n < v->size);
     v->array[n] = x;
+}
+
+O_INLINE void dvector_rmv(dvector *v, int z)
+{
+    v->size = (v->size >= z) ? v->size - z : 0;
+}
+
+O_INLINE void dvector_rmv1(dvector *v)
+{
+    if (v->size > 0)
+    {
+        v->size--;
+    }
+}
+
+O_INLINE void dvector_rmvall(dvector *v)
+{
+    v->size = 0;
 }
 #endif
 
@@ -46,26 +64,6 @@ O_INLINE void dvector_add(dvector *v, int x)
     v->size++;
 }
 
-O_INLINE void dvector_sub(dvector *v, int x)
-{
-    if (v->size >= x)
-    {
-        v->size -= x;
-    }
-    else
-    {
-        v->size = 0;
-    }
-}
-
-O_INLINE void dvector_sub1(dvector *v)
-{
-    if (v->size > 0)
-    {
-        v->size--;
-    }
-}
-
 O_INLINE double *dvector_get_array(dvector *v)
 {
     const int size = v->size;
@@ -79,6 +77,7 @@ O_INLINE double *dvector_get_array(dvector *v)
     return new_array;
 }
 
+// TODO: USE REALLOC
 O_INLINE void dvector_grow0(dvector *v, int new_capacity)
 {
     // The new array

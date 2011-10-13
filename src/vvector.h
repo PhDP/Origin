@@ -1,3 +1,8 @@
+/*! \file
+ *
+ * \brief A generic vector.
+ */ 
+
 #ifndef VVECTOR_H_
 #define VVECTOR_H_
 
@@ -6,17 +11,16 @@
 extern "C" {
 #endif
 
-/** A dynamic array of double. */
+/**
+ * \brief A dynamic array of void pointers.
+ */
 typedef struct
 {
-    /** Internal array. */
-    void **array;
+    void **array; /**< Internal array. */
 
-    /** Number of elements in the array. */
-    int size;
+    int size; /**< Number of elements in the array. */
 
-    /** Max number of elements given the current size of 'a'. */
-    int capacity;
+    int capacity; /**< Max number of elements given the current size of 'a'. */
 }
 vvector;
 
