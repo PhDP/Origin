@@ -119,7 +119,7 @@ void **SLL_as_array(const SLL *sll);
  * \param sll  The singly linked list.
  * \return     0 if it doesn't match or the length of the list if it does.
  */
-int SLL_check_length(const SLL *sll);
+unsigned int SLL_check_length(const SLL *sll);
 
 /**
  * \brief Free the memory of the list.

@@ -135,17 +135,17 @@ void **SLL_as_array(SLL *sll)
     void **data = (void**)malloc(sll->length * sizeof(void*));
 
     int i = 0;
-    SLLNode *node;
-    for (node = sll->head; node != NULL; node = node->next)
+    SLLNode *node = sll->head;
+    for (; node != NULL; node = node->next)
     {
         data[i++] = node->data;
     }
     return data;
 }
 
-int SLL_check_length(const SLL *sll)
+unsigned int SLL_check_length(const SLL *sll)
 {
-    int length = 0;
+    unsigned int length = 0;
     SLLNode *node = sll->head;
     while (node != NULL)
     {
