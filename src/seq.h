@@ -5,9 +5,10 @@
 #ifndef SEQ_H_
 #define SEQ_H_
 
-#include <stdbool.h>
+#include <stdint.h>
 #include <gsl/gsl_rng.h>
 #include <gsl/gsl_randist.h>
+#include "common.h"
 
 // For C++ compilers:
 #ifdef __cplusplus
@@ -46,7 +47,7 @@ char dna_random_nuc(gsl_rng *rng);
 char dna_random_nuc_prob(gsl_rng *rng, double prob_a, double prob_t, double prob_g);
 
 /** Return a sequence of 'A', 'T', 'C' or 'G'. */
-char* dna_random_nuc_seq(gsl_rng *rng, int seq_size);
+char *dna_random_nuc_seq(gsl_rng *rng, int seq_size);
 
 /** Return 'A', 'U', 'C' or 'G'. */
 char rna_random_nuc(gsl_rng *rng);
@@ -57,32 +58,35 @@ char rna_random_nuc_prob(gsl_rng *rng, double prob_a, double prob_u, double prob
 /** Return a sequence of 'A', 'U', 'C' or 'G'. */
 char *rna_random_nuc_seq(gsl_rng *rng, int seq_size);
 
+/** Number of occurences of a char in a sequence. */
+unsigned int seq_count(const char *seq);
+
 /** Number of adenosine 'A' in the sequence. */
-int a_count(const char *seq);
+unsigned int a_count(const char *seq);
 
 /** Number of thymidine 'T' in the sequence. */
-int t_count(const char *seq);
+unsigned int t_count(const char *seq);
 
 /** Number of uracil 'U' in the sequence. */
-int u_count(const char *seq);
+unsigned int u_count(const char *seq);
 
 /** Number of guanine 'G' in the sequence. */
-int g_count(const char *seq);
+unsigned int g_count(const char *seq);
 
 /** Number of cytosine 'C' in the sequence. */
-int c_count(const char *seq);
+unsigned int c_count(const char *seq);
 
 /** Number of cytosine 'C' and guanine 'G' in the sequence. */
-int gc_count(const char *seq);
+unsigned int gc_count(const char *seq);
 
 /** Return GC content (number of 'G' + number of 'C') / size. */
 double gc_content(const char *seq);
 
-/** Return 'true' if the sequence is only made of 'G', 'C', 'T' or 'A'. */
-bool dna_pure_seq(const char *dna_seq);
+/** Return 'TRUE' if the sequence is only made of 'G', 'C', 'T' or 'A'. */
+int dna_pure_seq(const char *dna_seq);
 
-/** Return 'true' if the sequence is only made of 'G', 'C', 'U' or 'A'. */
-bool rna_pure_seq(const char *rna_seq);
+/** Return 'TRUE' if the sequence is only made of 'G', 'C', 'U' or 'A'. */
+int rna_pure_seq(const char *rna_seq);
 
 /** Return a sequence with everything removed except 'G', 'C', 'T' and 'A'. */
 char *dna_rmv_amb(char *dna_seq);

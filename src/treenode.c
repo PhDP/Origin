@@ -41,11 +41,11 @@ int treenode_toroot(treenode *t)
     return (t->p == NULL) ? 0 : 1 + treenode_toroot(t->p);
 }
 
-bool treenode_sbinary(treenode *t)
+int treenode_sbinary(treenode *t)
 {
     if (t->l == NULL && t->r == NULL)
     {
-        return true;
+        return TRUE;
     }
     else if (t->l != NULL && t->r != NULL)
     {
@@ -53,21 +53,21 @@ bool treenode_sbinary(treenode *t)
     }
     else
     {
-        return false;
+        return FALSE;
     }
 }
 
-O_INLINE bool treenode_leaf(treenode *t)
+O_INLINE int treenode_leaf(treenode *t)
 {
     return (t->l == NULL);
 }
 
-O_INLINE bool treenode_root(treenode *t)
+O_INLINE int treenode_root(treenode *t)
 {
     return (t->p == NULL);
 }
 
-O_INLINE bool treenode_internal(treenode *t)
+O_INLINE int treenode_internal(treenode *t)
 {
     return (t->p != NULL && t->l != NULL);
 }

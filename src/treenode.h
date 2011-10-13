@@ -45,16 +45,16 @@ int treenode_numleaves(treenode *t);
 int treenode_toroot(treenode *t);
 
 /** Check if the subtree is really a strictly binary tree. */
-bool treenode_sbinary(treenode *t);
+int treenode_sbinary(treenode *t);
 
 /** Return 'true' if the node is a leaf. */
-bool treenode_leaf(treenode *t);
+int treenode_leaf(treenode *t);
 
 /** Return 'true' if the node is a root. */
-bool treenode_root(treenode *t);
+int treenode_root(treenode *t);
 
 /** Return 'true' if the node is an internal node. */
-bool treenode_internal(treenode *t);
+int treenode_internal(treenode *t);
 
 /** Return the simple newick tree. */
 char *treenode_simple_newick(treenode *t);

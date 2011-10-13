@@ -1,7 +1,6 @@
 #ifndef ADJLIST_H_
 #define ADJLIST_H_
 
-#include <stdbool.h>
 #include "common.h"
 
 // For C++ compilers:
@@ -51,8 +50,8 @@ int adjlist_outdegree(const adjlist *a, int u);
 /** Number of ingoing edges for vertex \f$v\f$. \f$O(|V||E|)\f$.*/
 int adjlist_indegree(const adjlist *a, int u);
 
-/** Return true if the adjlist is balanced (i.e.: for each vertex \f$v\f$, indegree(v) == outdegree(v)). \f$O(|V||E|)\f$. */
-bool adjlist_is_balanced(const adjlist *a);
+/** Return TRUE if the adjlist is balanced (i.e.: for each vertex \f$v\f$, indegree(v) == outdegree(v)). \f$O(|V||E|)\f$. */
+int adjlist_is_balanced(const adjlist *a);
 
 /** Add an edge between vertices 'u' and 'v' with weight. O(1), worst-case O(|N|). */
 void adjlist_add_edge(adjlist *a, int u, int v, double weight);
@@ -61,16 +60,16 @@ void adjlist_add_edge(adjlist *a, int u, int v, double weight);
 void adjlist_add_sym_edges(adjlist *a, int u, int v, double weight);
 
 /** Remove the edge between vertices 'u' and 'v'. */
-bool adjlist_rmv_edge(adjlist *a, int u, int v);
+int adjlist_rmv_edge(adjlist *a, int u, int v);
 
-/** Remove the edges between 'u' and 'v' and vice-versa. Return false if only 1 or 0 edges were removed. */
-bool adjlist_rmv_sym_edges(adjlist *a, int u, int v);
+/** Remove the edges between 'u' and 'v' and vice-versa. Return FALSE if only 1 or 0 edges were removed. */
+int adjlist_rmv_sym_edges(adjlist *a, int u, int v);
 
-/** Return true if the adjlist has an edge between 'u' and 'v'. O(|E|). */
-bool adjlist_has_edge(adjlist *a, int u, int v);
+/** Return TRUE if the adjlist has an edge between 'u' and 'v'. O(|E|). */
+int adjlist_has_edge(adjlist *a, int u, int v);
 
-/** Return true if the adjlist is strongly connected. */
-bool adjlist_strongly_connected(const adjlist *a);
+/** Return TRUE if the adjlist is strongly connected. */
+int adjlist_strongly_connected(const adjlist *a);
 
 /** Get the geodesic distances between all pairs of vertices using Johnson's algorithm. O(V^2 log V + VE). */
 double **adjlist_get_gdm(const adjlist *a);
@@ -103,7 +102,7 @@ void adjlist_free(adjlist *a);
 // 'Private' functions. You shouldn't need those.
 
 /** Recursive function used to test connectivity. */
-void adjlist_test_cc(const adjlist *a, bool *group, int u);
+void adjlist_test_cc(const adjlist *a, int *group, int u);
 
 #ifdef __cplusplus
 }

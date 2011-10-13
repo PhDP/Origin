@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
+#include <stdint.h>
 #include <float.h>
 #include "common.h"
 #include "adjlist.h"
@@ -89,17 +89,17 @@ O_INLINE int adjlist_indegree(const adjlist *a, int u)
     return sum;
 }
 
-O_INLINE bool adjlist_is_balanced(const adjlist *a)
+O_INLINE int adjlist_is_balanced(const adjlist *a)
 {
     const int num_v = a->num_v;
     for (int i = 0; i < num_v; ++i)
     {
         if (adjlist_indegree(a, i) != adjlist_outdegree(a, i))
         {
-            return false;
+            return FALSE;
         }
     }
-    return true;
+    return TRUE;
 }
 
 O_INLINE void adjlist_add_edge(adjlist *a, int u, int v, double weight)
@@ -113,11 +113,11 @@ O_INLINE void adjlist_add_sym_edges(adjlist *a, int u, int v, double weight)
     a->list[v] = create_edge(u, weight, a->list[v]);
 }
 
-O_INLINE bool adjlist_rmv_edge(adjlist *a, int u, int v)
+O_INLINE int adjlist_rmv_edge(adjlist *a, int u, int v)
 {
     if (a->list[u] == NULL)
     {
-        return false;
+        return FALSE;
     }
     else if (a->list[u]->head == v)
     {
@@ -125,7 +125,7 @@ O_INLINE bool adjlist_rmv_edge(adjlist *a, int u, int v)
         a->list[u] = a->list[u]->next;
         temp->next = NULL;
         edge_free(temp);
-        return true;
+        return TRUE;
     }
 
     edge *e = a->list[u];
@@ -137,56 +137,56 @@ O_INLINE bool adjlist_rmv_edge(adjlist *a, int u, int v)
             e->next = e->next->next;
             temp->next = NULL;
             edge_free(temp);
-            return true;
+            return TRUE;
         }
         e = e->next;
     }
-    return false;
+    return FALSE;
 }
 
-O_INLINE bool adjlist_rmv_sym_edges(adjlist *a, int u, int v)
+O_INLINE int adjlist_rmv_sym_edges(adjlist *a, int u, int v)
 {
     return (adjlist_rmv_edge(a, u, v) && adjlist_rmv_edge(a, v, u));
 }
 
-O_INLINE bool adjlist_has_edge(adjlist *a, int u, int v)
+O_INLINE int adjlist_has_edge(adjlist *a, int u, int v)
 {
     for (edge *e = a->list[u]; e != NULL; e = e->next) 
     {
         if (e->head == v) 
         {
-            return true;
+            return TRUE;
         }
     }
-    return false;
+    return FALSE;
 }
 
-bool adjlist_strongly_connected(const adjlist *a)
+int adjlist_strongly_connected(const adjlist *a)
 {
     const int num_v = a->num_v;
-    bool *group = (bool*)malloc(num_v * sizeof(bool));
+    int *group = (int*)malloc(num_v * sizeof(int));
 
     for (int u = 0; u < num_v; ++u) 
     {
         for (int v = 0; v < num_v; ++v) 
         {
-            group[v] = false;
+            group[v] = FALSE;
         }
 
-        group[u] = true;
+        group[u] = TRUE;
         adjlist_test_cc(a, group, u); // Call recursive function
 
         for (int v = 0; v < num_v; ++v) 
         {
-            if (group[v] == false) 
+            if (group[v] == FALSE) 
             {
                 free(group);
-                return false;
+                return FALSE;
             }
         }
     }
     free(group);
-    return true;
+    return TRUE;
 }
 
 double **adjlist_get_gdm(const adjlist *a)
@@ -205,19 +205,19 @@ double **adjlist_get_gdm(const adjlist *a)
             gdm[i][j] = max;
         }
     }
-    bool *visited = (bool*)malloc(num_v * sizeof(bool));
+    int *visited = (int*)malloc(num_v * sizeof(int));
     
     int current; // The vertex
     for (int u = 0; u < num_v; ++u)
     {
         for (int v = 0; v < num_v; ++v)
         {
-            visited[v] = false;
+            visited[v] = FALSE;
         }
 
         gdm[u][u] = 0; // By convention
         current = u;
-        bool has_next = true;
+        int has_next = TRUE;
 
         while (has_next)
         {
@@ -233,17 +233,17 @@ double **adjlist_get_gdm(const adjlist *a)
                     }
                 }
             }
-            visited[current] = true;
+            visited[current] = TRUE;
 
-            has_next = false;
+            has_next = FALSE;
             double tmp = max;
             for (int v = 0; v < num_v; v++)
             {
-                if (visited[v] == false && gdm[u][v] < tmp)
+                if (visited[v] == FALSE && gdm[u][v] < tmp)
                 {
                     current = v;
                     tmp = gdm[u][v];
-                    has_next = true;
+                    has_next = TRUE;
                 }
             }
         }
@@ -486,14 +486,14 @@ O_INLINE void adjlist_free(adjlist *a)
 // Private functions             //
 ///////////////////////////////////
 
-O_INLINE void adjlist_test_cc(const adjlist *a, bool *group, int u)
+O_INLINE void adjlist_test_cc(const adjlist *a, int *group, int u)
 {
     for (edge *e = a->list[u]; e != NULL; e = e->next) 
     {
         const int head = e->head;
-        if (head != u && group[head] == false)
+        if (head != u && group[head] == FALSE)
         {
-            group[head] = true;
+            group[head] = TRUE;
             adjlist_test_cc(a, group, head);
         }
     }
