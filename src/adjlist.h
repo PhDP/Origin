@@ -12,21 +12,21 @@ extern "C" {
 /** A adjlist represented by an adjacency list (made of dynamic arrays). */
 typedef struct edge_
 {
-	struct edge_ *next; /**< Pointer to the next edge in the list. */
-	
-	int head; /**< Head of the edge (the ID of the vertex pointed). */
-	
-	double w; /**< Weight. */
+    struct edge_ *next; /**< Pointer to the next edge in the list. */
+
+    int head; /**< Head of the edge (the ID of the vertex pointed). */
+
+    double w; /**< Weight. */
 } edge;
 
 /** A adjlist represented by an adjacency list (made of dynamic arrays). */
 typedef struct 
 {
-	int num_v; /**< Number of vertices. */  
-	
-	int *num_e;  /**< Number of edges per vertex. */
-	
-	edge **list; /**< The adjacency list. */
+    int num_v; /**< Number of vertices. */  
+
+    int *num_e;  /**< Number of edges per vertex. */
+
+    edge **list; /**< The adjacency list. */
 } 
 adjlist;
 

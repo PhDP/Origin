@@ -1,5 +1,5 @@
-#ifndef HON_SPECIESLIST_H
-#define HON_SPECIESLIST_H
+#ifndef SPECIESLIST_H_
+#define SPECIESLIST_H_
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,25 +16,25 @@ extern "C" {
 /** A node of the singly-linked list. */
 typedef struct SLNode_
 {
-  /** The species. */
-  Species *species;
+    /** The species. */
+    Species *species;
   
-  /** Pointer to the next node. */
-  struct SLNode_ *next;
+    /** Pointer to the next node. */
+    struct SLNode_ *next;
 }
 SLNode;
 
 /** A linked list of Species objects. */
 typedef struct
 {
-  /** Number of species in the list. */
-  int size;
+    /** Number of species in the list. */
+    int size;
   
-  /** First element of the list. */
-  SLNode *head;
+    /** First element of the list. */
+    SLNode *head;
   
-  /** Last element of the list. */
-  SLNode *tail;
+    /** Last element of the list. */
+    SLNode *tail;
 }
 SpeciesList;
 
@@ -67,4 +67,3 @@ void SpeciesList_free(SpeciesList *list);
 #endif
 
 #endif
-

@@ -16,20 +16,20 @@ extern "C" {
 
 typedef enum
 {
-	Protein = 0,
-	RNA = 1,
-	DNA = 2,
-	DNAorRNA = 3,
-	Other = 4,
+    Protein = 0,
+    RNA = 1,
+    DNA = 2,
+    DNAorRNA = 3,
+    Other = 4,
 }
 Sequence_type;
 
 typedef struct
 {
-	char *seq;
-	char *seq_info;
-	int length;
-	Sequence_type type;
+    char *seq;
+    char *seq_info;
+    int length;
+    Sequence_type type;
 }
 Fasta_seq;
 

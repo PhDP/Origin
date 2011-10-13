@@ -12,20 +12,20 @@ extern "C" {
 /** A strictly binary tree. */
 typedef struct treenode_
 {
-	/** Name of the node. */
-	char *name;
-	
-	/** Pointer to the parent. */
-	struct treenode_ *p;
-	
-	/** Pointer to the 'left' child. */
-	struct treenode_ *l;
-	
-	/** Pointer to the 'right' child. */
-	struct treenode_ *r;
-	
-	/** Data inside the node. */
-	void *data;
+    /** Name of the node. */
+    char *name;
+    
+    /** Pointer to the parent. */
+    struct treenode_ *p;
+    
+    /** Pointer to the 'left' child. */
+    struct treenode_ *l;
+    
+    /** Pointer to the 'right' child. */
+    struct treenode_ *r;
+    
+    /** Data inside the node. */
+    void *data;
 }
 treenode;
 

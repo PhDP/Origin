@@ -3,14 +3,12 @@ Author:          Philippe Desjardins-Proulx <philippe.d.proulx@gmail.com>
 License:         GPL
 Dependencies:    gsl (gnu scientific library)... which is why the project is under the GPL license.
 Description: 
-	Tools & models to study speciation in complex spatial networks.
+    Tools & models to study diversity in complex spatial networks.
 
-	The project is developed and tested on Linux x86_64. Stable versions are tagged.
+    The project is developed and tested on Linux x86_64. Stable versions are tagged.
 
 TODO list:
-	Better makefile (!).
-	Better generic structures (import from RNALand).
-	Doxygen documentation.
-	Generic tree structure.
-	Phylogeography.
-
+    Pythonization: transfer to Waf & Sprinx.
+    Use XML format for output using libxml2.
+    Phylogeography.
+    Generic tree structure.

@@ -20,9 +20,9 @@
 #endif
 
 #ifdef OINLINING
-#define ORIGIN_INLINE inline
+#define O_INLINE inline
 #else
-#define ORIGIN_INLINE
+#define O_INLINE
 #endif
 
 // The initial capacity of lists in graphs

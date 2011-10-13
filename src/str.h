@@ -6,6 +6,11 @@
 #ifndef STR_H_
 #define STR_H_
 
+// For C++ compilers:
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 ////////////////////////////////////////////////////////////////////
 // Read options supplied by the user
 
@@ -190,5 +195,9 @@ char * get_lower_case(const char *str);
  * \return        Upper-case deep copy of the string.
  */
 char * get_upper_case(const char *str);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

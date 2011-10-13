@@ -18,16 +18,21 @@
 #ifndef STACK_H_
 #define STACK_H_
 
+// For C++ compilers:
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * \brief Generic stack implemented as an array of void pointers.
  */
 typedef struct
 {
-	int index; /**< Current index. */
+    int index; /**< Current index. */
 
-	int capacity; /**< Capacity of the stack. */
+    int capacity; /**< Capacity of the stack. */
 
-	void **data; /**< Array of data. */
+    void **data; /**< Array of data. */
 }
 Stack;
 
@@ -95,5 +100,9 @@ void Stack_grow(Stack *s);
  * \param s   The stack object.
  */
 void Stack_free(Stack *s);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

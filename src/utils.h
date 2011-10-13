@@ -6,6 +6,11 @@
 #ifndef UTILS_H_
 #define UTILS_H_
 
+// For C++ compilers:
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 ////////////////////////////////////////////////////////////////////
 // Operations on matrices and arrays
 
@@ -206,5 +211,9 @@ int compare_int_des(const void *x, const void *y);
  * \return        -1 if x > y, 1 if x < y, 0 if x == y.
  */
 int compare_long_des(const void *x, const void *y);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

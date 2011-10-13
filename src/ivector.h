@@ -9,14 +9,14 @@ extern "C" {
 /** A dynamic array of integers. */
 typedef struct
 {
-	/** Internal array. */
-	int *array;
+    /** Internal array. */
+    int *array;
 
-	/** Number of elements in the array. */
-	int size;
+    /** Number of elements in the array. */
+    int size;
 
-	/** Max number of elements given the current size of 'a'. */
-	int capacity;
+    /** Max number of elements given the current size of 'a'. */
+    int capacity;
 }
 ivector;
 

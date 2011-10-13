@@ -1,5 +1,5 @@
-#ifndef HON_SPECIES_H
-#define HON_SPECIES_H
+#ifndef SPECIES_H_
+#define SPECIES_H_
 
 #include <stdbool.h>
 
@@ -11,20 +11,20 @@ extern "C" {
 /** An array of ints for individuals in different subpopulations. */
 typedef struct
 {
-	/** Number of subpopulations. */
-	int subpops;
+    /** Number of subpopulations. */
+    int subpops;
 
-	/** Array of individuals per subpopulations. */
-	int *n;
-	
-	/** Number of distinct genotypes. */
-	int n_genotypes;
+    /** Array of individuals per subpopulations. */
+    int *n;
+    
+    /** Number of distinct genotypes. */
+    int n_genotypes;
 
-	/** Number of individual of each genotype per subpopulations. */
-	int **genotypes;
-		
-	/** Date of birth. */
-	int birth;
+    /** Number of individual of each genotype per subpopulations. */
+    int **genotypes;
+        
+    /** Date of birth. */
+    int birth;
 }
 Species;
 

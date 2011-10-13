@@ -11,9 +11,9 @@
  */
 typedef struct SLLNode_
 {
-	struct SLLNode_ *next; /**< Next node. */
+    struct SLLNode_ *next; /**< Next node. */
 
-	void *data; /**< Data in the node. */
+    void *data; /**< Data in the node. */
 }
 SLLNode;
 
@@ -22,11 +22,11 @@ SLLNode;
  */
 typedef struct
 {
-	int length; /**< Number of elements in the list. */
+    int length; /**< Number of elements in the list. */
 
-	SLLNode *head; /**< First element of the list. */
+    SLLNode *head; /**< First element of the list. */
 
-	SLLNode *tail; /**< Last element of the list. */
+    SLLNode *tail; /**< Last element of the list. */
 }
 SLL;
 

@@ -12,20 +12,20 @@ extern "C" {
 /** A graph represented by an adjacency list (made of dynamic arrays). */
 typedef struct 
 {
-	/** Number of vertices. */
-	int num_v; 
-	
-	/** Number of edges per vertex. */
-	int *num_e;
-	
-	/** Space allocated to each vertex. */
-	int *capacity;
+    /** Number of vertices. */
+    int num_v; 
 
-	/** Adjacency list. */
-	int **adj_list;
-	
-	/** Weights. */
-	double **w_list;
+    /** Number of edges per vertex. */
+    int *num_e;
+
+    /** Space allocated to each vertex. */
+    int *capacity;
+
+    /** Adjacency list. */
+    int **adj_list;
+
+    /** Weights. */
+    double **w_list;
 } 
 graph;
 
