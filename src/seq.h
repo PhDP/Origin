@@ -1,6 +1,7 @@
-/**
- * Basic functions to analyze sequences
- ****************************************************************/
+/*! \file
+ *
+ * \brief Basic functions to analyze sequences
+ */ 
 
 #ifndef SEQ_H_
 #define SEQ_H_
@@ -102,6 +103,12 @@ char *transcription(const char *dna_seq);
 
 /** Translate RNA to an amino acid sequence. */
 char *translation(const char *rna_seq);
+
+/** Return true if the char is a standard DNA nucleotide. */
+#define DNANUC(c) (c=='A'||c=='T'||c=='G'||c=='C')
+
+/** Return true if the char is a standard RNA nucleotide. */
+#define RNANUC(c) (c=='A'||c=='U'||c=='G'||c=='C')
 
 #ifdef __cplusplus
 }

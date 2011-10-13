@@ -221,7 +221,7 @@ O_INLINE int dna_pure_seq(const char *dna_seq)
     int i = 0;
     while (dna_seq[i] != '\0')
     {
-        if (dna_seq[i] == 'A' || dna_seq[i] == 'T' || dna_seq[i] == 'G' || dna_seq[i] == 'C')
+        if (DNANUC(dna_seq[i]))
         {
             ++i;
         }
@@ -238,7 +238,7 @@ O_INLINE int rna_pure_seq(const char *rna_seq)
     int i = 0;
     while (rna_seq[i] != '\0')
     {
-        if (rna_seq[i] == 'A' || rna_seq[i] == 'U' || rna_seq[i] == 'G' || rna_seq[i] == 'C')
+        if (RNANUC(rna_seq[i]))
         {
             ++i;
         }
@@ -257,7 +257,7 @@ O_INLINE char *dna_rmv_amb(char *dna_seq)
     int count = 0;
     for (int i = 0; dna_seq[i] != '\0'; i++)
     {
-        if (dna_seq[i] == 'A' || dna_seq[i] == 'T' || dna_seq[i] == 'G' || dna_seq[i] == 'C')
+        if (DNANUC(dna_seq[i]))
         {
             new_dna_seq[count++] = dna_seq[i];
         }
@@ -275,7 +275,7 @@ O_INLINE char *rna_rmv_amb(char *rna_seq)
     int count = 0;
     for (int i = 0; rna_seq[i] != '\0'; i++)
     {
-        if (rna_seq[i] == 'A' || rna_seq[i] == 'U' || rna_seq[i] == 'G' || rna_seq[i] == 'C')
+        if (RNANUC(rna_seq[i]))
         {
             new_rna_seq[count++] = rna_seq[i];
         }
