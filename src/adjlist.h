@@ -101,7 +101,8 @@ unsigned int adjlist_outdegree(const adjlist *a, int u);
  */
 unsigned int adjlist_indegree(const adjlist *a, int u);
 
-/** Return TRUE if the adjlist is balanced.
+/**
+ * \brief Return TRUE if the adjlist is balanced.
  *
  * Return TRUE if, for each vertex \f$v\f$, indegree(v) == outdegree(v).
  * Complexity \f$O(|V||E|)\f$.
@@ -111,20 +112,77 @@ unsigned int adjlist_indegree(const adjlist *a, int u);
  */
 int adjlist_is_balanced(const adjlist *a);
 
-/** Add an edge between vertices 'u' and 'v' with weight. O(1), worst-case O(|N|). */
+/**
+ * \brief Add a weighted edge between vertices 'u' and 'v'.
+ *
+ * \param a        The adjlist object.
+ * \param u        Starting point of the edge (the tail).
+ * \param v        Endpoint of the edge (the head).
+ * \param weight   Weight of the edge.
+ */
 void adjlist_add_edge(adjlist *a, int u, int v, double weight);
 
-/** Add an edge between vertices 'u' and 'v' and vice-versa. */
+/**
+ * \brief Add a weighted edge between vertices 'u' and 'v' and one between 'v' and 'u'.
+ *
+ * \param a        The adjlist object.
+ * \param u        First vertex.
+ * \param v        Second vertex.
+ * \param weight   Weight of the edge.
+ */
 void adjlist_add_sym_edges(adjlist *a, int u, int v, double weight);
 
-/** Remove the edge between vertices 'u' and 'v'. */
+/**
+ * \brief Remove the edge between vertices 'u' and 'v'.
+ *
+ * Find the first edge from 'u' to 'v' and remove it. If no edge is found,
+ * return 0 (FALSE). If there are severals egdes between 'u' and 'v', only the
+ * first encounted in the list is going to be removed.
+ * 
+ * \param a    The adjlist object.
+ * \param u    Starting point of the edge (the tail).
+ * \param v    Endpoint of the edge (the head).
+ * \return     1 (TRUE) if an edge was removed.
+ */
 int adjlist_rmv_edge(adjlist *a, int u, int v);
 
-/** Remove the edges between 'u' and 'v' and vice-versa. Return FALSE if only 1 or 0 edges were removed. */
+/**
+ * \brief Remove the edges between 'u' and 'v' and vice-versa.
+ *
+ * Call adjlist_rmv_edge(a, u, v) and adjlist_rmv_edge(a, v, u) to remove the
+ * edges in both direction.
+ * 
+ * \param a    The adjlist object.
+ * \param u    First vertex.
+ * \param v    Second vertex.
+ * \return     Return the number of edges removed (0, 1, or 2).
+ */
 int adjlist_rmv_sym_edges(adjlist *a, int u, int v);
 
-/** Return TRUE if the adjlist has an edge between 'u' and 'v'. O(|E|). */
+/**
+ * \brief Return TRUE if the adjlist has an edge between 'u' and 'v'.
+ *
+ * Loop for an edge between 'u' and 'v', return TRUE if one is found. O(|E|)
+ * complexity.
+ *
+ * \param a    The adjlist object.
+ * \param u    Starting point of the edge (the tail).
+ * \param v    Endpoint of the edge (the head).
+ * \return     1 (TRUE) if an edge was found.
+ */
 int adjlist_has_edge(adjlist *a, int u, int v);
+
+/**
+ * \brief Return the number of edges from 'u' to 'v'.
+ *
+ * Find the number of edges from 'u' to 'v'. O(|E|) complexity.
+ *
+ * \param a    The adjlist object.
+ * \param u    Starting point of the edge (the tail).
+ * \param v    Endpoint of the edge (the head).
+ * \return     Number of edges from 'u' to 'v'.
+ */
+unsigned int adjlist_num_edge(adjlist *a, int u, int v);
 
 /** Return TRUE if the adjlist is strongly connected. */
 int adjlist_strongly_connected(const adjlist *a);

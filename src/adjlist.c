@@ -161,6 +161,19 @@ O_INLINE int adjlist_has_edge(adjlist *a, int u, int v)
     return FALSE;
 }
 
+O_INLINE unsigned int adjlist_num_edge(adjlist *a, int u, int v)
+{
+    unsigned int sum = 0;
+    for (edge *e = a->list[u]; e != NULL; e = e->next) 
+    {
+        if (e->head == v) 
+        {
+            ++sum;
+        }
+    }
+    return sum;
+}
+
 int adjlist_strongly_connected(const adjlist *a)
 {
     const int num_v = a->num_v;
