@@ -12,20 +12,6 @@ void adjlist_init(adjlist *a, int vertices)
     a->list = (edge**)calloc(vertices, sizeof(edge*));
 }
 
-O_INLINE int adjlist_edges(const adjlist *a)
-{
-    int sum = 0;
-    const int num_v = a->num_v;
-    for (int i = 0; i < num_v; ++i)
-    {
-        for (edge *e = a->list[i]; e != NULL; e = e->next) 
-        {
-            ++sum;
-        }
-    }
-    return sum;
-}
-
 O_INLINE edge *create_edge(int head, double weight, edge *next)
 {
     edge *e = (edge*)malloc(sizeof(edge));
@@ -37,9 +23,23 @@ O_INLINE edge *create_edge(int head, double weight, edge *next)
     return e;
 }
 
-O_INLINE int adjlist_proper_edges(const adjlist *a)
+O_INLINE unsigned int adjlist_edges(const adjlist *a)
 {
-    int sum = 0;
+    unsigned int sum = 0;
+    const int num_v = a->num_v;
+    for (int i = 0; i < num_v; ++i)
+    {
+        for (edge *e = a->list[i]; e != NULL; e = e->next) 
+        {
+            ++sum;
+        }
+    }
+    return sum;
+}
+
+O_INLINE unsigned int adjlist_p_edges(const adjlist *a)
+{
+    unsigned int sum = 0;
     const int num_v = a->num_v;
     for (int i = 0; i < num_v; ++i)
     {
@@ -51,9 +51,9 @@ O_INLINE int adjlist_proper_edges(const adjlist *a)
     return sum;
 }
 
-O_INLINE int adjlist_loops(const adjlist *a)
+O_INLINE unsigned int adjlist_loops(const adjlist *a)
 {
-    int sum = 0;
+    unsigned int sum = 0;
     const int num_v = a->num_v;
     for (int i = 0; i < num_v; ++i)
     {
@@ -65,9 +65,9 @@ O_INLINE int adjlist_loops(const adjlist *a)
     return sum;
 }
 
-O_INLINE int adjlist_outdegree(const adjlist *a, int u)
+O_INLINE unsigned int adjlist_outdegree(const adjlist *a, int u)
 {
-    int sum = 0;
+    unsigned int sum = 0;
     for (edge *e = a->list[u]; e != NULL; e = e->next) 
     {
         ++sum;
@@ -75,9 +75,9 @@ O_INLINE int adjlist_outdegree(const adjlist *a, int u)
     return sum;
 }
 
-O_INLINE int adjlist_indegree(const adjlist *a, int u)
+O_INLINE unsigned int adjlist_indegree(const adjlist *a, int u)
 {
-    int sum = 0;
+    unsigned int sum = 0;
     const int num_v = a->num_v;
     for (int i = 0; i < num_v; ++i)
     {

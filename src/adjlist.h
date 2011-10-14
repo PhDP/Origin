@@ -8,7 +8,12 @@
 extern "C" {
 #endif
 
-/** A adjlist represented by an adjacency list (made of dynamic arrays). */
+/**
+ * \brief A weighted directed edge.
+ *
+ * The edge is also the node of an adjacency list, so it has a pointer to the
+ * next edge in the list, a reference to the head of the pointer and a weight.
+ */
 typedef struct edge_
 {
     struct edge_ *next; /**< Pointer to the next edge in the list. */
@@ -16,9 +21,12 @@ typedef struct edge_
     int head; /**< Head of the edge (the ID of the vertex pointed). */
 
     double w; /**< Weight. */
-} edge;
+}
+edge;
 
-/** A adjlist represented by an adjacency list (made of dynamic arrays). */
+/**
+ * \brief A adjlist represented by an adjacency list.
+ */
 typedef struct 
 {
     int num_v; /**< Number of vertices. */  
@@ -29,28 +37,78 @@ typedef struct
 } 
 adjlist;
 
-/** Initialize a adjlist with a fixed number of vertices. */
+/**
+ * \brief Initialize an adjlist with a fixed number of vertices.
+ *
+ * \param a           An unitialized adjlist object.
+ * \param vertices    Number of vertices in the adjacency list.
+ */
 void adjlist_init(adjlist *a, int vertices);
 
-/** Number of edges in the entire adjlist. */
-int adjlist_edges(const adjlist *a);
-
-/** Allocate memory for an edge and return a pointer to it. */
+/**
+ * \brief Allocate memory for an edge and return a pointer to it.
+ *
+ * \param   head    Endpoint of the edge.
+ * \param   weight  Weight of the edge.
+ * \param   next    Pointer to the next edge in the list.
+ * \return          A pointer to an initialized edge.
+ */
 edge *create_edge(int head, double weight, edge *next);
 
-/** Number of proper edges in the entire adjlist. */
-int adjlist_proper_edges(const adjlist *a);
+/**
+ * \brief Number of edges in the entire adjlist.
+ *
+ * \param a    The adjlist object.
+ * \return     The total number of edges in the list.
+ */
+unsigned int adjlist_edges(const adjlist *a);
 
-/** Number of loops in the entire adjlist. */
-int adjlist_loops(const adjlist *a);
+/**
+ * \brief Number of proper edges in the entire adjlist.
+ *
+ * \param a    The adjlist object.
+ * \return     The total number of proper edges in the list.
+ */
+unsigned int adjlist_p_edges(const adjlist *a);
 
-/** Number of outgoing edges for vertex \f$v\f$. \f$O(1)\f$.*/
-int adjlist_outdegree(const adjlist *a, int u);
+/**
+ * \brief Number of loops in the entire adjlist.
+ *
+ * \param a    The adjlist object.
+ * \return     The total number of loops in the list.
+ */
+unsigned int adjlist_loops(const adjlist *a);
 
-/** Number of ingoing edges for vertex \f$v\f$. \f$O(|V||E|)\f$.*/
-int adjlist_indegree(const adjlist *a, int u);
+/**
+ * \brief Number of outgoing edges for vertex \f$v\f$.
+ *
+ * Complexity \f$O(1)\f$.
+ *
+ * \param a    The adjlist object.
+ * \param u    ID of the vertex.
+ * \return     Number of outgoing edges for vertex u.
+ */
+unsigned int adjlist_outdegree(const adjlist *a, int u);
 
-/** Return TRUE if the adjlist is balanced (i.e.: for each vertex \f$v\f$, indegree(v) == outdegree(v)). \f$O(|V||E|)\f$. */
+/**
+ * \brief Number of ingoing  edges for vertex \f$v\f$.
+ *
+ * Complexity \f$O(|V||E|)\f$.
+ *
+ * \param a    The adjlist object.
+ * \param u    ID of the vertex.
+ * \return     Number of ingoing edges for vertex u.
+ */
+unsigned int adjlist_indegree(const adjlist *a, int u);
+
+/** Return TRUE if the adjlist is balanced.
+ *
+ * Return TRUE if, for each vertex \f$v\f$, indegree(v) == outdegree(v).
+ * Complexity \f$O(|V||E|)\f$.
+ *
+ * \param a    The adjlist object.
+ * \return     1 (TRUE) if the adjlist is balanced.
+ */
 int adjlist_is_balanced(const adjlist *a);
 
 /** Add an edge between vertices 'u' and 'v' with weight. O(1), worst-case O(|N|). */
