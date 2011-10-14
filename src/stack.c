@@ -3,7 +3,7 @@
 #include "common.h"
 #include "stack.h"
 
-void Stack_init(Stack *s, int initial_capacity)
+void Stack_init(Stack *s, unsigned int initial_capacity)
 {
     s->index = -1;
     s->capacity = initial_capacity;
@@ -12,15 +12,15 @@ void Stack_init(Stack *s, int initial_capacity)
 
 void Stack_push(Stack *s, void *item)
 {
-    ++(s->index);
-    if (s->index + 1 == s->capacity)
+    if (++(s->index) + 1 == s->capacity)
     {
         Stack_grow(s);
     }
     s->data[s->index] = item;
 }
 
-void * Stack_pop(Stack *s)
+#ifndef NDEBUG
+void *Stack_pop(Stack *s)
 {
     return (s->index > -1) ? s->data[s->index--] : NULL;
 }
@@ -29,6 +29,7 @@ int Stack_is_empty(const Stack *s)
 {
     return (s->index == -1);
 }
+#endif
 
 void Stack_grow(Stack *s)
 {

@@ -12,7 +12,7 @@
  * remove this pointer from the stack. To get all the data out of a stack named
  * 's' you could simply use:
  *
- * while (!Stack_is_empty(s)) { void* p = Stack_pop(s); }
+ * while (!Stack_is_empty(s)) { void *p = Stack_pop(s); }
  */ 
 
 #ifndef STACK_H_
@@ -30,7 +30,7 @@ typedef struct
 {
     int index; /**< Current index. */
 
-    int capacity; /**< Capacity of the stack. */
+    unsigned int capacity; /**< Capacity of the stack. */
 
     void **data; /**< Array of data. */
 }
@@ -45,7 +45,7 @@ Stack;
  * \param s                   The object to initialize.
  * \param initial_capacity    The initial capacity of the internal array.
  */
-void Stack_init(Stack *s, int initial_capacity);
+void Stack_init(Stack *s, unsigned int initial_capacity);
 
 /**
  * \brief Push to the stack.
@@ -58,6 +58,7 @@ void Stack_init(Stack *s, int initial_capacity);
  */
 void Stack_push(Stack *s, void *item);
 
+#ifndef NDEBUG
 /**
  * \brief Pop stack.
  *
@@ -68,7 +69,7 @@ void Stack_push(Stack *s, void *item);
  * \return    The object at the top of the stack. Returns NULL if the stack
  *            is empty.
  */
-void * Stack_pop(Stack *s);
+void *Stack_pop(Stack *s);
 
 /**
  * \brief Return true if the stack is empty.
@@ -76,9 +77,13 @@ void * Stack_pop(Stack *s);
  * Check if the stack is empty and return true if it is. It's that simple.
  * 
  * \param s   The stack object.
- * \return    'true' (1) if the stack is empty, 'false' otherwise (0).
+ * \return    1 (TRUE) if the stack is empty, 0 (FALSE) otherwise.
  */
 int Stack_is_empty(const Stack *s);
+#else
+#define Stack_pop(s)        ((s->index>-1)?s->data[s->index--]:NULL)
+#define Stack_is_empty(s)   (s->index==-1)
+#endif
 
 /**
  * \brief Double the internal capacity.
@@ -87,7 +92,7 @@ int Stack_is_empty(const Stack *s);
  * accomodate new pointers.
  * 
  * \param s   The stack object.
- * \return    'true' (1) if the stack is empty, 'false' otherwise (0).
+ * \return    1 (TRUE) if the stack is empty, 0 (FALSE) otherwise..
  */
 void Stack_grow(Stack *s);
 
