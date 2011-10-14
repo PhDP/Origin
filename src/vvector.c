@@ -6,6 +6,7 @@
 #include <string.h>
 #include "common.h"
 #include "vvector.h"
+#include "utils.h"
 
 void vvector_init0(vvector *v)
 {
@@ -20,16 +21,34 @@ void vvector_init1(vvector *v, int initial_capacity)
 }
 
 #ifndef NDEBUG 
-void *vvector_get(vvector *v, int n)
+O_INLINE void *vvector_get(vvector *v, int n)
 {
     assert(n < v->size);
     return v->array[n];
 }
 
-void vvector_set(vvector *v, int n, void *x)
+O_INLINE void vvector_set(vvector *v, int n, void *x)
 {
     assert(n < v->size);
     v->array[n] = x;
+}
+
+O_INLINE void vvector_rmv(vvector *v, int x)
+{
+    v->size = (v->size >= z) ? v->size - z : 0;
+}
+
+O_INLINE void vvector_sub1(vvector *v)
+{
+    if (v->size > 0)
+    {
+        v->size--;
+    }
+}
+
+O_INLINE void vvector_rmvall(vvector *v)
+{
+    v->size = 0;
 }
 #endif
 
@@ -43,26 +62,6 @@ O_INLINE void vvector_add(vvector *v, void *x)
     // Add the new nent at the end
     v->array[v->size] = x;
     v->size++;
-}
-
-O_INLINE void vvector_sub(vvector *v, int x)
-{
-    if (v->size >= x)
-    {
-        v->size -= x;
-    }
-    else
-    {
-        v->size = 0;
-    }
-}
-
-O_INLINE void vvector_sub1(vvector *v)
-{
-    if (v->size > 0)
-    {
-        v->size--;
-    }
 }
 
 O_INLINE void **vvector_get_array(vvector *v)
@@ -104,6 +103,24 @@ O_INLINE void vvector_grow1(vvector *v)
     else
     {
         vvector_grow0(v, v->capacity * VECTOR_GROW_RATE);
+    }
+}
+
+void vvector_print(vvector *v, FILE *out)
+{
+    if (out == NULL)
+    {
+        for (int i = 0; i < v->size; ++i)
+        {
+            printf("%p ", v->array[i]);
+        }
+    }
+    else
+    {
+        for (int i = 0; i < v->size; ++i)
+        {
+            fprintf(out, "%p ", v->array[i]);
+        }
     }
 }
 

@@ -76,6 +76,24 @@ O_INLINE void ivector_set(ivector *v, int n, int x)
     assert(n < v->size);
     v->array[n] = x;
 }
+
+O_INLINE void ivector_rmv(ivector *v, int z)
+{
+    v->size = (v->size >= z) ? v->size - z : 0;
+}
+
+O_INLINE void ivector_rmv1(ivector *v)
+{
+    if (v->size > 0)
+    {
+        v->size--;
+    }
+}
+
+O_INLINE void ivector_rmvall(ivector *v)
+{
+    v->size = 0;
+}
 #endif
 
 O_INLINE void ivector_add(ivector *v, int x)
@@ -101,33 +119,8 @@ O_INLINE void ivector_add_array(ivector *v, int *a, int size)
     for (int i = 0; i < size; ++i)
     {
         v->array[old_size + i] = a[i];
-    }	
+    }
     v->size += size;
-}
-
-O_INLINE void ivector_sub(ivector *v, int x)
-{
-    if (v->size >= x)
-    {
-        v->size -= x;
-    }
-    else
-    {
-        v->size = 0;
-    }
-}
-
-O_INLINE void ivector_sub_all(ivector *v)
-{
-    v->size = 0;
-}
-
-O_INLINE void ivector_sub1(ivector *v)
-{
-    if (v->size > 0)
-    {
-        v->size--;
-    }
 }
 
 O_INLINE int *ivector_get_array(ivector *v)
@@ -153,7 +146,7 @@ O_INLINE void ivector_sort_des(ivector *v)
     qsort((void*)v->array, v->size, sizeof(int), compare_int_des);
 }
 
-O_INLINE int ivector_trim_small(ivector *v, int smallest)
+O_INLINE unsigned int ivector_trim_small(ivector *v, int smallest)
 {
     int i = 0;
     int j = 0;
@@ -161,18 +154,17 @@ O_INLINE int ivector_trim_small(ivector *v, int smallest)
     {
         if (v->array[j] >= smallest)
         {
-            v->array[i] = v->array[j];
-            ++i;
+            v->array[i++] = v->array[j];
         }
         ++j;
-    }	
+    }
     const int removed = j - i;
     v->size -= removed;
     
-    return removed;
+    return (unsigned)removed;
 }
 
-O_INLINE int ivector_trim_large(ivector *v, int largest)
+O_INLINE unsigned int ivector_trim_large(ivector *v, int largest)
 {
     int i = 0;
     int j = 0;
@@ -180,15 +172,14 @@ O_INLINE int ivector_trim_large(ivector *v, int largest)
     {
         if (v->array[j] <= largest)
         {
-            v->array[i] = v->array[j];
-            ++i;
+            v->array[i++] = v->array[j];
         }
         ++j;
-    }	
+    }
     const int removed = j - i;
     v->size -= removed;
     
-    return removed;
+    return (unsigned)removed;
 }
 
 void ivector_print(ivector *v, FILE *out)

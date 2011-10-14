@@ -34,7 +34,8 @@ void dvector_init0(dvector *v);
 /**
  * \brief Initialize a vector of a given initial capacity.
  * 
- * \param v  The object to initialize.
+ * \param v                  The object to initialize.
+ * \param initial_capacity   The memory allocated to the internal array.
  */
 void dvector_init1(dvector *v, int initial_capacity);
 
@@ -101,7 +102,7 @@ void dvector_rmvall(dvector *v);
 #else
 #define dvector_get(v,n)      ((v)->array[n])
 #define dvector_set(v,n,x)    ((v)->array[n]=x)
-#define dvector_rmv(v,z)      (v->size=(v->size>0)?v->size-z:0)
+#define dvector_rmv(v,z)      (v->size=(v->size>=z)?v->size-z:0)
 #define dvector_rmv1(v)       dvector_rmv(v,1)
 #define dvector_rmvall(v)     (v->size=0)
 #endif
@@ -129,7 +130,7 @@ void dvector_add(dvector *v, int x);
 double *dvector_get_array(dvector *v);
 
 /**
- * \brief Increase the internal storage capacity of the array.
+ * \brief Increase the internal storage capacity of the vector.
  * 
  * \param v              The dvector object.
  * \param new_capacity   The new storage capacity of the object.
@@ -137,13 +138,11 @@ double *dvector_get_array(dvector *v);
 void dvector_grow0(dvector *v, int new_capacity);
 
 /**
- * \brief Double the internal storage capacity of the array.
+ * \brief Double the internal storage capacity of the vector.
  * 
  * \param v              The dvector object.
  */
 void dvector_grow1(dvector *v);
-
-/** Use quicksort to sort the array in ascending order. */
 
 /**
  * \brief Sort the array in ascending order.
@@ -166,18 +165,18 @@ void dvector_sort_asc(dvector *v);
 void dvector_sort_des(dvector *v);
 
 /**
- * \brief Free the memory of the array.
- * 
- * \param v  The dvector object.
- */
-void dvector_free(dvector *v);
-
-/**
  * \brief Print the array. Set out to NULL to print to the console.
  * 
  * \param v  The dvector object.
  */
 void dvector_print(dvector *v, FILE *out);
+
+/**
+ * \brief Free the memory of the array.
+ * 
+ * \param v  The dvector object.
+ */
+void dvector_free(dvector *v);
 
 /**
  * \brief Tests and examples for this object.
