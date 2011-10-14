@@ -1,5 +1,11 @@
-#ifndef TREENODE_H_
-#define TREENODE_H_
+/*! \file
+ *
+ * \brief A generic strictly binary tree.
+ *
+ */ 
+
+#ifndef tnode_H_
+#define tnode_H_
 
 #include <stdbool.h>
 #include "common.h"
@@ -9,58 +15,55 @@
 extern "C" {
 #endif
 
-/** A strictly binary tree. */
-typedef struct treenode_
+/**
+ * \brief A strictly binary tree.
+ */
+typedef struct tnode_
 {
-    /** Name of the node. */
-    char *name;
-    
-    /** Pointer to the parent. */
-    struct treenode_ *p;
-    
-    /** Pointer to the 'left' child. */
-    struct treenode_ *l;
-    
-    /** Pointer to the 'right' child. */
-    struct treenode_ *r;
-    
-    /** Data inside the node. */
-    void *data;
-}
-treenode;
+    char *name; /**< Name of the node. */
 
-/** Initialize a treenode object. */
-treenode *treenode_init(treenode *p, char *name, void *data);
+    struct tnode_ *p; /**< Pointer to the parent. */
+
+    struct tnode_ *l; /**< Pointer to the 'left' child. */
+
+    struct tnode_ *r; /**< Pointer to the 'right' child. */
+
+    void *data; /**< Data inside the node. */
+}
+tnode;
+
+/** Initialize a tnode object. */
+tnode *tnode_init(tnode *p, char *name, void *data);
 
 /** Set the children of the node. */
-void treenode_set_children(treenode *t, treenode *l, treenode *r); // TODO: Replace by a define (and test!)
+void tnode_set_children(tnode *t, tnode *l, tnode *r); // TODO: Replace by a define (and test!)
 
 /** Number of edges in the subtree. */
-int treenode_numedges(treenode *t);
+int tnode_numedges(tnode *t);
 
 /** Number of leaves in the subtree. */
-int treenode_numleaves(treenode *t);
+int tnode_numleaves(tnode *t);
 
 /** Number of nodes between this node and the root */
-int treenode_toroot(treenode *t);
+int tnode_toroot(tnode *t);
 
 /** Check if the subtree is really a strictly binary tree. */
-int treenode_sbinary(treenode *t);
+int tnode_sbinary(tnode *t);
 
 /** Return 'true' if the node is a leaf. */
-int treenode_leaf(treenode *t);
+int tnode_leaf(tnode *t);
 
 /** Return 'true' if the node is a root. */
-int treenode_root(treenode *t);
+int tnode_root(tnode *t);
 
 /** Return 'true' if the node is an internal node. */
-int treenode_internal(treenode *t);
+int tnode_internal(tnode *t);
 
 /** Return the simple newick tree. */
-char *treenode_simple_newick(treenode *t);
+char *tnode_simple_newick(tnode *t);
 
 /** Recursively free the memory of the node. The tree node doesn't own the data at the end of the void pointer so the user has to free this memory manually (or reimplement this function). */
-void treenode_free(treenode *t);
+void tnode_free(tnode *t);
 
 #ifdef __cplusplus
 }
