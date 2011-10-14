@@ -102,7 +102,28 @@ void SLL_rm_all(SLL *sll)
     while(SLL_rm_next(sll, NULL));
 }
 
-unsigned int SLL_rm(SLL *sll, int foo(SLLNode *node));
+unsigned int SLL_rm(SLL *sll, int foo(SLLNode *node))
+{
+    unsigned int removed = 0;
+
+    SLLNode *node = sll->head;
+
+    // rmv first
+
+    while (node != NULL)
+    {
+        if (foo(node->next))
+        {
+            SLL_rm_next(sll, node);
+        }
+        else
+        {
+            node = node->next;
+        }
+    }
+    
+    return removed;
+}
 
 SLLNode *SLL_get(SLL *sll, int n)
 {
