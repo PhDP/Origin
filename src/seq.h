@@ -256,10 +256,14 @@ char *transcription(const char *dna_seq);
  */
 char *translation(const char *rna_seq);
 
-/** \brief Return true if the char is a standard DNA nucleotide. */
+/**
+ * \brief Return true if the char is a standard DNA nucleotide.
+ */
 #define DNANUC(c) (c=='A'||c=='T'||c=='G'||c=='C')
 
-/** \brief Return true if the char is a standard RNA nucleotide. */
+/**
+ * \brief Return true if the char is a standard RNA nucleotide.
+ */
 #define RNANUC(c) (c=='A'||c=='U'||c=='G'||c=='C')
 
 #ifdef __cplusplus
