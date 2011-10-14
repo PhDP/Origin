@@ -80,19 +80,7 @@ O_INLINE double *dvector_get_array(dvector *v)
 // TODO: USE REALLOC
 O_INLINE void dvector_grow0(dvector *v, unsigned int new_capacity)
 {
-    // The new array
-    double *new_array = (double*)malloc(new_capacity* sizeof(double));
-
-    // Copy the elements from the old to the new array
-    const int size = v->size;
-    for (int i = 0; i < size; ++i)
-    {
-        new_array[i] = v->array[i];
-    }
-    v->capacity = new_capacity; // Change the capacity
-    double *swap = v->array; // Used to swap the pointers
-    v->array = new_array; // Set the dynamic a's pointer to the new a
-    free(swap); // Free the memory of the old a
+    v->array = (void*)realloc(v->array, new_capacity * sizeof(double));
 }
 
 O_INLINE void dvector_grow1(dvector *v)

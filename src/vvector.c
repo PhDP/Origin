@@ -79,19 +79,7 @@ O_INLINE void **vvector_get_array(vvector *v)
 
 O_INLINE void vvector_grow0(vvector *v, unsigned int new_capacity)
 {
-    // The new array
-    void **new_array = (void**)malloc(new_capacity * sizeof(void*));
-
-    // Copy the elements from the old to the new array
-    const int size = v->size;
-    for (int i = 0; i < size; ++i)
-    {
-        new_array[i] = v->array[i];
-    }
-    v->capacity = new_capacity; // Change the capacity
-    void **swap = v->array; // Used to swap the pointers
-    v->array = new_array; // Set the dynamic a's pointer to the new a
-    free(swap); // Free the memory of the old a
+    v->array = (void*)realloc(v->array, new_capacity * sizeof(void*));
 }
 
 O_INLINE void vvector_grow1(vvector *v)
