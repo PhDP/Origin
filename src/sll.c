@@ -91,7 +91,6 @@ int SLL_rm_next(SLL *sll, SLLNode *node)
     //////////////////////////////////////////
     // FREE THE MEMORY OF THE OLD NODE !!!  //
     //////////////////////////////////////////
-    Species_free(old_node->species);
     free(old_node);
     
     --(sll->length);
@@ -103,7 +102,7 @@ void SLL_rm_all(SLL *sll)
     while(SLL_rm_next(sll, NULL));
 }
 
-int SLL_rm(SLL *sll, int foo(SLLNode *node));
+unsigned int SLL_rm(SLL *sll, int foo(SLLNode *node));
 
 SLLNode *SLL_get(SLL *sll, int n)
 {

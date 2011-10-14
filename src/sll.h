@@ -22,7 +22,7 @@ SLLNode;
  */
 typedef struct
 {
-    int length; /**< Number of elements in the list. */
+    unsigned int length; /**< Number of elements in the list. */
 
     SLLNode *head; /**< First element of the list. */
 
@@ -68,9 +68,9 @@ void SLL_add_tail(SLL *sll, void *data);
  * Provide a list and a node and the function will remove the next node. If
  * node == NULL, the function will remove the head of the list.
  * 
- * \param sll  The singly linked list.
- * \param node The node before the node to be removed.
- * \return     'true' is a node has been removed.
+ * \param sll    The singly linked list.
+ * \param node   The node before the node to be removed.
+ * \return       1 (TRUE) is a node has been removed.
  */
 int SLL_rm_next(SLL *sll, SLLNode *node);
 
@@ -91,7 +91,7 @@ void SLL_rm_all(SLL *sll);
  * \param foo  The condition to decide if a node can stay or has to be removed.
  * \return     The number of nodes removed.
  */
-int SLL_rm(SLL *sll, int foo(SLLNode *node));
+unsigned int SLL_rm(SLL *sll, int foo(SLLNode *node));
 
 /**
  * \brief Return a pointer to the nth node in the list.
