@@ -45,6 +45,19 @@ typedef struct
 Fasta_seq;
 
 /**
+ * \brief A compressed sequence represented by a bitfield.
+ */
+typedef struct
+{
+    char *seq; /**< The sequence. */
+
+    unsigned int length; /**< Length of the sequence. */
+
+    unsigned int capacity; /**< Capacity of the object. */
+}
+Compressed_Seq;
+
+/**
  * \brief Deduce the type of a sequence.
  * 
  * \param seq    The sequence
