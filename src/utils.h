@@ -100,7 +100,7 @@ void scale_a_b(double *x, int length, double a, double b);
  * \param   smallest  Everything that is smaller than this will be removed.
  * \return            The number of elements removed.
  */
-int trim_small(int **x, int length, int smallest);
+unsigned int trim_small(int **x, unsigned int length, int smallest);
 
 /**
  * \brief Remove large elements of an array.
@@ -113,7 +113,7 @@ int trim_small(int **x, int length, int smallest);
  * \param   largest   Everything that is larger than this will be removed.
  * \return            The number of elements removed.
  */
-int trim_large(int **x, int length, int largest);
+unsigned int trim_large(int **x, unsigned int length, int largest);
 
 ////////////////////////////////////////////////////////////////////
 // Other functions

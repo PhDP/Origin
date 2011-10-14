@@ -14,8 +14,7 @@ void **mat_alloc(int nrows, int ncols, size_t size)
 {
     void **matrix = (void**)malloc(nrows * sizeof(void*));
 
-    int i;
-    for (i = 0; i < nrows; ++i)
+    for (int i = 0; i < nrows; ++i)
     {
         matrix[i] = malloc(ncols * size);
     }
@@ -24,8 +23,7 @@ void **mat_alloc(int nrows, int ncols, size_t size)
 
 void mat_free(void **mat, int nrows)
 {
-    int i;
-    for (i = 0; i < nrows; ++i)
+    for (int i = 0; i < nrows; ++i)
     {
         free(mat[i]);
     }
@@ -37,8 +35,7 @@ void dmin_max(double *x, int length, double *min, double *max)
     *min = x[0];
     *max = x[0];
     // Find the min and max values in the array:
-    int i;
-    for (i = 0; i < length; ++i)
+    for (int i = 0; i < length; ++i)
     {
         if (*max < x[i])
         {
@@ -56,8 +53,7 @@ void imin_max(int *x, int length, int *min, int *max)
     *min = x[0];
     *max = x[0];
     // Find the min and max values in the array:
-    int i;
-    for (i = 0; i < length; ++i)
+    for (int i = 0; i < length; ++i)
     {
         if (*max < x[i])
         {
@@ -73,12 +69,11 @@ void imin_max(int *x, int length, int *min, int *max)
 void scale_0_1(double *x, int length)
 {
     double min;
-    double max;	
+    double max;
     dmin_max(x, length, &min, &max);
 
     // Scaling
-    int i;
-    for (i = 0; i < length; ++i)
+    for (int i = 0; i < length; ++i)
     {
         x[i] = (x[i] - min) / (max - min);
     }
@@ -87,12 +82,11 @@ void scale_0_1(double *x, int length)
 void scale_0_100(double *x, int length)
 {
     double min;
-    double max;	
+    double max;
     dmin_max(x, length, &min, &max);
 
     // Scaling
-    int i;
-    for (i = 0; i < length; ++i)
+    for (int i = 0; i < length; ++i)
     {
         x[i] = (x[i] - min) / (max - min) * 100;
     }
@@ -103,17 +97,16 @@ void scale_a_b(double *x, int length, double a, double b)
     const double delta = b - a;
     scale_0_1(x, length);
 
-    int i;
-    for (i = 0; i < length; ++i)
+    for (int i = 0; i < length; ++i)
     {
         x[i] = x[i] * delta + a;
     }
 }
 
-int trim_small(int **x, int length, int smallest)
+unsigned int trim_small(int **x, unsigned int length, int smallest)
 {
-    int i = 0;
-    int j = 0;
+    unsigned int i = 0;
+    unsigned int j = 0;
     while (j < length)
     {
         if ((*x)[j] >= smallest)
@@ -122,18 +115,18 @@ int trim_small(int **x, int length, int smallest)
             ++i;
         }
         ++j;
-    }	
-    const int removed = j - i;
+    }
+    const int unsigned removed = j - i;
     
     *x = (int*)realloc((void*)(*x), (length - removed) * sizeof(int));
     
     return removed;
 }
 
-int trim_large(int **x, int length, int largest)
+unsigned int trim_large(int **x, unsigned int length, int largest)
 {
-    int i = 0;
-    int j = 0;
+    unsigned int i = 0;
+    unsigned int j = 0;
     while (j < length)
     {
         if ((*x)[j] <= largest)
@@ -142,8 +135,8 @@ int trim_large(int **x, int length, int largest)
             ++i;
         }
         ++j;
-    }	
-    const int removed = j - i;
+    }
+    const unsigned int removed = j - i;
     
     *x = (int*)realloc((void*)(*x), (length - removed) * sizeof(int));
     
