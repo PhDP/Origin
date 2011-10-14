@@ -13,14 +13,14 @@ void ivector_init0(ivector *v)
     ivector_init1(v, VECTOR_INIT_CAPACITY);
 }
 
-void ivector_init1(ivector *v, int initial_capacity)
+void ivector_init1(ivector *v, unsigned int initial_capacity)
 {
     v->array = (int*)malloc(initial_capacity * sizeof(int));
     v->size = 0;
     v->capacity = initial_capacity;
 }
 
-void ivector_init2(ivector *v, int *x, int size, int initial_capacity)
+void ivector_init2(ivector *v, int *x, unsigned int size, unsigned int initial_capacity)
 {
     assert(size <= initial_capacity);
     v->array = (int*)malloc(initial_capacity * sizeof(int));
@@ -33,7 +33,7 @@ void ivector_init2(ivector *v, int *x, int size, int initial_capacity)
     }
 }
 
-O_INLINE void ivector_grow0(ivector *v, int new_capacity)
+O_INLINE void ivector_grow0(ivector *v, unsigned int new_capacity)
 {
     // The new array
     int *new_array = (int*)malloc(new_capacity * sizeof(int));
@@ -44,7 +44,6 @@ O_INLINE void ivector_grow0(ivector *v, int new_capacity)
     {
         new_array[i] = v->array[i];
     }
-
     v->capacity = new_capacity; // Change the max
     int *swap = v->array; // Used to swap the pointers
     v->array = new_array; // Set the dynamic a's pointer to the new a
@@ -65,19 +64,19 @@ O_INLINE void ivector_grow1(ivector *v)
 }
 
 #ifndef NDEBUG
-O_INLINE int ivector_get(ivector *v, int n)
+O_INLINE int ivector_get(ivector *v, unsigned int n)
 {
     assert(n < v->size);
     return v->array[n];
 }
 
-O_INLINE void ivector_set(ivector *v, int n, int x)
+O_INLINE void ivector_set(ivector *v, unsigned int n, int x)
 {
     assert(n < v->size);
     v->array[n] = x;
 }
 
-O_INLINE void ivector_rmv(ivector *v, int z)
+O_INLINE void ivector_rmv(ivector *v, unsigned int z)
 {
     v->size = (v->size >= z) ? v->size - z : 0;
 }
@@ -108,7 +107,7 @@ O_INLINE void ivector_add(ivector *v, int x)
     v->size++;
 }
 
-O_INLINE void ivector_add_array(ivector *v, int *a, int size)
+O_INLINE void ivector_add_array(ivector *v, int *a, unsigned int size)
 {
     // If there isn't enough space, double the size until it can contain 'a'
     const int old_size = v->size;

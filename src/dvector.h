@@ -18,9 +18,9 @@ typedef struct
 {
     double *array; /**< Internal array. */
 
-    int size; /**< Number of elements in the array. */
+    unsigned int size; /**< Number of elements in the array. */
 
-    int capacity; /**< Max number of elements given the current size of 'a'. */
+    unsigned int capacity; /**< Max number of elements given the current size of 'a'. */
 }
 dvector;
 
@@ -37,7 +37,7 @@ void dvector_init0(dvector *v);
  * \param v                  The object to initialize.
  * \param initial_capacity   The memory allocated to the internal array.
  */
-void dvector_init1(dvector *v, int initial_capacity);
+void dvector_init1(dvector *v, unsigned int initial_capacity);
 
 #ifndef NDEBUG
 /**
@@ -51,7 +51,7 @@ void dvector_init1(dvector *v, int initial_capacity);
  * \param n  Index of the element to return.
  * \return   The nth value in the array.
  */
-double dvector_get(dvector *v, int n);
+double dvector_get(dvector *v, unsigned int n);
 
 /**
  * \brief Set the nth element of the array.
@@ -64,7 +64,7 @@ double dvector_get(dvector *v, int n);
  * \param n  Index of the element to change.
  * \param x  The new value.
  */
-void dvector_set(dvector *v, int n, double x);
+void dvector_set(dvector *v, unsigned int n, double x);
 
 /**
  * \brief Remove 'z' elements from the array.
@@ -76,7 +76,7 @@ void dvector_set(dvector *v, int n, double x);
  * \param v  The dvector object.
  * \param z  The number of elements to remove at the end of the array.
  */
-void dvector_rmv(dvector *v, int z);
+void dvector_rmv(dvector *v, unsigned int z);
 
 /**
  * \brief Remove the last element of the array.
@@ -135,7 +135,7 @@ double *dvector_get_array(dvector *v);
  * \param v              The dvector object.
  * \param new_capacity   The new storage capacity of the object.
  */
-void dvector_grow0(dvector *v, int new_capacity);
+void dvector_grow0(dvector *v, unsigned int new_capacity);
 
 /**
  * \brief Double the internal storage capacity of the vector.

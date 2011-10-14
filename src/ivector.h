@@ -18,9 +18,9 @@ typedef struct
 {
     int *array; /**< Internal array. */
 
-    int size; /**< Number of elements in the array. */
+    unsigned int size; /**< Number of elements in the array. */
 
-    int capacity; /**< Max number of elements given the current size of 'a'. */
+    unsigned int capacity; /**< Max number of elements given the current size of 'a'. */
 }
 ivector;
 
@@ -37,7 +37,7 @@ void ivector_init0(ivector *v);
  * \param v                  The object to initialize.
  * \param initial_capacity   The memory allocated to the internal array.
  */
-void ivector_init1(ivector *v, int initial_capacity);
+void ivector_init1(ivector *v, unsigned int initial_capacity);
 
 /**
  * \brief Create an ivector object from an existing array of int. 
@@ -47,7 +47,7 @@ void ivector_init1(ivector *v, int initial_capacity);
  * \param size               Number of elements in 'x'.
  * \param initial_capacity   The memory allocated to the internal array, the initial capacity must be equal or greater than 'size'.
  */
-void ivector_init2(ivector *v, int *x, int size, int initial_capacity);
+void ivector_init2(ivector *v, int *x, unsigned int size, unsigned int initial_capacity);
 
 #ifndef NDEBUG
 /**
@@ -61,7 +61,7 @@ void ivector_init2(ivector *v, int *x, int size, int initial_capacity);
  * \param n  Index of the element to return.
  * \return   The nth value in the array.
  */
-int ivector_get(ivector *v, int n);
+int ivector_get(ivector *v, unsigned int n);
 
 /**
  * \brief Set the nth element of the array.
@@ -74,7 +74,7 @@ int ivector_get(ivector *v, int n);
  * \param n  Index of the element to change.
  * \param x  The new value.
  */
-void ivector_set(ivector *v, int n, int x);
+void ivector_set(ivector *v, unsigned int n, int x);
 
 /**
  * \brief Remove 'z' elements from the array.
@@ -86,7 +86,7 @@ void ivector_set(ivector *v, int n, int x);
  * \param v  The vector object.
  * \param z  The number of elements to remove at the end of the array.
  */
-void ivector_rmv(ivector *v, int z);
+void ivector_rmv(ivector *v, unsigned int z);
 
 /**
  * \brief Remove the last element of the array.
@@ -138,7 +138,7 @@ void ivector_add(ivector *v, int x);
  * \param a      The array to add at the end of the ivector.
  * \param size   Size of 'a'.
  */
-void ivector_add_array(ivector *v, int *a, int size);
+void ivector_add_array(ivector *v, int *a, unsigned int size);
 
 /**
  * \brief Return a deep copy of the array.
@@ -157,7 +157,7 @@ int *ivector_get_array(ivector *v);
  * \param v              The vector object.
  * \param new_capacity   The new storage capacity of the object.
  */
-void ivector_grow0(ivector *v, int new_capacity);
+void ivector_grow0(ivector *v, unsigned int new_capacity);
 
 /**
  * \brief Double the internal storage capacity of the vector.

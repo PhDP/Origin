@@ -13,7 +13,7 @@ void dvector_init0(dvector *v)
     dvector_init1(v, VECTOR_INIT_CAPACITY);
 }
 
-void dvector_init1(dvector *v, int initial_capacity)
+void dvector_init1(dvector *v, unsigned int initial_capacity)
 {
     v->array = (double*)malloc(initial_capacity * sizeof(double));
     v->size = 0;
@@ -21,19 +21,19 @@ void dvector_init1(dvector *v, int initial_capacity)
 }
 
 #ifndef NDEBUG 
-O_INLINE double dvector_get(dvector *v, int n)
+O_INLINE double dvector_get(dvector *v, unsigned int n)
 {
     assert(n < v->size);
     return v->array[n];
 }
 
-O_INLINE void dvector_set(dvector *v, int n, double x)
+O_INLINE void dvector_set(dvector *v, unsigned int n, double x)
 {
     assert(n < v->size);
     v->array[n] = x;
 }
 
-O_INLINE void dvector_rmv(dvector *v, int z)
+O_INLINE void dvector_rmv(dvector *v, unsigned int z)
 {
     v->size = (v->size >= z) ? v->size - z : 0;
 }
@@ -78,7 +78,7 @@ O_INLINE double *dvector_get_array(dvector *v)
 }
 
 // TODO: USE REALLOC
-O_INLINE void dvector_grow0(dvector *v, int new_capacity)
+O_INLINE void dvector_grow0(dvector *v, unsigned int new_capacity)
 {
     // The new array
     double *new_array = (double*)malloc(new_capacity* sizeof(double));

@@ -13,7 +13,7 @@ void vvector_init0(vvector *v)
     vvector_init1(v, VECTOR_INIT_CAPACITY);
 }
 
-void vvector_init1(vvector *v, int initial_capacity)
+void vvector_init1(vvector *v, unsigned int initial_capacity)
 {
     v->array = (void**)malloc(initial_capacity * sizeof(void*));
     v->size = 0;
@@ -21,19 +21,19 @@ void vvector_init1(vvector *v, int initial_capacity)
 }
 
 #ifndef NDEBUG 
-O_INLINE void *vvector_get(vvector *v, int n)
+O_INLINE void *vvector_get(vvector *v, unsigned int n)
 {
     assert(n < v->size);
     return v->array[n];
 }
 
-O_INLINE void vvector_set(vvector *v, int n, void *x)
+O_INLINE void vvector_set(vvector *v, unsigned int n, void *x)
 {
     assert(n < v->size);
     v->array[n] = x;
 }
 
-O_INLINE void vvector_rmv(vvector *v, int x)
+O_INLINE void vvector_rmv(vvector *v, unsigned int z)
 {
     v->size = (v->size >= z) ? v->size - z : 0;
 }
@@ -77,7 +77,7 @@ O_INLINE void **vvector_get_array(vvector *v)
     return new_array;
 }
 
-O_INLINE void vvector_grow0(vvector *v, int new_capacity)
+O_INLINE void vvector_grow0(vvector *v, unsigned int new_capacity)
 {
     // The new array
     void **new_array = (void**)malloc(new_capacity * sizeof(void*));
