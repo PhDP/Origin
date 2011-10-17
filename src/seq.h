@@ -30,7 +30,7 @@ typedef enum
 Sequence_type;
 
 /**
- * \brief A simple object for storing FASTA sequences.
+ * \brief A simple object to store FASTA sequences.
  */
 typedef struct
 {
@@ -74,7 +74,7 @@ Sequence_type get_type(const char *seq);
  * \param n          Index of the sequence.
  * \param fasta      A pointer to an unitialized Fasta_seq object.
  */
-void read_fasta_file(const char *filename, int n, Fasta_seq *fasta);
+void read_fasta_file(const char *filename, unsigned int n, Fasta_seq *fasta);
 
 /**
  * \brief Return a random DNA nucleotide.

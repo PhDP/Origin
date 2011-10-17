@@ -4,8 +4,8 @@
  *
  */ 
 
-#ifndef tnode_H_
-#define tnode_H_
+#ifndef TNODE_H_
+#define TNODE_H_
 
 #include <stdbool.h>
 #include "common.h"

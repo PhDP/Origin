@@ -10,8 +10,7 @@
 #include "seq.h"
 #include "amino.h"
 
-/** Read a fasta file with a single sequence and return a pointer to a Fasta struct */
-void read_fasta_file(const char* filename, int n, Fasta_seq *fasta)
+void read_fasta_file(const char* filename, unsigned int n, Fasta_seq *fasta)
 {
     FILE* input = fopen(filename, "r");
 
@@ -21,22 +20,21 @@ void read_fasta_file(const char* filename, int n, Fasta_seq *fasta)
 
     // Read the entire file
     char *complete_file = (char*)malloc(file_size);
-    size_t fread_size = fread((void*)complete_file, sizeof(char), file_size, fp);
-    const int complete_file_size = strlen(complete_file);
+    size_t fread_size = fread((void*)complete_file, sizeof(char), file_size, input);
+    const unsigned int complete_file_size = strlen(complete_file);
 
-    int i = 0;
+    unsigned int i = 0;
     while (i < complete_file_size)
     {
         if (complete_file[i] == '>')
         {
-            const int I0 = i;
+            const int i0 = i;
             while (complete_file[i] != '\n')
             {
                 ++i;
             }
-            
-            fasta->seq_info = (char*)malloc(i - I0 + 1);
-            strncpy(fasta->seq_info, complete_file + I0, i - I0);
+            fasta->seq_info = (char*)malloc(i - i0 + 1);
+            strncpy(fasta->seq_info, complete_file + i0, i - i0);
 
             fasta->seq = (char*)malloc(complete_file_size);
             int j = 0;
@@ -47,8 +45,7 @@ void read_fasta_file(const char* filename, int n, Fasta_seq *fasta)
             {
                 if (complete_file[i] != '\n' && complete_file[i] != '\r')
                 {
-                    fasta->seq[j] = complete_file[i];
-                    ++j;
+                    fasta->seq[j++] = complete_file[i];
                 }
                 ++i;
             }
