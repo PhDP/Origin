@@ -75,7 +75,12 @@ unsigned int tnode_numleaves(tnode *t);
  */
 unsigned int tnode_toroot(tnode *t);
 
-/** Check if the subtree is really a strictly binary tree. */
+/**
+ * \brief Check if the subtree is really a strictly binary tree.
+ *
+ * \param t    The subtree to analyze.
+ * \return     1 (TRUE) if the subtree is a strictly binary tree.
+ */
 int tnode_sbinary(tnode *t);
 
 /**
