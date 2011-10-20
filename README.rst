@@ -23,8 +23,6 @@ On Linux Debian/Ubuntu you can get everything you need to compile and run 'origi
 
 TODO list
 ---------
-- Pythonization: transfer to Waf & Sphinx.
-- Use XML format for output using libxml2 or expat
+- Use XML format for output.
 - Phylogeography.
 - Generic tree structure.
-
