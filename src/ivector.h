@@ -224,11 +224,6 @@ void ivector_print(ivector *v, FILE *out);
  */
 void ivector_free(ivector *v);
 
-/**
- * \brief Tests and examples for this object.
- */
-void ivector_examples();
-
 #ifdef __cplusplus
 }
 #endif

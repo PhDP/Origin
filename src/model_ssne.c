@@ -3,8 +3,8 @@
  * author:    Philippe Desjardins-Proulx
  * email:     <philippe.d.proulx@gmail.com>
  * website:   http://phdp.huginn.info
- * date:      2011.09.07
- * version:   2.6
+ * date:      2011.10.28
+ * version:   2.7
  * description:
  *   Spatially explicit speciation in neutral ecology. Type ssne --help 
  * for more information on how to run the program.
@@ -19,8 +19,8 @@
  * ...developed and tested on Linux x86_64.
  *****************************************************************************/
 
-#define SSNE_DATE       "2011.09.07"
-#define SSNE_VERSION    "2.6"
+#define SSNE_DATE       "2011.10.28"
+#define SSNE_VERSION    "2.7"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -280,7 +280,7 @@ void *sim(void *parameters)
     // Used to name the output file:
     char *buffer = (char*)malloc(100);
     // Nme of the file:
-    sprintf(buffer, "%s%u.data", P.ofilename, seed);
+    sprintf(buffer, "%s%u.xml", P.ofilename, seed);
     // Open the output file:
     FILE *restrict out = fopen(buffer, "w");
     // Store the total num. of species/1000 generations:
@@ -307,7 +307,6 @@ void *sim(void *parameters)
         speciation_per_c[i] = 0;
         extinction_per_c[i] = 0;
     }
-
     // Initialize an empty list of species:
     SpeciesList *restrict list = SpeciesList_init();
     // Initialize the metacommunity and fill them with the initial species evenly:
@@ -328,7 +327,6 @@ void *sim(void *parameters)
         }
         it = it->next;
     }
-
     // Create the metacommunity;
     graph g;
     switch(shape[0])
@@ -367,7 +365,6 @@ void *sim(void *parameters)
         shape = "random";
         graph_get_crgg(&g, communities, radius, x, y, rng);
     }
-    
     // Setup the cumulative jagged array for migration:
     double **cumul = setup_cumulative_list(&g, omega);
     
@@ -376,42 +373,40 @@ void *sim(void *parameters)
     double *cls_centrality_scaled = graph_cls_centrality_scaled(&g);
     double *har_cls_centrality = graph_har_cls_centrality(&g);
     double *har_cls_centrality_scaled = graph_har_cls_centrality_scaled(&g);
-    
-    fprintf(out, "author:   Philippe Desjardins-Proulx\n");
-    fprintf(out, "email:    <philippe.d.proulx@gmail.com>\n");
-    fprintf(out, "web:      http://phdp.huginn.info/\n");
-    fprintf(out, "version:  %s (%s)", SSNE_VERSION, SSNE_DATE);
-    fprintf(out, "\n\n");
-    fprintf(out, "Model: ");
+
+    fprintf(out, "<?xml version=\"1.0\"?>\n");
+    fprintf(out, "<simulation>\n");
+    fprintf(out, "  <model> ");
     if (P.m == MODEL_BDM_NEUTRAL)
     {
-        fprintf(out, "Neutral BDM speciation\n");
+        fprintf(out, "Neutral BDM speciation </model>\n");
     }
     else if (P.m == MODEL_BDM_SELECTION)
     {
-        fprintf(out, "Nonneutral BDM speciation\n");
+        fprintf(out, "BDM speciation with selection </model>\n");
     }
-    fprintf(out, "Seed: %u\n", seed);
-    fprintf(out, "Shape of the metacommunity: %s\n", shape);
-    fprintf(out, "Metacommunity size: %d\n", j_per_c * communities);
-    fprintf(out, "Number of generations (in thousands): %d\n", k_gen);
-    fprintf(out, "Number of communities: %d\n", communities);
-    fprintf(out, "Individuals/community: %d\n", j_per_c);
-    fprintf(out, "Initial number of species: %d\n", init_species);
-    fprintf(out, "Mutation rate 'mu': %.2e\n", mu);
-    fprintf(out, "Omega: %.2e\n", omega);
+    fprintf(out, "  <seed> %u </seed>\n", seed);
+    fprintf(out, "  <shape_metacom> %s </shape_metacom>\n", shape);
+    fprintf(out, "  <metacom_size> %d </metacom_size>\n", j_per_c * communities);
+    fprintf(out, "  <k_gen> %d </k_gen>\n", k_gen);
+    fprintf(out, "  <num_comm> %d </num_comm>\n", communities);
+    fprintf(out, "  <individuals_per_comm> %d </individuals_per_comm>\n", j_per_c);
+    fprintf(out, "  <initial_num_species> %d </initial_num_species>\n", init_species);
+    fprintf(out, "  <mutation_rate> %.2e </mutation_rate>\n", mu);
+    fprintf(out, "  <omega> %.2e </omega>\n", omega);
     if (P.m == MODEL_BDM_SELECTION)
     {
-        fprintf(out, "Selection coefficient 's': %.2e\n", s);
+        fprintf(out, "  <selection> %.2e </selection>\n", s);
     }
     if (shape[0] == 'r')
     {
-        fprintf(out, "radius: %.4f\n", radius);
+        fprintf(out, "  <radius> %.4f </radius>\n", radius);
     }
     if (shape[0] == 'r' && shape[1] == 'e')
     {
-        fprintf(out, "width: %.4f\n", width);
+        fprintf(out, "  <width> %.4f </width>\n", width);
     }
+    fprintf(out, "\n");
 
     // To select the species and genotypes to pick and replace:
     SLNode *s0 = list->head; // Species0
@@ -513,7 +508,6 @@ void *sim(void *parameters)
                     { // Migration event
                         g1 = 0;
                     }
-
                     // Apply the changes
                     s0->species->n[c]--;
                     s0->species->genotypes[c][g0]--;
@@ -545,56 +539,56 @@ void *sim(void *parameters)
                         ++speciation_events[k];
                         ++speciation_per_c[c];
                     }
-
+                    
                 } // End 'c'
-
+                
             } // End 't'
-
+            
             // Remove extinct species from the list and store the number of extinctions.
             extinction_events[k] += SpeciesList_rmv_extinct2(list, &lifespan, current_date);
-
+    
         } // End 'g'
 
         total_species[k] = list->size;
-
+        
     } // End 'k'
 
     //////////////////////////////////////////////////
     // PRINT THE FINAL RESULTS                      //
     //////////////////////////////////////////////////
-    fprintf(out, "\nGlobal properties:\n");
-    fprintf(out, "  Number of proper edges (links between different communities): %d\n", graph_edges(&g));
-    fprintf(out, "  Average number of links: %.4f\n", (double)graph_edges(&g) / communities);
+    fprintf(out, "  <global>\n");
+    fprintf(out, "    <proper_edges> %d </proper_edges>\n", graph_edges(&g));
+    fprintf(out, "    <links_per_c> %.4f </links_per_c>\n", (double)graph_edges(&g) / communities);
 
-    fprintf(out, "  Average lifespan: %.4f\n", imean(lifespan.array, lifespan.size));
-    fprintf(out, "  Median lifespan: %.4f\n", imedian(lifespan.array, lifespan.size));
+    fprintf(out, "    <avr_lifespan> %.4f </avr_lifespan>\n", imean(lifespan.array, lifespan.size));
+    fprintf(out, "    <median_lifespan> %.4f </median_lifespan>\n", imedian(lifespan.array, lifespan.size));
 
-    fprintf(out, "  Average population size at speciation: %.4f\n", imean(pop_size.array, pop_size.size));
-    fprintf(out, "  Median population size at speciation: %.4f\n", imedian(pop_size.array, pop_size.size));
+    fprintf(out, "    <avr_pop_size_speciation> %.4f </avr_pop_size_speciation>\n", imean(pop_size.array, pop_size.size));
+    fprintf(out, "    <median_pop_size_speciation> %.4f </median_pop_size_speciation>\n", imedian(pop_size.array, pop_size.size));
 
-    fprintf(out, "  Number of speciations events/1000 generations: ");
+    fprintf(out, "    <speciation_per_k_gen> ");
     for (int i = 0; i < k_gen; ++i)
     {
         fprintf(out, "%d ", speciation_events[i]);
     }
-    fprintf(out, "\n");
+    fprintf(out, " </speciation_per_k_gen>\n");
 
-    fprintf(out, "  Number of extinctions events/1000 generations: ");
+    fprintf(out, "    <extinctions_per_k_gen> ");
     for (int i = 0; i < k_gen; ++i)
     {
         fprintf(out, "%d ", extinction_events[i]);
     }
-    fprintf(out, "\n");
+    fprintf(out, " </extinctions_per_k_gen>\n");
 
-    fprintf(out, "  Total extant species at the end of each block of 1000 generations: ");
+    fprintf(out, "    <extant_species_per_k_gen> ");
     for (int i = 0; i < k_gen; ++i)
     {
         fprintf(out, "%d ", total_species[i]);
     }
-    fprintf(out, "\n");
+    fprintf(out, " </extant_species_per_k_gen>\n");
 
     // Print global distribution
-    fprintf(out, "  Global species distribution: ");
+    fprintf(out, "    <species_distribution>");
     ivector species_distribution;
     ivector_init1(&species_distribution, 128);
     it = list->head;
@@ -605,34 +599,38 @@ void *sim(void *parameters)
     }
     ivector_sort_asc(&species_distribution);
     ivector_print(&species_distribution, out);
-    
+    fprintf(out, " </species_distribution>\n");
+
     double *octaves;
     int oct_num = biodiversity_octaves(species_distribution.array, species_distribution.size, &octaves);
-    fprintf(out, "\n  Octaves: ");
+    fprintf(out, "    <octaves> ");
     for (int i = 0; i < oct_num; ++i)
     {
         fprintf(out, "%.2f ", octaves[i]);
     }
-    fprintf(out, "\n\n");
+    fprintf(out, " </octaves>\n");
+    fprintf(out, "\n  </global>\n");
 
     // Print info on all vertices
     for (int c = 0; c < communities; ++c)
     {
-        fprintf(out, "Vertex %d\n", c);
+        fprintf(out, "  <vertex>\n");
+        fprintf(out, "    <id> %d </id>\n", c);
         if (shape[0] == 'r')
         {
-            fprintf(out, "  Position: (%.4f, %.4f)\n", x[c], y[c]);
+            fprintf(out, "    <xcoor> %.4f </xcoor>\n", x[c]);
+            fprintf(out, "    <ycoor> %.4f </ycoor>\n", y[c]);
         }
-        fprintf(out, "  Degree: %d\n", g.num_e[c] + 1);
-        fprintf(out, "  Closeness centrality: %.8f\n", cls_centrality[c]);
-        fprintf(out, "  Scaled closeness centrality: %.8f\n", cls_centrality_scaled[c]);
-        fprintf(out, "  Harmonic closeness centrality: %.8f\n", har_cls_centrality[c]);
-        fprintf(out, "  Scaled harmonic closeness centrality: %.8f\n", har_cls_centrality_scaled[c]);
-        fprintf(out, "  Speciation events: %d\n", speciation_per_c[c]);
-        fprintf(out, "  Extinction events: %d\n", extinction_per_c[c]);
-        
+        fprintf(out, "    <degree> %d </degree>\n", g.num_e[c] + 1);
+        fprintf(out, "    <cls_cen> %.8f </cls_cen>\n", cls_centrality[c]);
+        fprintf(out, "    <scaled_cls_cen> %.8f </scaled_cls_cen>\n", cls_centrality_scaled[c]);
+        fprintf(out, "    <har_cls_cen> %.8f </har_cls_cen>\n", har_cls_centrality[c]);
+        fprintf(out, "    <scaled_har_cls_cen> %.8f </scaled_har_cls_cen>\n", har_cls_centrality_scaled[c]);
+        fprintf(out, "    <speciation_events> %d </speciation_events>\n", speciation_per_c[c]);
+        fprintf(out, "    <extinction_events> %d </extinction_events>\n", extinction_per_c[c]);
+
         int vertex_richess = 0;
-        ivector_sub_all(&species_distribution);
+        ivector_rmvall(&species_distribution);
         it = list->head;
         while (it != NULL)
         {
@@ -643,29 +641,32 @@ void *sim(void *parameters)
         ivector_sort_asc(&species_distribution);
         ivector_trim_small(&species_distribution, 1);
         
-        fprintf(out, "  Species richess: %d\n", species_distribution.size);
-        fprintf(out, "  Species distribution: ");
+        fprintf(out, "    <species_richess> %d </species_richess>\n", species_distribution.size);
+        fprintf(out, "    <species_distribution> ");
         ivector_print(&species_distribution, out);
-
+        fprintf(out, " </species_distribution>\n");
+        
         // Print octaves
         free(octaves);
         oct_num = biodiversity_octaves(species_distribution.array, species_distribution.size, &octaves);
-        fprintf(out, "\n  Octaves: ");
+        fprintf(out, "    <octaves> ");
         for (int i = 0; i < oct_num; ++i)
         {
             fprintf(out, "%.2f ", octaves[i]);
         }
-        fprintf(out, "\n\n");
+        fprintf(out, " </octaves>\n");
         #ifdef EXTRAPRINT
         printf("%d\t%.8f\t%.8f\t%.8f\t%.8f\t%d\t%d\t%d\n", graph_outdegree(&g, c) - 1, cls_centrality[c], cls_centrality_scaled[c], har_cls_centrality[c], har_cls_centrality_scaled[c], species_distribution.size, speciation_per_c[c], extinction_per_c[c]);
         #endif
     }
     #ifdef EXTRAPRINT
-    printf("Simulation %u\t%d\t%.2f\t%.2f\t%.4f\t%.4f\t%d\t%.2f\t%.2f\n", seed, communities, radius, s, (double)graph_edges(&g) / communities, omega, total_species[k_gen-1], imedian(lifespan.array, lifespan.size), imedian(pop_size.array, pop_size.size));
+    printf("Simulation %u\t%d\t%.2f\t%.2f\t%.4f\t%.4f\t%d\t%.2f\t%.2f\n", seed, communities, radius, s, (double)graph_edges(&g) / communities, omega, total_species[k_gen - 1], imedian(lifespan.array, lifespan.size), imedian(pop_size.array, pop_size.size));
     #endif
 
+    fprintf(out, "</simulation>\n");
+
     // GraphML output:
-    sprintf(buffer, "%u.graphml", seed);
+    sprintf(buffer, "%s%u.graphml", P.ofilename, seed);
     FILE *outgml = fopen(buffer, "w");
     graph_graphml(&g, outgml, seed);
 
@@ -749,7 +750,6 @@ double **setup_cumulative_list(const graph *g, double omega)
         }
         cumul[i][num_e - 1] = 1.0;
     }
-
     /*
     graph_print(g, NULL);
     for (int i = 0; i < num_v; ++i)

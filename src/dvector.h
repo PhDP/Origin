@@ -178,11 +178,6 @@ void dvector_print(dvector *v, FILE *out);
  */
 void dvector_free(dvector *v);
 
-/**
- * \brief Tests and examples for this object.
- */
-void dvector_examples();
-
 #ifdef __cplusplus
 }
 #endif

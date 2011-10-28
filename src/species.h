@@ -1,30 +1,25 @@
 #ifndef SPECIES_H_
 #define SPECIES_H_
 
-#include <stdbool.h>
-
 // For C++ compilers:
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/** An array of ints for individuals in different subpopulations. */
+/**
+ * An array of ints for individuals in different subpopulations.
+ */
 typedef struct
 {
-    /** Number of subpopulations. */
-    int subpops;
+    int subpops; /**< Number of subpopulations. */
 
-    /** Array of individuals per subpopulations. */
-    int *n;
-    
-    /** Number of distinct genotypes. */
-    int n_genotypes;
+    int *n; /**< Array of individuals per subpopulations. */
 
-    /** Number of individual of each genotype per subpopulations. */
-    int **genotypes;
-        
-    /** Date of birth. */
-    int birth;
+    int n_genotypes; /**< Number of distinct genotypes. */
+
+    int **genotypes; /**< Number of individual of each genotype per subpopulations. */
+
+    int birth; /**< Date of birth. */
 }
 Species;
 
@@ -35,10 +30,10 @@ Species *Species_init0(int subpopulations, int time_of_birth, int n_genotypes);
 Species *Species_init1(int subpopulations, int fill, int time_of_birth, int n_genotypes);
 
 /** Return true if the population has still individuals. */
-bool Species_is_extant(const Species *pop);
+int Species_is_extant(const Species *pop);
 
 /** Return true if the population is extinct. */
-bool Species_is_extinct(const Species *pop);
+int Species_is_extinct(const Species *pop);
 
 /** Return the total population. */
 int Species_total(const Species *pop);
