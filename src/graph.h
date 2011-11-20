@@ -14,16 +14,16 @@ typedef struct
 {
     /** Number of vertices. */
     int num_v; 
-
+    
     /** Number of edges per vertex. */
     int *num_e;
-
+    
     /** Space allocated to each vertex. */
     int *capacity;
 
     /** Adjacency list. */
     int **adj_list;
-
+    
     /** Weights. */
     double **w_list;
 } 

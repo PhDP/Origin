@@ -1,8 +1,3 @@
-/*! \file
- *
- * \brief A growable array of double.
- */ 
-
 #ifndef DVECTOR_H_
 #define DVECTOR_H_
 
@@ -11,172 +6,69 @@
 extern "C" {
 #endif
 
-/**
- * \brief A dynamic array of double.
- */
+/** A dynamic array of double. */
 typedef struct
 {
-    double *array; /**< Internal array. */
+    /** Internal array. */
+    double *array;
 
-    unsigned int size; /**< Number of elements in the array. */
+    /** Number of elements in the array. */
+    int size;
 
-    unsigned int capacity; /**< Max number of elements given the current size of 'a'. */
+    /** Max number of elements given the current size of 'a'. */
+    int capacity;
 }
 dvector;
 
-/**
- * \brief Initialize a vector with the default initial capacity.
- * 
- * \param v  The object to initialize.
- */
+/** Return a pointer to an empty vector. */
 void dvector_init0(dvector *v);
 
-/**
- * \brief Initialize a vector of a given initial capacity.
- * 
- * \param v                  The object to initialize.
- * \param initial_capacity   The memory allocated to the internal array.
- */
-void dvector_init1(dvector *v, unsigned int initial_capacity);
+/** Return a pointer to a dynamic array of a given size. */
+void dvector_init1(dvector *v, int initial_capacity);
 
 #ifndef NDEBUG
-/**
- * \brief Get the nth element of an array.
- *
- * The basic function is safe, it will use assert to make sure you're not
- * accessing an element out of the array. If NDEBUG is define at compile-time,
- * this function will be replaced by an unsafe, but faster, macro.
- * 
- * \param v  The dvector object.
- * \param n  Index of the element to return.
- * \return   The nth value in the array.
- */
-double dvector_get(dvector *v, unsigned int n);
+/** Return the nth value of a vector. */
+double dvector_get(dvector *v, int n);
 
-/**
- * \brief Set the nth element of the array.
- *
- * The basic function is safe, it will use assert to make sure you're not
- * accessing an element out of the array. If NDEBUG is define at compile-time,
- * this function will be replaced by an unsafe, but faster, macro.
- * 
- * \param v  The dvector object.
- * \param n  Index of the element to change.
- * \param x  The new value.
- */
-void dvector_set(dvector *v, unsigned int n, double x);
-
-/**
- * \brief Remove 'z' elements from the array.
- *
- * The function will remove the 'z' last elements of the array. In practice
- * this function do not free or reallocate memory, it simply decrease the
- * 'size' variable.
- * 
- * \param v  The dvector object.
- * \param z  The number of elements to remove at the end of the array.
- */
-void dvector_rmv(dvector *v, unsigned int z);
-
-/**
- * \brief Remove the last element of the array.
- *
- * The function will remove the last element of the array. In practice
- * this function do not free or reallocate memory, it simply decrease the
- * 'size' variable by one.
- * 
- * \param v  The dvector object.
- */
-void dvector_rmv1(dvector *v);
-
-/**
- * \brief Remove all elements.
- *
- * The function will remove all elements of the array. In practice
- * this function do not free or reallocate memory, it simply set the 'size'
- * variable to 0.
- * 
- * \param v  The dvector object.
- */
-void dvector_rmvall(dvector *v);
+/** Set the nth value to 'x'. */
+void dvector_set(dvector *v, int n, double x);
 #else
 #define dvector_get(v,n)      ((v)->array[n])
 #define dvector_set(v,n,x)    ((v)->array[n]=x)
-#define dvector_rmv(v,z)      (v->size=(v->size>=z)?v->size-z:0)
-#define dvector_rmv1(v)       dvector_rmv(v,1)
-#define dvector_rmvall(v)     (v->size=0)
 #endif
 
-/**
- * \brief Add an element at the end of the array.
- *
- * This function adds an element at the end of the array. It will automatically
- * call dvector_grow1 if there isn't enough space.
- * 
- * \param v  The dvector object.
- * \param x  The value added at the end of the array.
- */
+/** Add 'x' at the end of the array, call 'dvector_grow1' if necessary. */
 void dvector_add(dvector *v, int x);
 
-/**
- * \brief Return a deep copy of the array.
- *
- * This function generates an array of double of size v->size (i.e.: without
- * the extra storage).
- * 
- * \param v  The dvector object.
- * \return   A deep copy of the internal array without the extra storage.
- */
+/** Subtract 'x' elements from the array. */
+void dvector_sub(dvector *v, int x);
+
+/** Subtract an element from the array. */
+void dvector_sub1(dvector *v);
+
+/** Return a deep copy of the array (without the extra storage space). */
 double *dvector_get_array(dvector *v);
 
-/**
- * \brief Increase the internal storage capacity of the vector.
- * 
- * \param v              The dvector object.
- * \param new_capacity   The new storage capacity of the object.
- */
-void dvector_grow0(dvector *v, unsigned int new_capacity);
+/** Increase the internal storage for the array. */
+void dvector_grow0(dvector *v, int new_capacity);
 
-/**
- * \brief Double the internal storage capacity of the vector.
- * 
- * \param v              The dvector object.
- */
+/** Double the internal storage for the array. */
 void dvector_grow1(dvector *v);
 
-/**
- * \brief Sort the array in ascending order.
- *
- * This function sort the array using the standard library's quicksort
- * algorithm.
- * 
- * \param v  The dvector object.
- */
+/** Use quicksort to sort the array in ascending order. */
 void dvector_sort_asc(dvector *v);
 
-/**
- * \brief Sort the array in descending order.
- *
- * This function sort the array using the standard library's quicksort
- * algorithm.
- * 
- * \param v  The dvector object.
- */
+/** Use quicksort to sort the array in descending order. */
 void dvector_sort_des(dvector *v);
 
-/**
- * \brief Print the array. Set out to NULL to print to the console.
- * 
- * \param v  The dvector object.
- */
+/** Free the memory. */
+void dvector_free(dvector *v);
+
+/** Print the array. Set the argument to NULL to print to the console. */
 void dvector_print(dvector *v, FILE *out);
 
-/**
- * \brief Free the memory of the array.
- * 
- * \param v  The dvector object.
- */
-void dvector_free(dvector *v);
+/** Tests and examples for this file. */
+void dvector_examples();
 
 #ifdef __cplusplus
 }

@@ -14,15 +14,9 @@ GPL
 
 Dependencies
 ------------
-* gsl (gnu scientific library)... which is why the project is under the GPL license.
-* libxml2
+gsl (gnu scientific library)... which is why the project is under the GPL license.
 
-On Linux Debian/Ubuntu you can get everything you need to compile and run 'origin' by entering the following line in a terminal:
+On Linux Debian/Ubuntu/Mint you can get everything you need to compile and run 'origin' by entering the following line in a terminal:
 
-    sudo apt-get install gcc libgsl0-dev libgsl0ldbl libxml2 libxml2-dev
+    sudo apt-get install gcc libgsl0-dev libgsl0ldbl
 
-TODO list
----------
-- Use XML format for output.
-- Phylogeography.
-- Generic tree structure.

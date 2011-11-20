@@ -23,8 +23,7 @@ char *get_opt_s(const char *arg)
     const int ss_length = length - n; // - 1 ('=') + 1 ('\0')
     char *substring = (char*)malloc(ss_length);
 
-    int i;
-    for (i = 0; i < ss_length - 1; ++i)
+    for (int i = 0; i < ss_length - 1; ++i)
     {
         substring[i] = arg[i + n + 1];
     }
@@ -49,12 +48,11 @@ double get_opt_d(const char *arg)
     return number;
 }
 
-int read_opt_i(const char *option, const char *argv[], int n, int *param)
+bool read_opt_i(const char *option, const char *argv[], int n, int *param)
 {
     const int length = strlen(option);
     
-    int i;
-    for (i = 0; i < n; ++i)
+    for (int i = 0; i < n; ++i)
     {
         int j = 0;
         const int inplen = strlen(argv[i]);
@@ -72,18 +70,17 @@ int read_opt_i(const char *option, const char *argv[], int n, int *param)
         if (j == length && argv[i][length + 1] == '=')
         {
             *param = get_opt_i(argv[i]);
-            return TRUE;
+            return true;
         }
     }
-    return FALSE;
+    return false;
 }
 
-int read_opt_d(const char *option, const char *argv[], int n, double *param)
+bool read_opt_d(const char *option, const char *argv[], int n, double *param)
 {
     const int length = strlen(option);
     
-    int i;
-    for (i = 0; i < n; ++i)
+    for (int i = 0; i < n; ++i)
     {
         int j = 0;
         const int inplen = strlen(argv[i]);
@@ -101,18 +98,17 @@ int read_opt_d(const char *option, const char *argv[], int n, double *param)
         if (j == length && argv[i][length + 1] == '=')
         {
             *param = get_opt_d(argv[i]);
-            return TRUE;
+            return true;
         }
     }
-    return FALSE;
+    return false;
 }
 
-int read_opt_s(const char *option, const char *argv[], int n, char *param)
+bool read_opt_s(const char *option, const char *argv[], int n, char *param)
 {
     const int length = strlen(option);
     
-    int i;
-    for (i = 1; i < n; ++i)
+    for (int i = 1; i < n; ++i)
     {
         int j = 0;
         const int inplen = strlen(argv[i]);
@@ -130,16 +126,16 @@ int read_opt_s(const char *option, const char *argv[], int n, char *param)
         if (j == length && argv[i][length + 1] == '=')
         {
             sprintf(param, "%s", get_opt_s(argv[i]));
-            return TRUE;
+            return true;
         }
     }
-    return FALSE;
+    return false;
 }
 
 char *sec_to_string(long seconds)
 {
     char *str = (char*)malloc(21);
-  
+
     const long d = seconds / (60 * 60 * 24);
     const long h = seconds / (60 * 60) - (d * 24);
     const long m = seconds / 60 - (h * 60) - (d * 24 * 60);
@@ -177,8 +173,8 @@ char *int_with_space(int integer)
 
     int next_space = (length0 % 3) == 0 ? 3 : (length0 % 3);
 
-    int i1, i0 = 0; // Index for the old string
-    for (i1 = 0; i1 < length1; ++i1)
+    int i0 = 0; // Index for the old string
+    for (int i1 = 0; i1 < length1; ++i1)
     {
         if (i1 == next_space)
         {
@@ -207,8 +203,8 @@ char *long_with_space(long integer)
 
     int next_space = (length0 % 3) == 0 ? 3 : (length0 % 3);
 
-    int i1, i0 = 0; // Index for the old string
-    for (i1 = 0; i1 < length1; ++i1)
+    int i0 = 0; // Index for the old string
+    for (int i1 = 0; i1 < length1; ++i1)
     {
         if (i1 == next_space)
         {
@@ -228,8 +224,7 @@ void convert_to_lower_case(char *str)
 {
     const int length = strlen(str);
 
-    int i;
-    for (i = 0; i < length; ++i)
+    for (int i = 0; i < length; ++i)
     {
         if (str[i] >= 0x41 && str[i] <= 0x5A)
         {
@@ -242,8 +237,7 @@ void convert_to_upper_case(char *str)
 {
     const int length = strlen(str);
 
-    int i;
-    for (i = 0; i < length; ++i)
+    for (int i = 0; i < length; ++i)
     {
         if (str[i] >= 0x61 && str[i] <= 0x7A)
         {
@@ -257,8 +251,7 @@ char *get_lower_case(const char *str)
     const int length = strlen(str);
     char *new_str = (char*)malloc(length + 1);
 
-    int i;
-    for (i = 0; i < length; ++i)
+    for (int i = 0; i < length; ++i)
     {
         if (str[i] >= 0x41 && str[i] <= 0x5A)
         {
@@ -278,8 +271,7 @@ char *get_upper_case(const char *str)
     const int length = strlen(str);
     char *new_str = (char*)malloc(length + 1);
 
-    int i;
-    for (i = 0; i < length; ++i)
+    for (int i = 0; i < length; ++i)
     {
         if (str[i] >= 0x61 && str[i] <= 0x7A)
         {

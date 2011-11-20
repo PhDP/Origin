@@ -1,14 +1,6 @@
 #ifndef COMMON_H_
 #define COMMON_H_
 
-#ifndef TRUE
-#define TRUE 1
-#endif
-
-#ifndef FALSE
-#define FALSE 0
-#endif
-
 // The initial capacity of vectors
 #ifndef VECTOR_INIT_CAPACITY
 #define VECTOR_INIT_CAPACITY 32
@@ -20,9 +12,9 @@
 #endif
 
 #ifdef OINLINING
-#define O_INLINE inline
+#define ORIGIN_INLINE inline
 #else
-#define O_INLINE
+#define ORIGIN_INLINE
 #endif
 
 // The initial capacity of lists in graphs

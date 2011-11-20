@@ -9,7 +9,7 @@
 #include "stats.h"
 #include "utils.h"
 
-O_INLINE double dnaivesum(const double *x, int length)
+ORIGIN_INLINE double dnaivesum(const double *x, int length)
 {
     double sum = 0.0;
 
@@ -20,7 +20,7 @@ O_INLINE double dnaivesum(const double *x, int length)
     return sum;
 }
 
-O_INLINE double dsortsum(const double *x, int length)
+ORIGIN_INLINE double dsortsum(const double *x, int length)
 {
     // Copy the array & sort it with quicksort.
     double *sorted = (double*)malloc(length * sizeof(double));
@@ -34,7 +34,7 @@ O_INLINE double dsortsum(const double *x, int length)
 }
 
 // So simple with integers...
-O_INLINE int isum(const int *x, int length)
+ORIGIN_INLINE int isum(const int *x, int length)
 {
     int sum = 0;
 
@@ -45,7 +45,7 @@ O_INLINE int isum(const int *x, int length)
     return sum;
 }
 
-O_INLINE long lsum(const long *x, int length)
+ORIGIN_INLINE long lsum(const long *x, int length)
 {
     long sum = 0;
 
@@ -81,7 +81,7 @@ void dvarmean(const double *x, int length, double *mean, double *var)
     double m = 0.0;
     double m2 = 0.0;
     double delta;
- 
+
     for (int i = 0; i < length; ++i)
     {
         delta = x[i] - m;
@@ -98,14 +98,14 @@ double dvar(const double *x, int length)
     double m = 0.0;
     double m2 = 0.0;
     double delta;
- 
+
     for (int i = 0; i < length; ++i)
     {
         delta = x[i] - m;
         m += delta / (i + 1);
         m2 += delta * (x[i] - m);
     }
- 
+
     return m2 / (length - 1);
 }
 
@@ -113,7 +113,7 @@ double dkutorsis(const double *x, int length)
 {
     double m1 = 0.0, m2 = 0.0, m3 = 0.0, m4 = 0.0;
     double i1, term1, delta, delta_n, delta_n2;
- 
+
     for (int i = 0; i < length; ++i)
     {
         i1 = (double)(i + 1);

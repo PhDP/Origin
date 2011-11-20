@@ -16,7 +16,7 @@ void graph_get_rgg(graph *g, int vertices, double r, double *x, double *y, gsl_r
     {
         x[i] = gsl_rng_uniform(rng);
         y[i] = gsl_rng_uniform(rng);
-    }
+    }	
     double d;
     for (int i = 0; i < vertices; ++i) 
     {
@@ -114,7 +114,7 @@ void graph_get_circle(graph *g, int vertices)
 void graph_get_star(graph *g, int vertices)
 {
     graph_init(g, vertices);
-    
+
     for (int u = 0; u < vertices; ++u)
     {
         graph_add_edge(g, u, u, 1.0);

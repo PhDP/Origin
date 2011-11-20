@@ -1,5 +1,5 @@
-#ifndef SPECIESLIST_H_
-#define SPECIESLIST_H_
+#ifndef HON_SPECIESLIST_H
+#define HON_SPECIESLIST_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,7 +18,7 @@ typedef struct SLNode_
 {
     /** The species. */
     Species *species;
-  
+
     /** Pointer to the next node. */
     struct SLNode_ *next;
 }
@@ -29,10 +29,10 @@ typedef struct
 {
     /** Number of species in the list. */
     int size;
-  
+
     /** First element of the list. */
     SLNode *head;
-  
+
     /** Last element of the list. */
     SLNode *tail;
 }
@@ -67,3 +67,4 @@ void SpeciesList_free(SpeciesList *list);
 #endif
 
 #endif
+

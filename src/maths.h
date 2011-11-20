@@ -6,13 +6,7 @@
 extern "C" {
 #endif
 
-/**
- * \brief Compute the hypotenuse \sqrt(a^2 + b^2) without under/overflow.
- *
- * \param a  First length.
- * \param b  Second length.
- * \return   \sqrt(a^2 + b^2).
- */
+/** Compute \sqrt(a^2 + b^2) without under/overflow. */
 double hypot(double a, double b);
 
 #ifdef __cplusplus

@@ -1,26 +1,27 @@
 /**
- * file:      model_ssne.c
- * author:    Philippe Desjardins-Proulx
- * email:     <philippe.d.proulx@gmail.com>
- * website:   http://phdp.huginn.info
- * date:      2011.10.28
- * version:   2.7
- * description:
- *   Spatially explicit speciation in neutral ecology. Type ssne --help 
- * for more information on how to run the program.
- *
- * references:
- *    Desjardins-Proulx, P. and Gravel, D. How likely is speciation in
- *  neutral ecology ? The American Naturalist (accepted).
- *
- *    Desjardins-Proulx, P. and Gravel, D. Neutral biodiversity in 
- * complex landscapes.
- *
- * ...developed and tested on Linux x86_64.
- *****************************************************************************/
+* file:      model_ssne.c
+* author:    Philippe Desjardins-Proulx
+* email:     <philippe.d.proulx@gmail.com>
+* website:   http://phdp.huginn.info/
+* date:      2011.11.20
+* version:   2.0 alpha1
+* 
+* description:
+*   Spatially explicit speciation in neutral ecology. Type ssne --help 
+* for more information on how to run the program.
+*
+* references:
+*    Desjardins-Proulx, P. and Gravel, D. How likely is speciation in
+*  neutral ecology ? The American Naturalist.
+*
+*    Desjardins-Proulx, P. and Gravel, D. Neutral biodiversity in 
+* complex landscapes. In prep.
+*
+* ...developed and tested on Linux x86_64.
+*****************************************************************************/
 
-#define SSNE_DATE       "2011.10.28"
-#define SSNE_VERSION    "2.7"
+#define SSNE_DATE       "2011.11.20"
+#define SSNE_VERSION    "2.0a1"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -192,7 +193,7 @@ int main(int argc, const char *argv[])
     read_opt_d("s", argv, argc, &p.s);
     if (read_opt_s("o", argv, argc, p.ofilename) == false)
     {
-        sprintf(p.ofilename, "out");
+        sprintf(p.ofilename, "");
     }
     if (read_opt_s("shape", argv, argc, p.shape) == false)
     {
@@ -367,7 +368,7 @@ void *sim(void *parameters)
     }
     // Setup the cumulative jagged array for migration:
     double **cumul = setup_cumulative_list(&g, omega);
-    
+
     // Closeness centrality arrays
     double *cls_centrality = graph_cls_centrality(&g);
     double *cls_centrality_scaled = graph_cls_centrality_scaled(&g);
@@ -406,8 +407,6 @@ void *sim(void *parameters)
     {
         fprintf(out, "  <width> %.4f </width>\n", width);
     }
-    fprintf(out, "\n");
-
     // To select the species and genotypes to pick and replace:
     SLNode *s0 = list->head; // Species0
     SLNode *s1 = list->head; // Species1
@@ -539,18 +538,18 @@ void *sim(void *parameters)
                         ++speciation_events[k];
                         ++speciation_per_c[c];
                     }
-                    
+
                 } // End 'c'
-                
+
             } // End 't'
-            
+
             // Remove extinct species from the list and store the number of extinctions.
             extinction_events[k] += SpeciesList_rmv_extinct2(list, &lifespan, current_date);
-    
+
         } // End 'g'
 
         total_species[k] = list->size;
-        
+
     } // End 'k'
 
     //////////////////////////////////////////////////
@@ -571,21 +570,21 @@ void *sim(void *parameters)
     {
         fprintf(out, "%d ", speciation_events[i]);
     }
-    fprintf(out, " </speciation_per_k_gen>\n");
+    fprintf(out, "</speciation_per_k_gen>\n");
 
     fprintf(out, "    <extinctions_per_k_gen> ");
     for (int i = 0; i < k_gen; ++i)
     {
         fprintf(out, "%d ", extinction_events[i]);
     }
-    fprintf(out, " </extinctions_per_k_gen>\n");
+    fprintf(out, "</extinctions_per_k_gen>\n");
 
     fprintf(out, "    <extant_species_per_k_gen> ");
     for (int i = 0; i < k_gen; ++i)
     {
         fprintf(out, "%d ", total_species[i]);
     }
-    fprintf(out, " </extant_species_per_k_gen>\n");
+    fprintf(out, "</extant_species_per_k_gen>\n");
 
     // Print global distribution
     fprintf(out, "    <species_distribution>");
@@ -599,7 +598,7 @@ void *sim(void *parameters)
     }
     ivector_sort_asc(&species_distribution);
     ivector_print(&species_distribution, out);
-    fprintf(out, " </species_distribution>\n");
+    fprintf(out, "</species_distribution>\n");
 
     double *octaves;
     int oct_num = biodiversity_octaves(species_distribution.array, species_distribution.size, &octaves);
@@ -608,8 +607,8 @@ void *sim(void *parameters)
     {
         fprintf(out, "%.2f ", octaves[i]);
     }
-    fprintf(out, " </octaves>\n");
-    fprintf(out, "\n  </global>\n");
+    fprintf(out, "</octaves>\n");
+    fprintf(out, "  </global>\n");
 
     // Print info on all vertices
     for (int c = 0; c < communities; ++c)
@@ -640,12 +639,12 @@ void *sim(void *parameters)
         // Sort the species distribution and remove the 0s
         ivector_sort_asc(&species_distribution);
         ivector_trim_small(&species_distribution, 1);
-        
+
         fprintf(out, "    <species_richess> %d </species_richess>\n", species_distribution.size);
         fprintf(out, "    <species_distribution> ");
         ivector_print(&species_distribution, out);
-        fprintf(out, " </species_distribution>\n");
-        
+        fprintf(out, "</species_distribution>\n");
+
         // Print octaves
         free(octaves);
         oct_num = biodiversity_octaves(species_distribution.array, species_distribution.size, &octaves);
@@ -654,10 +653,11 @@ void *sim(void *parameters)
         {
             fprintf(out, "%.2f ", octaves[i]);
         }
-        fprintf(out, " </octaves>\n");
+        fprintf(out, "</octaves>\n");
         #ifdef EXTRAPRINT
         printf("%d\t%.8f\t%.8f\t%.8f\t%.8f\t%d\t%d\t%d\n", graph_outdegree(&g, c) - 1, cls_centrality[c], cls_centrality_scaled[c], har_cls_centrality[c], har_cls_centrality_scaled[c], species_distribution.size, speciation_per_c[c], extinction_per_c[c]);
         #endif
+        fprintf(out, "  </vertex>\n");
     }
     #ifdef EXTRAPRINT
     printf("Simulation %u\t%d\t%.2f\t%.2f\t%.4f\t%.4f\t%d\t%.2f\t%.2f\n", seed, communities, radius, s, (double)graph_edges(&g) / communities, omega, total_species[k_gen - 1], imedian(lifespan.array, lifespan.size), imedian(pop_size.array, pop_size.size));

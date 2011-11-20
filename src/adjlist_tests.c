@@ -74,6 +74,6 @@ int main(int argc, const char *argv[])
     adjlist_print_w_mat(&a, NULL);
     printf("\n");
     printf("Trials: %d\n", trials);
-    
+
     return EXIT_SUCCESS; // yeppie !
 }

@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdint.h>
+#include <stdbool.h>
 #include <float.h>
 #include "common.h"
 #include "adjlist.h"
@@ -12,20 +12,9 @@ void adjlist_init(adjlist *a, int vertices)
     a->list = (edge**)calloc(vertices, sizeof(edge*));
 }
 
-O_INLINE edge *create_edge(int head, double weight, edge *next)
+ORIGIN_INLINE int adjlist_edges(const adjlist *a)
 {
-    edge *e = (edge*)malloc(sizeof(edge));
-    
-    e->head = head;
-    e->w = weight;
-    e->next = next;
-
-    return e;
-}
-
-O_INLINE unsigned int adjlist_edges(const adjlist *a)
-{
-    unsigned int sum = 0;
+    int sum = 0;
     const int num_v = a->num_v;
     for (int i = 0; i < num_v; ++i)
     {
@@ -37,9 +26,20 @@ O_INLINE unsigned int adjlist_edges(const adjlist *a)
     return sum;
 }
 
-O_INLINE unsigned int adjlist_p_edges(const adjlist *a)
+ORIGIN_INLINE edge *create_edge(int head, double weight, edge *next)
 {
-    unsigned int sum = 0;
+    edge *e = (edge*)malloc(sizeof(edge));
+    
+    e->head = head;
+    e->w = weight;
+    e->next = next;
+
+    return e;
+}
+
+ORIGIN_INLINE int adjlist_proper_edges(const adjlist *a)
+{
+    int sum = 0;
     const int num_v = a->num_v;
     for (int i = 0; i < num_v; ++i)
     {
@@ -51,9 +51,9 @@ O_INLINE unsigned int adjlist_p_edges(const adjlist *a)
     return sum;
 }
 
-O_INLINE unsigned int adjlist_loops(const adjlist *a)
+ORIGIN_INLINE int adjlist_loops(const adjlist *a)
 {
-    unsigned int sum = 0;
+    int sum = 0;
     const int num_v = a->num_v;
     for (int i = 0; i < num_v; ++i)
     {
@@ -65,9 +65,9 @@ O_INLINE unsigned int adjlist_loops(const adjlist *a)
     return sum;
 }
 
-O_INLINE unsigned int adjlist_outdegree(const adjlist *a, int u)
+ORIGIN_INLINE int adjlist_outdegree(const adjlist *a, int u)
 {
-    unsigned int sum = 0;
+    int sum = 0;
     for (edge *e = a->list[u]; e != NULL; e = e->next) 
     {
         ++sum;
@@ -75,9 +75,9 @@ O_INLINE unsigned int adjlist_outdegree(const adjlist *a, int u)
     return sum;
 }
 
-O_INLINE unsigned int adjlist_indegree(const adjlist *a, int u)
+ORIGIN_INLINE int adjlist_indegree(const adjlist *a, int u)
 {
-    unsigned int sum = 0;
+    int sum = 0;
     const int num_v = a->num_v;
     for (int i = 0; i < num_v; ++i)
     {
@@ -89,35 +89,35 @@ O_INLINE unsigned int adjlist_indegree(const adjlist *a, int u)
     return sum;
 }
 
-O_INLINE int adjlist_is_balanced(const adjlist *a)
+ORIGIN_INLINE bool adjlist_is_balanced(const adjlist *a)
 {
     const int num_v = a->num_v;
     for (int i = 0; i < num_v; ++i)
     {
         if (adjlist_indegree(a, i) != adjlist_outdegree(a, i))
         {
-            return FALSE;
+            return false;
         }
     }
-    return TRUE;
+    return true;
 }
 
-O_INLINE void adjlist_add_edge(adjlist *a, int u, int v, double weight)
+ORIGIN_INLINE void adjlist_add_edge(adjlist *a, int u, int v, double weight)
 {
     a->list[u] = create_edge(v, weight, a->list[u]);
 }
 
-O_INLINE void adjlist_add_sym_edges(adjlist *a, int u, int v, double weight)
+ORIGIN_INLINE void adjlist_add_sym_edges(adjlist *a, int u, int v, double weight)
 {
     a->list[u] = create_edge(v, weight, a->list[u]);
     a->list[v] = create_edge(u, weight, a->list[v]);
 }
 
-O_INLINE int adjlist_rmv_edge(adjlist *a, int u, int v)
+ORIGIN_INLINE bool adjlist_rmv_edge(adjlist *a, int u, int v)
 {
     if (a->list[u] == NULL)
     {
-        return FALSE;
+        return false;
     }
     else if (a->list[u]->head == v)
     {
@@ -125,7 +125,7 @@ O_INLINE int adjlist_rmv_edge(adjlist *a, int u, int v)
         a->list[u] = a->list[u]->next;
         temp->next = NULL;
         edge_free(temp);
-        return TRUE;
+        return true;
     }
 
     edge *e = a->list[u];
@@ -137,69 +137,56 @@ O_INLINE int adjlist_rmv_edge(adjlist *a, int u, int v)
             e->next = e->next->next;
             temp->next = NULL;
             edge_free(temp);
-            return TRUE;
+            return true;
         }
         e = e->next;
     }
-    return FALSE;
+    return false;
 }
 
-O_INLINE int adjlist_rmv_sym_edges(adjlist *a, int u, int v)
+ORIGIN_INLINE bool adjlist_rmv_sym_edges(adjlist *a, int u, int v)
 {
     return (adjlist_rmv_edge(a, u, v) && adjlist_rmv_edge(a, v, u));
 }
 
-O_INLINE int adjlist_has_edge(adjlist *a, int u, int v)
+ORIGIN_INLINE bool adjlist_has_edge(adjlist *a, int u, int v)
 {
     for (edge *e = a->list[u]; e != NULL; e = e->next) 
     {
         if (e->head == v) 
         {
-            return TRUE;
+            return true;
         }
     }
-    return FALSE;
+    return false;
 }
 
-O_INLINE unsigned int adjlist_num_edge(adjlist *a, int u, int v)
-{
-    unsigned int sum = 0;
-    for (edge *e = a->list[u]; e != NULL; e = e->next) 
-    {
-        if (e->head == v) 
-        {
-            ++sum;
-        }
-    }
-    return sum;
-}
-
-int adjlist_strongly_connected(const adjlist *a)
+bool adjlist_strongly_connected(const adjlist *a)
 {
     const int num_v = a->num_v;
-    int *group = (int*)malloc(num_v * sizeof(int));
+    bool *group = (bool*)malloc(num_v * sizeof(bool));
 
     for (int u = 0; u < num_v; ++u) 
     {
         for (int v = 0; v < num_v; ++v) 
         {
-            group[v] = FALSE;
+            group[v] = false;
         }
 
-        group[u] = TRUE;
+        group[u] = true;
         adjlist_test_cc(a, group, u); // Call recursive function
 
         for (int v = 0; v < num_v; ++v) 
         {
-            if (group[v] == FALSE) 
+            if (group[v] == false) 
             {
                 free(group);
-                return FALSE;
+                return false;
             }
         }
     }
     free(group);
-    return TRUE;
+    return true;
 }
 
 double **adjlist_get_gdm(const adjlist *a)
@@ -218,19 +205,19 @@ double **adjlist_get_gdm(const adjlist *a)
             gdm[i][j] = max;
         }
     }
-    int *visited = (int*)malloc(num_v * sizeof(int));
+    bool *visited = (bool*)malloc(num_v * sizeof(bool));
     
     int current; // The vertex
     for (int u = 0; u < num_v; ++u)
     {
         for (int v = 0; v < num_v; ++v)
         {
-            visited[v] = FALSE;
+            visited[v] = false;
         }
 
         gdm[u][u] = 0; // By convention
         current = u;
-        int has_next = TRUE;
+        bool has_next = true;
 
         while (has_next)
         {
@@ -246,17 +233,17 @@ double **adjlist_get_gdm(const adjlist *a)
                     }
                 }
             }
-            visited[current] = TRUE;
+            visited[current] = true;
 
-            has_next = FALSE;
+            has_next = false;
             double tmp = max;
             for (int v = 0; v < num_v; v++)
             {
-                if (visited[v] == FALSE && gdm[u][v] < tmp)
+                if (visited[v] == false && gdm[u][v] < tmp)
                 {
                     current = v;
                     tmp = gdm[u][v];
-                    has_next = TRUE;
+                    has_next = true;
                 }
             }
         }
@@ -472,7 +459,7 @@ void adjlist_print_w_mat(const adjlist *a, FILE *out)
     }
 }
 
-O_INLINE void edge_free(edge *e)
+ORIGIN_INLINE void edge_free(edge *e)
 {
     if (e->next != NULL)
     {
@@ -481,7 +468,7 @@ O_INLINE void edge_free(edge *e)
     free(e);
 }
 
-O_INLINE void adjlist_free(adjlist *a)
+ORIGIN_INLINE void adjlist_free(adjlist *a)
 {
     const int num_v = a->num_v;
     for (int i = 0; i < num_v; ++i)
@@ -499,14 +486,14 @@ O_INLINE void adjlist_free(adjlist *a)
 // Private functions             //
 ///////////////////////////////////
 
-O_INLINE void adjlist_test_cc(const adjlist *a, int *group, int u)
+ORIGIN_INLINE void adjlist_test_cc(const adjlist *a, bool *group, int u)
 {
     for (edge *e = a->list[u]; e != NULL; e = e->next) 
     {
         const int head = e->head;
-        if (head != u && group[head] == FALSE)
+        if (head != u && group[head] == false)
         {
-            group[head] = TRUE;
+            group[head] = true;
             adjlist_test_cc(a, group, head);
         }
     }

@@ -11,25 +11,25 @@
 #include "ivector.h"
 #include "species.h"
 
-O_INLINE SpeciesList *SpeciesList_init()
+ORIGIN_INLINE SpeciesList *SpeciesList_init()
 {
     SpeciesList *temp = (SpeciesList*)malloc(sizeof(SpeciesList));
-    
+
     temp->size = 0;
     temp->head = NULL;
     temp->tail = NULL;
-    
+
     return temp;
 }
 
 // Always add the species at the end;
-O_INLINE void SpeciesList_add(SpeciesList *list, Species *s)
+ORIGIN_INLINE void SpeciesList_add(SpeciesList *list, Species *s)
 {
     // Create the SLNode object to contain the species
     SLNode *new_node = (SLNode*)malloc(sizeof(SLNode));
     new_node->species = s;
     new_node->next = NULL;
-    
+
     // No species in the list;
     if (list->size == 0)
     {
@@ -44,7 +44,7 @@ O_INLINE void SpeciesList_add(SpeciesList *list, Species *s)
     list->size++;
 }
 
-O_INLINE bool SpeciesList_rmv_next(SpeciesList *list, SLNode *node)
+ORIGIN_INLINE bool SpeciesList_rmv_next(SpeciesList *list, SLNode *node)
 {
     SLNode *old_node;
 
@@ -75,12 +75,12 @@ O_INLINE bool SpeciesList_rmv_next(SpeciesList *list, SLNode *node)
     }
     Species_free(old_node->species);
     free(old_node);
-    
+
     list->size--;
     return true;
 }
 
-O_INLINE int SpeciesList_rmv_extinct(SpeciesList *list)
+ORIGIN_INLINE int SpeciesList_rmv_extinct(SpeciesList *list)
 {
     if (list->size == 0)
     {
@@ -88,7 +88,7 @@ O_INLINE int SpeciesList_rmv_extinct(SpeciesList *list)
     }
     int extinctions = 0; // Number of extinctions
     SLNode *node = list->head;
-    
+
     while (Species_is_extant(node->species) == false)
     {
         SpeciesList_rmv_next(list, NULL);
@@ -109,7 +109,7 @@ O_INLINE int SpeciesList_rmv_extinct(SpeciesList *list)
     return extinctions;
 }
 
-O_INLINE int SpeciesList_rmv_extinct2(SpeciesList *list, ivector *lifespan, int date)
+ORIGIN_INLINE int SpeciesList_rmv_extinct2(SpeciesList *list, ivector *lifespan, int date)
 {
     if (list->size == 0)
     {
@@ -117,7 +117,7 @@ O_INLINE int SpeciesList_rmv_extinct2(SpeciesList *list, ivector *lifespan, int 
     }
     int extinctions = 0; // Number of extinctions
     SLNode *node = list->head;
-    
+
     while (Species_is_extant(node->species) == false)
     {
         ivector_add(lifespan, date - node->next->species->birth);
@@ -141,7 +141,7 @@ O_INLINE int SpeciesList_rmv_extinct2(SpeciesList *list, ivector *lifespan, int 
     return extinctions;
 }
 
-O_INLINE SLNode *SpeciesList_get(SpeciesList *list, int n)
+ORIGIN_INLINE SLNode *SpeciesList_get(SpeciesList *list, int n)
 {
     if (n < 0 || n >= list->size)
     {
@@ -155,7 +155,7 @@ O_INLINE SLNode *SpeciesList_get(SpeciesList *list, int n)
     {
         return list->tail;
     }
-    
+
     SLNode *node = list->head;
 
     for (int i = 0; i < n; ++i)
@@ -165,7 +165,7 @@ O_INLINE SLNode *SpeciesList_get(SpeciesList *list, int n)
     return node;
 }
 
-O_INLINE void SpeciesList_print_pop(SpeciesList *list, FILE *out)
+ORIGIN_INLINE void SpeciesList_print_pop(SpeciesList *list, FILE *out)
 {
     SLNode *node = list->head;
     const int subpopulations = node->species->subpops;
@@ -186,7 +186,7 @@ O_INLINE void SpeciesList_print_pop(SpeciesList *list, FILE *out)
             fprintf(out, " = %5d ", Species_total(node->species));
             fprintf(out, "\n");
             node = node->next;
-        }  
+        }
     }
     else
     {
@@ -204,11 +204,11 @@ O_INLINE void SpeciesList_print_pop(SpeciesList *list, FILE *out)
             printf(" = %5d ", Species_total(node->species));
             printf("\n");
             node = node->next;
-        }  
+        }
     }
 }
 
-O_INLINE void SpeciesList_free(SpeciesList *list)
+ORIGIN_INLINE void SpeciesList_free(SpeciesList *list)
 {
     while (SpeciesList_rmv_next(list, NULL));
     free(list);

@@ -23,7 +23,7 @@ void graph_init(graph *g, int vertices)
     }
 }
 
-O_INLINE int graph_edges(const graph *g)
+ORIGIN_INLINE int graph_edges(const graph *g)
 {
     const int num_v = g->num_v;
     int sum = 0;
@@ -34,7 +34,7 @@ O_INLINE int graph_edges(const graph *g)
     return sum;
 }
 
-O_INLINE int graph_proper_edges(const graph *g)
+ORIGIN_INLINE int graph_proper_edges(const graph *g)
 {
     const int num_v = g->num_v;
     int sum = 0;
@@ -51,7 +51,7 @@ O_INLINE int graph_proper_edges(const graph *g)
     return sum;
 }
 
-O_INLINE int graph_loops(const graph *g)
+ORIGIN_INLINE int graph_loops(const graph *g)
 {
     const int num_v = g->num_v;
     int sum = 0;
@@ -68,12 +68,12 @@ O_INLINE int graph_loops(const graph *g)
     return sum;
 }
 
-O_INLINE int graph_outdegree(const graph *g, int u)
+ORIGIN_INLINE int graph_outdegree(const graph *g, int u)
 {
     return g->num_e[u];
 }
 
-O_INLINE int graph_indegree(const graph *g, int u)
+ORIGIN_INLINE int graph_indegree(const graph *g, int u)
 {
     const int num_v = g->num_v;
     int sum = 0;
@@ -90,7 +90,7 @@ O_INLINE int graph_indegree(const graph *g, int u)
     return sum;
 }
 
-O_INLINE bool graph_is_balanced(const graph *g)
+ORIGIN_INLINE bool graph_is_balanced(const graph *g)
 {
     const int num_v = g->num_v;
     for (int u = 0; u < num_v; ++u)
@@ -103,7 +103,7 @@ O_INLINE bool graph_is_balanced(const graph *g)
     return true;
 }
 
-O_INLINE void graph_add_edge(graph *g, int u, int v, double weight)
+ORIGIN_INLINE void graph_add_edge(graph *g, int u, int v, double weight)
 {
     if (g->num_e[u] == g->capacity[u]) 
     {
@@ -202,7 +202,7 @@ double **graph_get_gdm(const graph *g)
         }
     }
     bool* visited = (bool*)malloc(num_v * sizeof(bool));
-    
+
     int current; // The vertex
     for (int u = 0; u < num_v; ++u)
     {
@@ -253,7 +253,7 @@ double *graph_cls_centrality(const graph *g)
     const int num_v = g->num_v;
     double **gdm = graph_get_gdm(g);
     double *cls_centrality = (double*)malloc(num_v * sizeof(double));
-    
+
     for (int i = 0; i < num_v; ++i)
     {
         double sum = 0.0;
@@ -269,7 +269,7 @@ double *graph_cls_centrality(const graph *g)
         free(gdm[i]);
     }
     free(gdm);
-    
+
     return cls_centrality;
 }
 
@@ -285,7 +285,7 @@ double *graph_har_cls_centrality(const graph *g)
     const int num_v = g->num_v;
     double **gdm = graph_get_gdm(g);
     double *har_cls_centrality = (double*)malloc(num_v * sizeof(double));
-    
+
     for (int i = 0; i < num_v; ++i)
     {
         double sum = 0.0;
@@ -298,14 +298,14 @@ double *graph_har_cls_centrality(const graph *g)
         }
         har_cls_centrality[i] = sum / (num_v - 1);
     }
-    
+
     // Free the memory of the geodesic distance matrix:
     for (int i = 0; i < num_v; ++i)
     {
         free(gdm[i]);
     }
     free(gdm);
-    
+
     return har_cls_centrality;
 }
 
@@ -320,9 +320,9 @@ void graph_graphml(const graph *g, FILE *out, unsigned int id)
 {
     const int num_v = g->num_v;
     fprintf(out, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-    fprintf(out, "<graphml xmlns=\"http://graphml.graphdrawing.org/xmlns\"\n");
-    fprintf(out, "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n");
-    fprintf(out, "xsi:schemaLocation=\"http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd\">\n");
+    fprintf(out, "<graphml xmlns=\"http://graphml.graphdrawing.org/xmlns\"");
+    fprintf(out, " xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"");
+    fprintf(out, " xsi:schemaLocation=\"http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd\">\n");
 
     fprintf(out, "  <graph id=\"%u\" edgedefault=\"directed\">\n", id);
     int i, e;
@@ -354,8 +354,8 @@ void graph_print(const graph *g, FILE *out)
             }
             printf("\n");
         }
-    } 
-    else 
+    }
+    else
     {
         for (int i = 0; i < g->num_v; ++i) 
         {
@@ -435,7 +435,7 @@ void graph_print_mat(const graph *g, FILE *out)
         {
             row[g->adj_list[i][e]] = 0;
         }
-        if (out == NULL) 
+        if (out == NULL)
         {
             printf("\n");
         }
@@ -450,27 +450,27 @@ void graph_print_w_mat(const graph *g, FILE *out)
 {
     const int num_v = g->num_v;
     double row[num_v];
-    for (int i = 0; i < num_v; ++i) 
+    for (int i = 0; i < num_v; ++i)
     {
         row[i] = 0.0;
     }
-    for (int i = 0; i < num_v; ++i) 
+    for (int i = 0; i < num_v; ++i)
     {
         const int num_e = g->num_e[i];
         // Set the edges to 1
-        for (int e = 0; e < num_e; ++e) 
+        for (int e = 0; e < num_e; ++e)
         {
             row[g->adj_list[i][e]] = g->w_list[i][e];
         }
         // Print the row
-        if (out == NULL) 
+        if (out == NULL)
         {
             for (int j = 0; j < num_v; ++j) 
             {
                 printf("%.4f ", row[j]);
             }
-        } 
-        else 
+        }
+        else
         {
             for (int j = 0; j < num_v; ++j) 
             {
@@ -485,8 +485,8 @@ void graph_print_w_mat(const graph *g, FILE *out)
         if (out == NULL) 
         {
             printf("\n");
-        } 
-        else 
+        }
+        else
         {
             fprintf(out, "\n");
         }

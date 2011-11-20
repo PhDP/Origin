@@ -4,7 +4,6 @@
 #include <string.h>
 #include <assert.h>
 #include <time.h>
-#include "common.h"
 #include "utils.h"
 
 ////////////////////////////////////////////////////////////////////
@@ -69,7 +68,7 @@ void imin_max(int *x, int length, int *min, int *max)
 void scale_0_1(double *x, int length)
 {
     double min;
-    double max;
+    double max;	
     dmin_max(x, length, &min, &max);
 
     // Scaling
@@ -82,7 +81,7 @@ void scale_0_1(double *x, int length)
 void scale_0_100(double *x, int length)
 {
     double min;
-    double max;
+    double max;	
     dmin_max(x, length, &min, &max);
 
     // Scaling
@@ -103,11 +102,11 @@ void scale_a_b(double *x, int length, double a, double b)
     }
 }
 
-unsigned int trim_small(int **x, unsigned int length, int smallest)
+int trim_small(int **x, int elements, int smallest)
 {
-    unsigned int i = 0;
-    unsigned int j = 0;
-    while (j < length)
+    int i = 0;
+    int j = 0;
+    while (j < elements)
     {
         if ((*x)[j] >= smallest)
         {
@@ -115,19 +114,19 @@ unsigned int trim_small(int **x, unsigned int length, int smallest)
             ++i;
         }
         ++j;
-    }
-    const int unsigned removed = j - i;
+    }	
+    const int removed = j - i;
     
-    *x = (int*)realloc((void*)(*x), (length - removed) * sizeof(int));
+    *x = (int*)realloc((void*)(*x), (elements - removed) * sizeof(int));
     
     return removed;
 }
 
-unsigned int trim_large(int **x, unsigned int length, int largest)
+int trim_large(int **x, int elements, int largest)
 {
-    unsigned int i = 0;
-    unsigned int j = 0;
-    while (j < length)
+    int i = 0;
+    int j = 0;
+    while (j < elements)
     {
         if ((*x)[j] <= largest)
         {
@@ -135,10 +134,10 @@ unsigned int trim_large(int **x, unsigned int length, int largest)
             ++i;
         }
         ++j;
-    }
-    const unsigned int removed = j - i;
+    }	
+    const int removed = j - i;
     
-    *x = (int*)realloc((void*)(*x), (length - removed) * sizeof(int));
+    *x = (int*)realloc((void*)(*x), (elements - removed) * sizeof(int));
     
     return removed;
 }
