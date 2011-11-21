@@ -33,13 +33,8 @@ int Stack_is_empty(const Stack *s)
 
 void Stack_grow(Stack *s)
 {
-    const int size = s->index + 1;
     s->capacity *= 2;
-    void **new_data = (void**)malloc(s->capacity * sizeof(void*));
-    memcpy(new_data, s->data, size * sizeof(void*));
-    void **swap = s->data;
-    s->data = new_data;
-    free(swap);
+    data = (void**)realloc((void*)data, s->capacity * sizeof(void*));
 }
 
 void Stack_free(Stack *s)
