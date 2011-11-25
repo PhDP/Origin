@@ -63,4 +63,3 @@ void vvector_free(vvector *v);
 #endif
 
 #endif
-
