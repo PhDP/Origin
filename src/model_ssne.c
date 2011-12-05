@@ -271,7 +271,6 @@ void *sim(void *parameters)
     const int j_per_c = P.j_per_c;
     const int init_species = P.init_species;
     const int init_pop_size = j_per_c / init_species;
-    // assert(init_species * init_pop_size == j_per_c);
     const double omega = P.omega;
     const double mu = P.mu;
     const double s = P.s;
@@ -338,7 +337,6 @@ void *sim(void *parameters)
 
     // To iterate the list;
     const int remainder = j_per_c - (init_species * init_pop_size);
-    assert(remainder < init_species);
     for (i = 0; i < communities; ++i)
     {
         int j = 0;
@@ -350,12 +348,15 @@ void *sim(void *parameters)
         }
     }
 
+    // Test (will be removed for v2.0):
+    int sum = 0;
     it = list->head;
     while (it != NULL)
     {
-        printf("Pop -> %d\n", Species_total(it->species));
+        sum += Species_total(it->species);
         it = it->next;
     }
+    assert(sum == j_per_c * communities);
 
     // Create the metacommunity;
     graph g;

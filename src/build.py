@@ -20,7 +20,7 @@ else:
 name = 'ssne'
 
 # Flags:
-cflags = '-O3 -DHAVE_INLINE -DOINLINING -DEXTRAPRINT -std=c99'
+cflags = '-O3 -DHAVE_INLINE -DOINLINING -std=c99'
 
 # List of files to compile:
 cfiles = 'model_ssne.c species.c dvector.c ivector.c specieslist.c graph.c graphgen.c utils.c ecology.c stats.c maths.c str.c'
