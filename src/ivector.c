@@ -26,7 +26,7 @@ void ivector_init2(ivector *v, int *x, int size, int initial_capacity)
     v->array = (int*)malloc(initial_capacity * sizeof(int));
     v->size = size;
     v->capacity = initial_capacity;
-    
+
     for (int i = 0; i < size; ++i)
     {
         v->array[i] = x[i];
@@ -187,26 +187,18 @@ ORIGIN_INLINE int ivector_trim_large(ivector *v, int largest)
     }	
     const int removed = j - i;
     v->size -= removed;
-    
+
     return removed;
 }
 
 void ivector_print(ivector *v, FILE *out)
 {
-    if (out == NULL)
+    int i = 0;
+    for (; i < v->size - 1; ++i)
     {
-        for (int i = 0; i < v->size; ++i)
-        {
-            printf("%d ", v->array[i]);
-        }
+        fprintf(out, "%d ", v->array[i]);
     }
-    else
-    {
-        for (int i = 0; i < v->size; ++i)
-        {
-            fprintf(out, "%d ", v->array[i]);
-        }
-    }
+    fprintf(out, "%d", v->array[i]);
 }
 
 ORIGIN_INLINE void ivector_free(ivector *v)

@@ -202,36 +202,37 @@ int main(int argc, const char *argv[])
 
     printf("<?xml version=\"1.0\"?>\n");
     printf("<origin_ssne>\n");
-    printf("  <model> ");
+    printf("  <model>");
     if (p.m == MODEL_BDM_NEUTRAL)
     {
-        printf("Neutral BDM speciation </model>\n");
+        printf("Neutral BDM speciation</model>\n");
     }
     else if (p.m == MODEL_BDM_SELECTION)
     {
-        printf("BDM speciation with selection </model>\n");
+        printf("BDM speciation with selection</model>\n");
     }
-    printf("  <shape_metacom> %s </shape_metacom>\n", p.shape);
-    printf("  <metacom_size> %d </metacom_size>\n", p.j_per_c * p.communities);
-    printf("  <k_gen> %d </k_gen>\n", p.k_gen);
-    printf("  <num_comm> %d </num_comm>\n", p.communities);
-    printf("  <individuals_per_comm> %d </individuals_per_comm>\n", p.j_per_c);
-    printf("  <initial_num_species> %d </initial_num_species>\n", p.init_species);
-    printf("  <mutation_rate> %.2e </mutation_rate>\n", p.mu);
-    printf("  <omega> %.2e </omega>\n", p.omega);
+    printf("  <n>%d</n>\n", n_threads);
+    printf("  <shape_metacom>%s</shape_metacom>\n", p.shape);
+    printf("  <metacom_size>%d</metacom_size>\n", p.j_per_c * p.communities);
+    printf("  <k_gen>%d</k_gen>\n", p.k_gen);
+    printf("  <num_comm>%d</num_comm>\n", p.communities);
+    printf("  <individuals_per_comm>%d</individuals_per_comm>\n", p.j_per_c);
+    printf("  <initial_num_species>%d</initial_num_species>\n", p.init_species);
+    printf("  <mutation_rate>%.2e</mutation_rate>\n", p.mu);
+    printf("  <omega>%.2e</omega>\n", p.omega);
     if (p.m == MODEL_BDM_SELECTION)
     {
-        printf("  <selection> %.2e </selection>\n", p.s);
+        printf("  <selection>%.2e</selection>\n", p.s);
     }
     if (p.shape[0] == 'r')
     {
-        printf("  <radius> %.4f </radius>\n", p.r);
+        printf("  <radius>%.4f</radius>\n", p.r);
     }
     if (p.shape[0] == 'r' && p.shape[1] == 'e')
     {
-        printf("  <width> %.4f </width>\n", p.w);
+        printf("  <width>%.4f</width>\n", p.w);
     }
-    printf("  <filename> %s </filename>\n", p.ofilename);
+    printf("  <filename>%s</filename>\n", p.ofilename);
 
     // The threads:
     pthread_t threads[n_threads];
@@ -252,8 +253,8 @@ int main(int argc, const char *argv[])
     }
 
     const time_t end_t = time(NULL);
-    printf("  <seconds> %lu </seconds>\n", (unsigned long)(end_t - start));
-    printf("  <time> %s </time>\n", sec_to_string(end_t - start));
+    printf("  <seconds>%lu</seconds>\n", (unsigned long)(end_t - start));
+    printf("  <time>%s</time>\n", sec_to_string(end_t - start));
     printf("</origin_ssne>\n");
     return EXIT_SUCCESS; // yeppie !
 }
@@ -282,7 +283,7 @@ void *sim(void *parameters)
     // Initialize the GSL generator with /dev/urandom:
     const unsigned int seed = devurandom_get_uint();
     gsl_rng_set(rng, seed); // Seed with time
-    printf("  <seed> %u </seed>\n", seed);
+    printf("  <seed>%u</seed>\n", seed);
     // Used to name the output file:
     char *buffer = (char*)malloc(100);
     // Nme of the file:
@@ -407,35 +408,35 @@ void *sim(void *parameters)
 
     fprintf(out, "<?xml version=\"1.0\"?>\n");
     fprintf(out, "<simulation>\n");
-    fprintf(out, "  <model> ");
+    fprintf(out, "  <model>");
     if (P.m == MODEL_BDM_NEUTRAL)
     {
-        fprintf(out, "Neutral BDM speciation </model>\n");
+        fprintf(out, "Neutral BDM speciation</model>\n");
     }
     else if (P.m == MODEL_BDM_SELECTION)
     {
-        fprintf(out, "BDM speciation with selection </model>\n");
+        fprintf(out, "BDM speciation with selection</model>\n");
     }
-    fprintf(out, "  <seed> %u </seed>\n", seed);
-    fprintf(out, "  <shape_metacom> %s </shape_metacom>\n", shape);
-    fprintf(out, "  <metacom_size> %d </metacom_size>\n", j_per_c * communities);
-    fprintf(out, "  <k_gen> %d </k_gen>\n", k_gen);
-    fprintf(out, "  <num_comm> %d </num_comm>\n", communities);
-    fprintf(out, "  <individuals_per_comm> %d </individuals_per_comm>\n", j_per_c);
-    fprintf(out, "  <initial_num_species> %d </initial_num_species>\n", init_species);
-    fprintf(out, "  <mutation_rate> %.2e </mutation_rate>\n", mu);
-    fprintf(out, "  <omega> %.2e </omega>\n", omega);
+    fprintf(out, "  <seed>%u</seed>\n", seed);
+    fprintf(out, "  <shape_metacom>%s</shape_metacom>\n", shape);
+    fprintf(out, "  <metacom_size>%d</metacom_size>\n", j_per_c * communities);
+    fprintf(out, "  <k_gen>%d</k_gen>\n", k_gen);
+    fprintf(out, "  <num_comm>%d</num_comm>\n", communities);
+    fprintf(out, "  <individuals_per_comm>%d</individuals_per_comm>\n", j_per_c);
+    fprintf(out, "  <initial_num_species>%d</initial_num_species>\n", init_species);
+    fprintf(out, "  <mutation_rate>%.2e</mutation_rate>\n", mu);
+    fprintf(out, "  <omega>%.2e</omega>\n", omega);
     if (P.m == MODEL_BDM_SELECTION)
     {
-        fprintf(out, "  <selection> %.2e </selection>\n", s);
+        fprintf(out, "  <selection>%.2e</selection>\n", s);
     }
     if (shape[0] == 'r')
     {
-        fprintf(out, "  <radius> %.4f </radius>\n", radius);
+        fprintf(out, "  <radius>%.4f</radius>\n", radius);
     }
     if (shape[0] == 'r' && shape[1] == 'e')
     {
-        fprintf(out, "  <width> %.4f </width>\n", width);
+        fprintf(out, "  <width>%.4f</width>\n", width);
     }
     // To select the species and genotypes to pick and replace:
     SLNode *s0 = list->head; // Species0
@@ -590,35 +591,35 @@ void *sim(void *parameters)
     // PRINT THE FINAL RESULTS                      //
     //////////////////////////////////////////////////
     fprintf(out, "  <global>\n");
-    fprintf(out, "    <proper_edges> %d </proper_edges>\n", graph_edges(&g));
-    fprintf(out, "    <links_per_c> %.4f </links_per_c>\n", (double)graph_edges(&g) / communities);
+    fprintf(out, "    <proper_edges>%d</proper_edges>\n", graph_edges(&g));
+    fprintf(out, "    <links_per_c>%.4f</links_per_c>\n", (double)graph_edges(&g) / communities);
 
-    fprintf(out, "    <avr_lifespan> %.4f </avr_lifespan>\n", imean(lifespan.array, lifespan.size));
-    fprintf(out, "    <median_lifespan> %.4f </median_lifespan>\n", imedian(lifespan.array, lifespan.size));
+    fprintf(out, "    <avr_lifespan>%.4f</avr_lifespan>\n", imean(lifespan.array, lifespan.size));
+    fprintf(out, "    <median_lifespan>%.4f</median_lifespan>\n", imedian(lifespan.array, lifespan.size));
 
-    fprintf(out, "    <avr_pop_size_speciation> %.4f </avr_pop_size_speciation>\n", imean(pop_size.array, pop_size.size));
-    fprintf(out, "    <median_pop_size_speciation> %.4f </median_pop_size_speciation>\n", imedian(pop_size.array, pop_size.size));
+    fprintf(out, "    <avr_pop_size_speciation>%.4f</avr_pop_size_speciation>\n", imean(pop_size.array, pop_size.size));
+    fprintf(out, "    <median_pop_size_speciation>%.4f</median_pop_size_speciation>\n", imedian(pop_size.array, pop_size.size));
 
-    fprintf(out, "    <speciation_per_k_gen> ");
-    for (i = 0; i < k_gen; ++i)
+    fprintf(out, "    <speciation_per_k_gen>");
+    for (i = 0; i < k_gen - 1; ++i)
     {
         fprintf(out, "%d ", speciation_events[i]);
     }
-    fprintf(out, "</speciation_per_k_gen>\n");
+    fprintf(out, "%d</speciation_per_k_gen>\n", speciation_events[i]);
 
-    fprintf(out, "    <extinctions_per_k_gen> ");
-    for (i = 0; i < k_gen; ++i)
+    fprintf(out, "    <extinctions_per_k_gen>");
+    for (i = 0; i < k_gen - 1; ++i)
     {
         fprintf(out, "%d ", extinction_events[i]);
     }
-    fprintf(out, "</extinctions_per_k_gen>\n");
+    fprintf(out, "%d</extinctions_per_k_gen>\n", extinction_events[i]);
 
-    fprintf(out, "    <extant_species_per_k_gen> ");
-    for (i = 0; i < k_gen; ++i)
+    fprintf(out, "    <extant_species_per_k_gen>");
+    for (i = 0; i < k_gen - 1; ++i)
     {
         fprintf(out, "%d ", total_species[i]);
     }
-    fprintf(out, "</extant_species_per_k_gen>\n");
+    fprintf(out, "%d</extant_species_per_k_gen>\n", total_species[i]);
 
     // Print global distribution
     fprintf(out, "    <species_distribution>");
@@ -636,12 +637,12 @@ void *sim(void *parameters)
 
     double *octaves;
     int oct_num = biodiversity_octaves(species_distribution.array, species_distribution.size, &octaves);
-    fprintf(out, "    <octaves> ");
+    fprintf(out, "    <octaves>");
     for (i = 0; i < oct_num; ++i)
     {
         fprintf(out, "%.2f ", octaves[i]);
     }
-    fprintf(out, "</octaves>\n");
+    fprintf(out, "%.2f</octaves>\n", octaves[i]);
     fprintf(out, "  </global>\n");
 
     // Print info on all vertices
@@ -649,19 +650,19 @@ void *sim(void *parameters)
     for (; c < communities; ++c)
     {
         fprintf(out, "  <vertex>\n");
-        fprintf(out, "    <id> %d </id>\n", c);
+        fprintf(out, "    <id>%d</id>\n", c);
         if (shape[0] == 'r')
         {
-            fprintf(out, "    <xcoor> %.4f </xcoor>\n", x[c]);
-            fprintf(out, "    <ycoor> %.4f </ycoor>\n", y[c]);
+            fprintf(out, "    <xcoor>%.4f</xcoor>\n", x[c]);
+            fprintf(out, "    <ycoor>%.4f</ycoor>\n", y[c]);
         }
-        fprintf(out, "    <degree> %d </degree>\n", g.num_e[c] + 1);
-        fprintf(out, "    <cls_cen> %.8f </cls_cen>\n", cls_centrality[c]);
-        fprintf(out, "    <scaled_cls_cen> %.8f </scaled_cls_cen>\n", cls_centrality_scaled[c]);
-        fprintf(out, "    <har_cls_cen> %.8f </har_cls_cen>\n", har_cls_centrality[c]);
-        fprintf(out, "    <scaled_har_cls_cen> %.8f </scaled_har_cls_cen>\n", har_cls_centrality_scaled[c]);
-        fprintf(out, "    <speciation_events> %d </speciation_events>\n", speciation_per_c[c]);
-        fprintf(out, "    <extinction_events> %d </extinction_events>\n", extinction_per_c[c]);
+        fprintf(out, "    <degree>%d</degree>\n", g.num_e[c] + 1);
+        fprintf(out, "    <cls_cen>%.8f</cls_cen>\n", cls_centrality[c]);
+        fprintf(out, "    <scaled_cls_cen>%.8f</scaled_cls_cen>\n", cls_centrality_scaled[c]);
+        fprintf(out, "    <har_cls_cen>%.8f</har_cls_cen>\n", har_cls_centrality[c]);
+        fprintf(out, "    <scaled_har_cls_cen>%.8f</scaled_har_cls_cen>\n", har_cls_centrality_scaled[c]);
+        fprintf(out, "    <speciation_events>%d</speciation_events>\n", speciation_per_c[c]);
+        fprintf(out, "    <extinction_events>%d</extinction_events>\n", extinction_per_c[c]);
 
         int vertex_richess = 0;
         ivector_rmvall(&species_distribution);
@@ -675,20 +676,20 @@ void *sim(void *parameters)
         ivector_sort_asc(&species_distribution);
         ivector_trim_small(&species_distribution, 1);
 
-        fprintf(out, "    <species_richess> %d </species_richess>\n", species_distribution.size);
-        fprintf(out, "    <species_distribution> ");
+        fprintf(out, "    <species_richess>%d</species_richess>\n", species_distribution.size);
+        fprintf(out, "    <species_distribution>");
         ivector_print(&species_distribution, out);
         fprintf(out, "</species_distribution>\n");
 
         // Print octaves
         free(octaves);
         oct_num = biodiversity_octaves(species_distribution.array, species_distribution.size, &octaves);
-        fprintf(out, "    <octaves> ");
-        for (i = 0; i < oct_num; ++i)
+        fprintf(out, "    <octaves>");
+        for (i = 0; i < oct_num - 1; ++i)
         {
             fprintf(out, "%.2f ", octaves[i]);
         }
-        fprintf(out, "</octaves>\n");
+        fprintf(out, "%.2f</octaves>\n", octaves[i]);
         fprintf(out, "  </vertex>\n");
     }
 

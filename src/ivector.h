@@ -76,7 +76,7 @@ int ivector_trim_small(ivector *v, int smallest);
 /** Remove from the array all the elements larger than "largest". The function will reallocate memory. Return the number of elements removed. */
 int ivector_trim_large(ivector *v, int largest);
 
-/** Print the array. Set the argument to NULL to print to the console. */
+/** Print the array. Set the argument to 'stdout' to print to the console. */
 void ivector_print(ivector *v, FILE *out);
 
 /** Free the memory. */
