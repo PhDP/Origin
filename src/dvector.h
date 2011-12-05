@@ -64,7 +64,7 @@ void dvector_sort_des(dvector *v);
 /** Free the memory. */
 void dvector_free(dvector *v);
 
-/** Print the array. Set the argument to NULL to print to the console. */
+/** Print the array. Set the argument to 'stdout' to print to the console. */
 void dvector_print(dvector *v, FILE *out);
 
 /** Tests and examples for this file. */

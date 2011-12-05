@@ -3,8 +3,8 @@
 * author:    Philippe Desjardins-Proulx
 * email:     <philippe.d.proulx@gmail.com>
 * website:   http://phdp.huginn.info/
-* date:      2011.11.20
-* version:   2.0 alpha1
+* date:      2011.12.05
+* version:   2.0 alpha2
 * 
 * description:
 *   Spatially explicit speciation in neutral ecology. Type ssne --help 
@@ -20,8 +20,8 @@
 * ...developed and tested on Linux x86_64.
 *****************************************************************************/
 
-#define SSNE_DATE       "2011.11.20"
-#define SSNE_VERSION    "2.0a1"
+#define SSNE_DATE       "2011.12.05"
+#define SSNE_VERSION    "2.0a2"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -200,37 +200,38 @@ int main(int argc, const char *argv[])
         sprintf(p.shape, "random");
     }
 
-    // Print basic info about the simulations:
-    printf("Parameters:\n  Model: ");
+    printf("<?xml version=\"1.0\"?>\n");
+    printf("<origin_ssne>\n");
+    printf("  <model> ");
     if (p.m == MODEL_BDM_NEUTRAL)
     {
-        printf("Neutral BDM speciation.\n");
+        printf("Neutral BDM speciation </model>\n");
     }
     else if (p.m == MODEL_BDM_SELECTION)
     {
-        printf("BDM speciation with selection.\n");
+        printf("BDM speciation with selection </model>\n");
     }
-    printf("  Number of simulations: %d\n", n_threads);
-    printf("  Shape of the metacommunity: %s\n", p.shape);
-    printf("  Number of generations (in thousands): %d\n", p.k_gen);
-    printf("  Number of communities: %d\n", p.communities);
-    printf("  Individuals/community: %d\n", p.j_per_c);
-    printf("  Initial number of species: %d\n", p.init_species);
-    printf("  Mutation rate 'mu': %.2e\n", p.mu);
+    printf("  <shape_metacom> %s </shape_metacom>\n", p.shape);
+    printf("  <metacom_size> %d </metacom_size>\n", p.j_per_c * p.communities);
+    printf("  <k_gen> %d </k_gen>\n", p.k_gen);
+    printf("  <num_comm> %d </num_comm>\n", p.communities);
+    printf("  <individuals_per_comm> %d </individuals_per_comm>\n", p.j_per_c);
+    printf("  <initial_num_species> %d </initial_num_species>\n", p.init_species);
+    printf("  <mutation_rate> %.2e </mutation_rate>\n", p.mu);
+    printf("  <omega> %.2e </omega>\n", p.omega);
     if (p.m == MODEL_BDM_SELECTION)
     {
-        printf("  Selection coefficient 's': %.2e\n", p.s);
+        printf("  <selection> %.2e </selection>\n", p.s);
     }
-    printf("  Omega: %.2e\n", p.omega);
     if (p.shape[0] == 'r')
     {
-        printf("  r: %.4f\n", p.r);
+        printf("  <radius> %.4f </radius>\n", p.r);
     }
     if (p.shape[0] == 'r' && p.shape[1] == 'e')
     {
-        printf("  width: %.4f\n", p.w);
+        printf("  <width> %.4f </width>\n", p.w);
     }
-    printf("\n");
+    printf("  <filename> %s </filename>\n", p.ofilename);
 
     // The threads:
     pthread_t threads[n_threads];
@@ -238,18 +239,22 @@ int main(int argc, const char *argv[])
     const time_t start = time(NULL);
 
     // Create the threads:
-    for (int i = 0; i < n_threads; ++i)
+    int i = 0;
+    for (; i < n_threads; ++i)
     {
         pthread_create(&threads[i], NULL, sim, (void*)&p);
     }
 
     // Wait for the threads to end:
-    for (int i = 0; i < n_threads; ++i)
+    for (i = 0; i < n_threads; ++i)
     {
         pthread_join(threads[i], NULL);
     }
 
-    printf("\nDone !\nElapsed time: %s\n", sec_to_string(time(NULL) - start));
+    const time_t end_t = time(NULL);
+    printf("  <seconds> %lu </seconds>\n", (unsigned long)(end_t - start));
+    printf("  <time> %s </time>\n", sec_to_string(end_t - start));
+    printf("</origin_ssne>\n");
     return EXIT_SUCCESS; // yeppie !
 }
 
@@ -266,7 +271,7 @@ void *sim(void *parameters)
     const int j_per_c = P.j_per_c;
     const int init_species = P.init_species;
     const int init_pop_size = j_per_c / init_species;
-    assert(init_species * init_pop_size == j_per_c);
+    // assert(init_species * init_pop_size == j_per_c);
     const double omega = P.omega;
     const double mu = P.mu;
     const double s = P.s;
@@ -278,6 +283,7 @@ void *sim(void *parameters)
     // Initialize the GSL generator with /dev/urandom:
     const unsigned int seed = devurandom_get_uint();
     gsl_rng_set(rng, seed); // Seed with time
+    printf("  <seed> %u </seed>\n", seed);
     // Used to name the output file:
     char *buffer = (char*)malloc(100);
     // Nme of the file:
@@ -303,7 +309,8 @@ void *sim(void *parameters)
     // (x, y) coordinates for the spatial graph:
     double *restrict x = (double*)malloc(communities * sizeof(double));
     double *restrict y = (double*)malloc(communities * sizeof(double));
-    for (int i = 0; i < communities; ++i)
+    int i = 0;
+    for (; i < communities; ++i)
     {
         speciation_per_c[i] = 0;
         extinction_per_c[i] = 0;
@@ -311,7 +318,7 @@ void *sim(void *parameters)
     // Initialize an empty list of species:
     SpeciesList *restrict list = SpeciesList_init();
     // Initialize the metacommunity and fill them with the initial species evenly:
-    for (int i = 0; i < init_species; ++i)
+    for (i = 0; i < init_species; ++i)
     {
         // Intialize the species and add it to the list:
         SpeciesList_add(list, Species_init1(communities, 0, 0, 3));
@@ -321,13 +328,35 @@ void *sim(void *parameters)
     // Fill the communities:
     while (it != NULL)
     {
-        for (int i = 0; i < communities; ++i)
+        for (i = 0; i < communities; ++i)
         {
             it->species->n[i] = init_pop_size;
             it->species->genotypes[i][0] = init_pop_size;
         }
         it = it->next;
     }
+
+    // To iterate the list;
+    const int remainder = j_per_c - (init_species * init_pop_size);
+    assert(remainder < init_species);
+    for (i = 0; i < communities; ++i)
+    {
+        int j = 0;
+        it = list->head;
+        for (; j < remainder; ++j, it = it->next)
+        {
+            ++(it->species->n[i]);
+            ++(it->species->genotypes[i][0]);
+        }
+    }
+
+    it = list->head;
+    while (it != NULL)
+    {
+        printf("Pop -> %d\n", Species_total(it->species));
+        it = it->next;
+    }
+
     // Create the metacommunity;
     graph g;
     switch(shape[0])
@@ -417,7 +446,8 @@ void *sim(void *parameters)
     /////////////////////////////////////////////
     // Groups of 1 000 generations             //
     /////////////////////////////////////////////
-    for (int k = 0; k < k_gen; ++k)
+    int k = 0;
+    for (; k < k_gen; ++k)
     {
         extinction_events[k] = 0;
         speciation_events[k] = 0;
@@ -425,18 +455,21 @@ void *sim(void *parameters)
         /////////////////////////////////////////////
         // 1 000 generations                       //
         /////////////////////////////////////////////
-        for (int gen = 0; gen < 1000; ++gen)
+        int gen = 0;
+        for (; gen < 1000; ++gen)
         {
             const int current_date = (k * 1000) + gen;
             /////////////////////////////////////////////
             // A single generation                     //
             /////////////////////////////////////////////
-            for (int t = 0; t < j_per_c; ++t)
+            int t = 0;
+            for (; t < j_per_c; ++t)
             {
                 /////////////////////////////////////////////
                 // A single time step (for each community) //
                 /////////////////////////////////////////////
-                for (int c = 0; c < communities; ++c)
+                int c = 0;
+                for (; c < communities; ++c)
                 {
                     // Select the species and genotype of the individual to be replaced
                     int position = (int)(gsl_rng_uniform(rng) * j_per_c);
@@ -566,21 +599,21 @@ void *sim(void *parameters)
     fprintf(out, "    <median_pop_size_speciation> %.4f </median_pop_size_speciation>\n", imedian(pop_size.array, pop_size.size));
 
     fprintf(out, "    <speciation_per_k_gen> ");
-    for (int i = 0; i < k_gen; ++i)
+    for (i = 0; i < k_gen; ++i)
     {
         fprintf(out, "%d ", speciation_events[i]);
     }
     fprintf(out, "</speciation_per_k_gen>\n");
 
     fprintf(out, "    <extinctions_per_k_gen> ");
-    for (int i = 0; i < k_gen; ++i)
+    for (i = 0; i < k_gen; ++i)
     {
         fprintf(out, "%d ", extinction_events[i]);
     }
     fprintf(out, "</extinctions_per_k_gen>\n");
 
     fprintf(out, "    <extant_species_per_k_gen> ");
-    for (int i = 0; i < k_gen; ++i)
+    for (i = 0; i < k_gen; ++i)
     {
         fprintf(out, "%d ", total_species[i]);
     }
@@ -603,7 +636,7 @@ void *sim(void *parameters)
     double *octaves;
     int oct_num = biodiversity_octaves(species_distribution.array, species_distribution.size, &octaves);
     fprintf(out, "    <octaves> ");
-    for (int i = 0; i < oct_num; ++i)
+    for (i = 0; i < oct_num; ++i)
     {
         fprintf(out, "%.2f ", octaves[i]);
     }
@@ -611,7 +644,8 @@ void *sim(void *parameters)
     fprintf(out, "  </global>\n");
 
     // Print info on all vertices
-    for (int c = 0; c < communities; ++c)
+    int c = 0;
+    for (; c < communities; ++c)
     {
         fprintf(out, "  <vertex>\n");
         fprintf(out, "    <id> %d </id>\n", c);
@@ -649,19 +683,13 @@ void *sim(void *parameters)
         free(octaves);
         oct_num = biodiversity_octaves(species_distribution.array, species_distribution.size, &octaves);
         fprintf(out, "    <octaves> ");
-        for (int i = 0; i < oct_num; ++i)
+        for (i = 0; i < oct_num; ++i)
         {
             fprintf(out, "%.2f ", octaves[i]);
         }
         fprintf(out, "</octaves>\n");
-        #ifdef EXTRAPRINT
-        printf("%d\t%.8f\t%.8f\t%.8f\t%.8f\t%d\t%d\t%d\n", graph_outdegree(&g, c) - 1, cls_centrality[c], cls_centrality_scaled[c], har_cls_centrality[c], har_cls_centrality_scaled[c], species_distribution.size, speciation_per_c[c], extinction_per_c[c]);
-        #endif
         fprintf(out, "  </vertex>\n");
     }
-    #ifdef EXTRAPRINT
-    printf("Simulation %u\t%d\t%.2f\t%.2f\t%.4f\t%.4f\t%d\t%.2f\t%.2f\n", seed, communities, radius, s, (double)graph_edges(&g) / communities, omega, total_species[k_gen - 1], imedian(lifespan.array, lifespan.size), imedian(pop_size.array, pop_size.size));
-    #endif
 
     fprintf(out, "</simulation>\n");
 
@@ -703,20 +731,23 @@ double **setup_cumulative_list(const graph *g, double omega)
 {
     const int num_v = g->num_v;
     double **cumul = (double**)malloc(num_v * sizeof(double*));
-    for (int i = 0; i < num_v; ++i) 
+    int i = 0;
+    for (; i < num_v; ++i) 
     {
         cumul[i] = (double*)malloc(g->num_e[i] * sizeof(double));
     }
-    for (int i = 0; i < num_v; ++i)
+    for (i = 0; i < num_v; ++i)
     {
-        for (int j = 0; j < g->num_e[i]; ++j)
+        int j = 0;
+        for (; j < g->num_e[i]; ++j)
         {
             cumul[i][j] = g->w_list[i][j];
         }
     }
-    for (int i = 0; i < num_v; ++i)
+    for (i = 0; i < num_v; ++i)
     {
-        for (int j = 0; j < g->num_e[i]; ++j)
+        int j = 0;
+        for (; j < g->num_e[i]; ++j)
         {
             if (i != g->adj_list[i][j])
             {
@@ -728,23 +759,25 @@ double **setup_cumulative_list(const graph *g, double omega)
             }
         }
     }
-    for (int i = 0; i < num_v; ++i)
+    for (i = 0; i < num_v; ++i)
     {
         double sum = 0.0;
         const int num_e = g->num_e[i];
-        for (int j = 0; j < num_e; ++j)
+        int j = 0;
+        for (; j < num_e; ++j)
         {
             sum += cumul[i][j];
         }
-        for (int j = 0; j < num_e; ++j)
+        for (j = 0; j < num_e; ++j)
         {
             cumul[i][j] /= sum;
         }
     }
-    for (int i = 0; i < num_v; ++i)
+    for (i = 0; i < num_v; ++i)
     {
         const int num_e = g->num_e[i];
-        for (int j = 1; j < num_e - 1; ++j)
+        int j = 1;
+        for (; j < num_e - 1; ++j)
         {
             cumul[i][j] += cumul[i][j - 1];
         }

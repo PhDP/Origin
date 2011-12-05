@@ -1,6 +1,14 @@
 #ifndef COMMON_H_
 #define COMMON_H_
 
+#ifndef TRUE
+#define TRUE 1
+#endif
+
+#ifndef FALSE
+#define FALSE 0
+#endif
+
 // The initial capacity of vectors
 #ifndef VECTOR_INIT_CAPACITY
 #define VECTOR_INIT_CAPACITY 32

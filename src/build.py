@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-
+#
 # A small Python script to compile the programs.
 #
 # Yes I know about make (and Waf), and I understand the limitations of this simple script, but

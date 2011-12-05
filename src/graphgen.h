@@ -1,7 +1,6 @@
 #ifndef GRAPHGENERATORS_H_
 #define GRAPHGENERATORS_H_
 
-#include <stdbool.h>
 #include <gsl/gsl_rng.h>
 #include <gsl/gsl_randist.h>
 #include "graph.h"

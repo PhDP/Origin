@@ -6,8 +6,9 @@
 ORIGIN_INLINE int biodiversity_octaves(const int *a, int array_size, double **octaves)
 {
     // Find the largest number in the supplied array:
-    int largest = a[0];  
-    for (int i = 0; i < array_size; ++i)
+    int largest = a[0];
+    int i = 0;
+    for (; i < array_size; ++i)
     {
         if (a[i] > largest)
         {
@@ -24,13 +25,13 @@ ORIGIN_INLINE int biodiversity_octaves(const int *a, int array_size, double **oc
     }
     // Allocate memory for the array and fill with 0.0:
     (*octaves) = (double*)malloc(oct_num * sizeof(double));
-    for (int i = 0; i < oct_num; ++i)
+    for (i = 0; i < oct_num; ++i)
     {
         (*octaves)[i] = 0.0;
     }
     // Fill the abundance classes:
     int abundance_class; //
-    for (int i = 0; i < array_size; ++i)
+    for (i = 0; i < array_size; ++i)
     {
         if (a[i] != 0)
         {

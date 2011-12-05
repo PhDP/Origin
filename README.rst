@@ -19,4 +19,3 @@ gsl (gnu scientific library)... which is why the project is under the GPL licens
 On Linux Debian/Ubuntu/Mint you can get everything you need to compile and run 'origin' by entering the following line in a terminal:
 
     sudo apt-get install gcc libgsl0-dev libgsl0ldbl
-

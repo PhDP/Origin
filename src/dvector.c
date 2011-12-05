@@ -72,7 +72,8 @@ ORIGIN_INLINE double *dvector_get_array(dvector *v)
     double *new_array = (double*)malloc(size * sizeof(double)); // Only allocate memory for the active elements
 
     // Copy the elements to the new array
-    for (int i = 0; i < size; ++i)
+    int i = 0;
+    for (; i < size; ++i)
     {
         new_array[i] = v->array[i];
     }
@@ -86,7 +87,8 @@ ORIGIN_INLINE void dvector_grow0(dvector *v, int new_capacity)
 
     // Copy the elements from the old to the new array
     const int size = v->size;
-    for (int i = 0; i < size; ++i)
+    int i = 0;
+    for (; i < size; ++i)
     {
         new_array[i] = v->array[i];
     }
@@ -127,19 +129,10 @@ ORIGIN_INLINE void dvector_free(dvector *v)
 ORIGIN_INLINE void dvector_print(dvector *v, FILE *out)
 {
     const int size = v->size;
-    if (out == NULL)
+    int i = 0;
+    for (; i < size; ++i)
     {
-        for (int i = 0; i < size; ++i)
-        {
-            printf("%.2f ", v->array[i]);
-        }
-    }
-    else
-    {
-        for (int i = 0; i < size; ++i)
-        {
-            fprintf(out, "%.2f ", v->array[i]);
-        }
+        fprintf(out, "%.2f ", v->array[i]);
     }
 }
 
@@ -151,39 +144,38 @@ void dvector_examples()
     dvector_init0(&v1);
     dvector_init1(&v2, 3);
 
-    for (int i = 0; i < 10; ++i)
+    int i = 0;
+    for (; i < 10; ++i)
     {
         dvector_add(&v1, (double)i);
         dvector_add(&v2, (double)i);
     }
-
     printf("v1 (n = %d, capacity = %d): ", v1.size, v1.capacity);
-    dvector_print(&v1, NULL);  
+    dvector_print(&v1, stdout);
     printf("\n");
     printf("v2 (n = %d, capacity = %d): ", v2.size, v2.capacity);
-    dvector_print(&v2, NULL);  
+    dvector_print(&v2, stdout);
     printf("\n");
 
-    for (int i = 10; i < 15; ++i)
+    for (i = 10; i < 15; ++i)
     {
         dvector_add(&v1, (double)i);
     }
-
     printf("v1 (n = %d, capacity = %d): ", v1.size, v1.capacity);
-    dvector_print(&v1, NULL);  
+    dvector_print(&v1, stdout);  
     printf("\n");
     printf("v2 (n = %d, capacity = %d): ", v2.size, v2.capacity);
-    dvector_print(&v2, NULL);  
+    dvector_print(&v2, stdout);  
     printf("\n");
 
     dvector_sub1(&v1);
     dvector_sub(&v2, 8);
 
     printf("v1 (n = %d, capacity = %d): ", v1.size, v1.capacity);
-    dvector_print(&v1, NULL);  
+    dvector_print(&v1, stdout);
     printf("\n");
     printf("v2 (n = %d, capacity = %d): ", v2.size, v2.capacity);
-    dvector_print(&v2, NULL);  
+    dvector_print(&v2, stdout);
     printf("\n");
 
     dvector_free(&v1);  

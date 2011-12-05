@@ -12,7 +12,7 @@
 Species *Species_init0(int subpopulations, int time_of_birth, int n_genotypes)
 {
     Species *temp = (Species*)malloc(sizeof(Species));
-    
+
     temp->subpops = subpopulations;
     temp->n_genotypes = n_genotypes;
     temp->birth = time_of_birth;  
@@ -38,7 +38,7 @@ Species *Species_init0(int subpopulations, int time_of_birth, int n_genotypes)
 Species *Species_init1(int subpopulations, int fill, int time_of_birth, int n_genotypes)
 {
     Species *temp = (Species*)malloc(sizeof(Species));
-    
+
     temp->subpops = subpopulations;
     temp->n_genotypes = n_genotypes;
     temp->birth = time_of_birth;  
@@ -96,7 +96,7 @@ ORIGIN_INLINE bool Species_is_extinct(const Species *s)
 ORIGIN_INLINE int Species_total(const Species *s)
 {
     int sum = 0;
-    
+
     for (int i = 0; i < s->subpops; ++i)
     {
         sum += s->n[i];

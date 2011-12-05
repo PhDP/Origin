@@ -16,7 +16,8 @@ ORIGIN_INLINE int adjlist_edges(const adjlist *a)
 {
     int sum = 0;
     const int num_v = a->num_v;
-    for (int i = 0; i < num_v; ++i)
+    int i = 0;
+    for (; i < num_v; ++i)
     {
         for (edge *e = a->list[i]; e != NULL; e = e->next) 
         {
@@ -29,7 +30,7 @@ ORIGIN_INLINE int adjlist_edges(const adjlist *a)
 ORIGIN_INLINE edge *create_edge(int head, double weight, edge *next)
 {
     edge *e = (edge*)malloc(sizeof(edge));
-    
+
     e->head = head;
     e->w = weight;
     e->next = next;
@@ -41,9 +42,11 @@ ORIGIN_INLINE int adjlist_proper_edges(const adjlist *a)
 {
     int sum = 0;
     const int num_v = a->num_v;
-    for (int i = 0; i < num_v; ++i)
+    int i = 0;
+    for (; i < num_v; ++i)
     {
-        for (edge *e = a->list[i]; e != NULL; e = e->next) 
+        edge *e = a->list[i];
+        for (; e != NULL; e = e->next) 
         {
             sum += (e->head != i);
         }
@@ -55,9 +58,11 @@ ORIGIN_INLINE int adjlist_loops(const adjlist *a)
 {
     int sum = 0;
     const int num_v = a->num_v;
-    for (int i = 0; i < num_v; ++i)
+    int i = 0;
+    for (; i < num_v; ++i)
     {
-        for (edge *e = a->list[i]; e != NULL; e = e->next) 
+        edge *e = a->list[i];
+        for (; e != NULL; e = e->next) 
         {
             sum += (e->head == i);
         }
@@ -68,7 +73,8 @@ ORIGIN_INLINE int adjlist_loops(const adjlist *a)
 ORIGIN_INLINE int adjlist_outdegree(const adjlist *a, int u)
 {
     int sum = 0;
-    for (edge *e = a->list[u]; e != NULL; e = e->next) 
+    edge *e = a->list[u];
+    for (; e != NULL; e = e->next) 
     {
         ++sum;
     }
@@ -79,9 +85,11 @@ ORIGIN_INLINE int adjlist_indegree(const adjlist *a, int u)
 {
     int sum = 0;
     const int num_v = a->num_v;
-    for (int i = 0; i < num_v; ++i)
+    int i = 0;
+    for (; i < num_v; ++i)
     {
-        for (edge *e = a->list[i]; e != NULL; e = e->next) 
+        edge *e = a->list[i];
+        for (; e != NULL; e = e->next) 
         {
             sum += (e->head == u);
         }
@@ -92,7 +100,8 @@ ORIGIN_INLINE int adjlist_indegree(const adjlist *a, int u)
 ORIGIN_INLINE bool adjlist_is_balanced(const adjlist *a)
 {
     const int num_v = a->num_v;
-    for (int i = 0; i < num_v; ++i)
+    int i = 0;
+    for (; i < num_v; ++i)
     {
         if (adjlist_indegree(a, i) != adjlist_outdegree(a, i))
         {
@@ -166,9 +175,11 @@ bool adjlist_strongly_connected(const adjlist *a)
     const int num_v = a->num_v;
     bool *group = (bool*)malloc(num_v * sizeof(bool));
 
-    for (int u = 0; u < num_v; ++u) 
+    int u = 0;
+    for (; u < num_v; ++u) 
     {
-        for (int v = 0; v < num_v; ++v) 
+        int v = 0;
+        for (; v < num_v; ++v) 
         {
             group[v] = false;
         }
@@ -176,7 +187,7 @@ bool adjlist_strongly_connected(const adjlist *a)
         group[u] = true;
         adjlist_test_cc(a, group, u); // Call recursive function
 
-        for (int v = 0; v < num_v; ++v) 
+        for (v = 0; v < num_v; ++v) 
         {
             if (group[v] == false) 
             {
@@ -194,23 +205,27 @@ double **adjlist_get_gdm(const adjlist *a)
     const double max = DBL_MAX;
     const int num_v = a->num_v;
     double **gdm = (double**)malloc(num_v * sizeof(double*));
-    for (int i = 0; i < num_v; ++i)
+    int i = 0;
+    for (; i < num_v; ++i)
     {
         gdm[i] = (double*)malloc(num_v * sizeof(double));
     }
-    for (int i = 0; i < num_v; ++i)
+    for (i = 0; i < num_v; ++i)
     {
-        for (int j = 0; j < num_v; ++j)
+        int j = 0;
+        for (; j < num_v; ++j)
         {
             gdm[i][j] = max;
         }
     }
     bool *visited = (bool*)malloc(num_v * sizeof(bool));
-    
+
     int current; // The vertex
-    for (int u = 0; u < num_v; ++u)
+    int u = 0;
+    for (; u < num_v; ++u)
     {
-        for (int v = 0; v < num_v; ++v)
+        int v = 0;
+        for (; v < num_v; ++v)
         {
             visited[v] = false;
         }
@@ -221,7 +236,8 @@ double **adjlist_get_gdm(const adjlist *a)
 
         while (has_next)
         {
-            for (edge *e = a->list[u]; e != NULL; e = e->next)
+            edge *e = a->list[u];
+            for (; e != NULL; e = e->next)
             {
                 const int head = e->head;
                 if (head != current)
@@ -237,7 +253,7 @@ double **adjlist_get_gdm(const adjlist *a)
 
             has_next = false;
             double tmp = max;
-            for (int v = 0; v < num_v; v++)
+            for (v = 0; v < num_v; ++v)
             {
                 if (visited[v] == false && gdm[u][v] < tmp)
                 {
@@ -257,24 +273,27 @@ double *adjlist_cls(const adjlist *a)
     const int num_v = a->num_v;
     double **gdm = adjlist_get_gdm(a);
     double *cls_centrality = (double*)malloc(num_v * sizeof(double));
-    
-    for (int i = 0; i < num_v; ++i)
+
+    int i = 0;
+    for (; i < num_v; ++i)
     {
         double sum = 0.0;
-        for (int j = 0; j < num_v; ++j)
+        int j = 0;
+        for (; j < num_v; ++j)
         {
             sum += gdm[i][j];
         }
         cls_centrality[i] = sum / (num_v - 1);
     }
-    
+
     // Free the memory of the geodesic distance matrix:
-    for (int i = 0; i < num_v; ++i)
+    int i = 0;
+    for (; i < num_v; ++i)
     {
         free(gdm[i]);
     }
     free(gdm);
-    
+
     return cls_centrality;
 }
 
@@ -282,9 +301,7 @@ void adjlist_graphml(const adjlist *a, FILE *out, const char *id)
 {
     const int num_v = a->num_v;
     fprintf(out, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-    fprintf(out, "<graphml xmlns=\"http://graphml.graphdrawing.org/xmlns\"\n");
-    fprintf(out, "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n");
-    fprintf(out, "xsi:schemaLocation=\"http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd\">\n");
+    fprintf(out, "<graphml xmlns=\"http://graphml.graphdrawing.org/xmlns\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd\">\n");
 
     if (id != NULL)
     {
@@ -301,71 +318,43 @@ void adjlist_graphml(const adjlist *a, FILE *out, const char *id)
     }
     for (i = 0; i < num_v; ++i)
     {
-        edge *e;
-        for (e = a->list[i]; e != NULL; e = e->next)
+        edge *e = a->list[i];
+        for (; e != NULL; e = e->next)
         {
             fprintf(out, "    <edge source=\"v%d\" target=\"v%d\"/>\n", i, e->head);
         }
     }
-    fprintf(out, "  </graph>\n");
-    fprintf(out, "</graphml>\n");
+    fprintf(out, "  </graph>\n</graphml>\n");
 }
 
 void adjlist_print(const adjlist *a, FILE *out)
 {
     const int num_v = a->num_v;
-    if (out == NULL) 
+    int i = 0;
+    for (; i < num_v; ++i) 
     {
-        for (int i = 0; i < num_v; ++i) 
+        edge *e = a->list[i];
+        fprintf(out, "%5d -> ", i);
+        for (; e != NULL; e = e->next)
         {
-            printf("%5d -> ", i);
-            for (edge *e = a->list[i]; e != NULL; e = e->next)
-            {
-                printf("%d ", e->head);
-            }
-            printf("\n");
+            fprintf(out, "%d ", e->head);
         }
-    } 
-    else 
-    {
-        for (int i = 0; i < num_v; ++i) 
-        {
-            fprintf(out, "%5d -> ", i);
-            for (edge *e = a->list[i]; e != NULL; e = e->next)
-            {
-                fprintf(out, "%d ", e->head);
-            }
-            fprintf(out, "\n");
-        }
+        fprintf(out, "\n");
     }
 }
 
 void adjlist_print_w(const adjlist *a, FILE *out)
 {
     const int num_v = a->num_v;
-    if (out == NULL) 
+    int i = 0;
+    for (; i < num_v; ++i) 
     {
-        for (int i = 0; i < num_v; ++i) 
+        fprintf(out, "%5d -> ", i);
+        for (edge *e = a->list[i]; e != NULL; e = e->next)
         {
-            printf("%5d -> ", i);
-            for (edge *e = a->list[i]; e != NULL; e = e->next)
-            {
-                printf("%d(%.2f) ", e->head, e->w);
-            }
-            printf("\n");
+            fprintf(out, "%d(%8.2f) ", e->head, e->w);
         }
-    } 
-    else 
-    {
-        for (int i = 0; i < num_v; ++i) 
-        {
-            fprintf(out, "%5d -> ", i);
-            for (edge *e = a->list[i]; e != NULL; e = e->next)
-            {
-                fprintf(out, "%d(%8.2f) ", e->head, e->w);
-            }
-            fprintf(out, "\n");
-        }
+        fprintf(out, "\n");
     }
 }
 
@@ -373,44 +362,31 @@ void adjlist_print_mat(const adjlist *a, FILE *out)
 {
     const int num_v = a->num_v;
     int row[num_v];
-    for (int i = 0; i < num_v; ++i) 
+    int i = 0;
+    for (; i < num_v; ++i) 
     {
         row[i] = 0;
     }
-    for (int i = 0; i < num_v; ++i) 
+    for (i = 0; i < num_v; ++i) 
     {
-        for (edge *e = a->list[i]; e != NULL; e = e->next)
+        edge *e = a->list[i];
+        for (; e != NULL; e = e->next)
         {
             row[e->head] += 1;
         }
         // Print the row
-        if (out == NULL) 
+        int j = 0;
+        for (; j < num_v; ++j) 
         {
-            for (int j = 0; j < num_v; ++j) 
-            {
-                printf("%d ", row[j]);
-            }
-        } 
-        else 
-        {
-            for (int j = 0; j < num_v; ++j) 
-            {
-                fprintf(out, "%d ", row[j]);
-            }
+            fprintf(out, "%d ", row[j]);
         }
         // Set all edges back to 0
-        for (edge *e = a->list[i]; e != NULL; e = e->next)
+        e = a->list[i];
+        for (; e != NULL; e = e->next)
         {
             row[e->head] -= 1;
         }
-        if (out == NULL) 
-        {
-            printf("\n");
-        }
-        else
-        {
-            fprintf(out, "\n");
-        }
+        fprintf(out, "\n");
     }
 }
 
@@ -418,44 +394,31 @@ void adjlist_print_w_mat(const adjlist *a, FILE *out)
 {
     const int num_v = a->num_v;
     double row[num_v];
-    for (int i = 0; i < num_v; ++i) 
+    int i = 0;
+    for (; i < num_v; ++i) 
     {
         row[i] = 0.0;
     }
-    for (int i = 0; i < num_v; ++i) 
+    for (i = 0; i < num_v; ++i) 
     {
-        for (edge *e = a->list[i]; e != NULL; e = e->next)
+        edge *e = a->list[i];
+        for (; e != NULL; e = e->next)
         {
             row[e->head] = e->w;
         }
         // Print the row
-        if (out == NULL) 
+        int j = 0;
+        for (; j < num_v; ++j) 
         {
-            for (int j = 0; j < num_v; ++j) 
-            {
-                printf("%.4f ", row[j]);
-            }
-        } 
-        else 
-        {
-            for (int j = 0; j < num_v; ++j) 
-            {
-                fprintf(out, "%.4f ", row[j]);
-            }
+            fprintf(out, "%.4f ", row[j]);
         }
         // Set all edges back to 0
-        for (edge *e = a->list[i]; e != NULL; e = e->next)
+        e = a->list[i];
+        for (; e != NULL; e = e->next)
         {
             row[e->head] = 0.0;
         }
-        if (out == NULL) 
-        {
-            printf("\n");
-        }
-        else
-        {
-            fprintf(out, "\n");
-        }
+        fprintf(out, "\n");
     }
 }
 
@@ -471,7 +434,8 @@ ORIGIN_INLINE void edge_free(edge *e)
 ORIGIN_INLINE void adjlist_free(adjlist *a)
 {
     const int num_v = a->num_v;
-    for (int i = 0; i < num_v; ++i)
+    int i = 0;
+    for (; i < num_v; ++i)
     {
         if (a->list[i] != NULL)
         {
@@ -488,7 +452,8 @@ ORIGIN_INLINE void adjlist_free(adjlist *a)
 
 ORIGIN_INLINE void adjlist_test_cc(const adjlist *a, bool *group, int u)
 {
-    for (edge *e = a->list[u]; e != NULL; e = e->next) 
+    edge *e = a->list[u];
+    for (; e != NULL; e = e->next) 
     {
         const int head = e->head;
         if (head != u && group[head] == false)

@@ -13,19 +13,20 @@ extern "C" {
 typedef struct edge_
 {
     struct edge_ *next; /**< Pointer to the next edge in the list. */
-    
+
     int head; /**< Head of the edge (the ID of the vertex pointed). */
-    
+
     double w; /**< Weight. */
-} edge;
+}
+edge;
 
 /** A adjlist represented by an adjacency list (made of dynamic arrays). */
 typedef struct 
 {
     int num_v; /**< Number of vertices. */  
-    
+
     int *num_e;  /**< Number of edges per vertex. */
-    
+
     edge **list; /**< The adjacency list. */
 } 
 adjlist;
@@ -81,16 +82,16 @@ double *adjlist_cls(const adjlist *a);
 /** Print the graph in graphml format. */
 void adjlist_graphml(const adjlist *a, FILE *out, const char *id);
 
-/** Print the adjacency list. Use NULL for the file pointer to print to the console. */
+/** Print the adjacency list. Use 'stdout' for the file pointer to print to the console. */
 void adjlist_print(const adjlist *a, FILE *out);
 
-/** Print the adjacency list & the weights. Use NULL for the file pointer to print to the console. */
+/** Print the adjacency list & the weights. Use 'stdout' for the file pointer to print to the console. */
 void adjlist_print_w(const adjlist *a, FILE *out);
 
-/** Print in matrix form. Use NULL for the file pointer to print to the console. */
+/** Print in matrix form. Use 'stdout' for the file pointer to print to the console. */
 void adjlist_print_mat(const adjlist *a, FILE *out);
 
-/** Print the weights in matrix form. Use NULL for the file pointer to print to the console. */
+/** Print the weights in matrix form. Use 'stdout' for the file pointer to print to the console. */
 void adjlist_print_w_mat(const adjlist *a, FILE *out);
 
 /** Free the memory of the struct and all subsequent edges. */
