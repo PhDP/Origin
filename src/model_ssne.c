@@ -4,7 +4,7 @@
 * email:     <philippe.d.proulx@gmail.com>
 * website:   http://phdp.huginn.info/
 * date:      2011.12.05
-* version:   2.0 alpha2
+* version:   2.0 alpha3
 * 
 * description:
 *   Spatially explicit speciation in neutral ecology. Type ssne --help 
@@ -21,7 +21,7 @@
 *****************************************************************************/
 
 #define SSNE_DATE       "2011.12.05"
-#define SSNE_VERSION    "2.0a2"
+#define SSNE_VERSION    "2.0a3"
 
 #include <stdlib.h>
 #include <stdio.h>
