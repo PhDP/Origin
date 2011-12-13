@@ -64,7 +64,6 @@ ORIGIN_INLINE bool SpeciesList_rmv_next(SpeciesList *list, SLNode *node)
         {
             return false;
         }
-
         old_node = node->next;
         node->next = node->next->next;
 
@@ -155,10 +154,10 @@ ORIGIN_INLINE SLNode *SpeciesList_get(SpeciesList *list, int n)
     {
         return list->tail;
     }
-
     SLNode *node = list->head;
 
-    for (int i = 0; i < n; ++i)
+    int i = 0;
+    for (; i < n; ++i)
     {
         node = node->next;
     }
@@ -170,41 +169,22 @@ ORIGIN_INLINE void SpeciesList_print_pop(SpeciesList *list, FILE *out)
     SLNode *node = list->head;
     const int subpopulations = node->species->subpops;
 
-    if (out != NULL)
+    while (node != NULL)
     {
-        while (node != NULL)
+        int i = 0;
+        for (; i < subpopulations; ++i)
         {
-            for (int i = 0; i < subpopulations; ++i)
+            fprintf(out, "%d ( ", node->species->n[i]);
+            int j = 0;
+            for (; j < node->species->n_genotypes; ++j)
             {
-                fprintf(out, "%d ( ", node->species->n[i]);
-                for (int j = 0; j < node->species->n_genotypes; ++j)
-                {
-                    fprintf(out, "%d ", node->species->genotypes[i][j]);
-                }
-                fprintf(out, ")");
+                fprintf(out, "%d ", node->species->genotypes[i][j]);
             }
-            fprintf(out, " = %5d ", Species_total(node->species));
-            fprintf(out, "\n");
-            node = node->next;
+            fprintf(out, ")");
         }
-    }
-    else
-    {
-        while (node != NULL)
-        {
-            for (int i = 0; i < subpopulations; ++i)
-            {
-                printf("%d ( ", node->species->n[i]);
-                for (int j = 0; j < node->species->n_genotypes; ++j)
-                {
-                    printf("%d ", node->species->genotypes[i][j]);
-                }
-                printf(")");
-            }
-            printf(" = %5d ", Species_total(node->species));
-            printf("\n");
-            node = node->next;
-        }
+        fprintf(out, " = %5d ", Species_total(node->species));
+        fprintf(out, "\n");
+        node = node->next;
     }
 }
 

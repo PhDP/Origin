@@ -785,7 +785,7 @@ double **setup_cumulative_list(const graph *g, double omega)
         cumul[i][num_e - 1] = 1.0;
     }
     /*
-    graph_print(g, NULL);
+    graph_print(g, stdout);
     for (int i = 0; i < num_v; ++i)
     {
         const int num_e = g->num_e[i];

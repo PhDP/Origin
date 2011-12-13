@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <time.h>
 #include <assert.h>
-#include <stdbool.h>
 #include <string.h>
 #include <math.h>
 #include <pthread.h>
@@ -31,7 +30,6 @@ Species *Species_init0(int subpopulations, int time_of_birth, int n_genotypes)
     {
         temp->genotypes = NULL;
     }
-
     return temp;
 }
 
@@ -44,7 +42,8 @@ Species *Species_init1(int subpopulations, int fill, int time_of_birth, int n_ge
     temp->birth = time_of_birth;  
 
     temp->n = (int*)malloc(subpopulations * sizeof(int));
-    for (int i = 0; i < subpopulations; ++i)
+    int i = 0;
+    for (; i < subpopulations; ++i)
     {
         temp->n[i] = fill;
     }
@@ -52,11 +51,12 @@ Species *Species_init1(int subpopulations, int fill, int time_of_birth, int n_ge
     if (n_genotypes > 0)
     {
         temp->genotypes = (int**)malloc(subpopulations * sizeof(int*));
-        for (int i = 0; i < subpopulations; ++i)
+        for (i = 0; i < subpopulations; ++i)
         {
             temp->genotypes[i] = (int*)malloc(n_genotypes * sizeof(int));
             temp->genotypes[i][0] = fill;
-            for (int j = 1; j < n_genotypes; ++j)
+            int j = 1;
+            for (; j < n_genotypes; ++j)
             {
                 temp->genotypes[i][j] = 0;
             }
@@ -69,69 +69,74 @@ Species *Species_init1(int subpopulations, int fill, int time_of_birth, int n_ge
     return temp;
 }
 
-ORIGIN_INLINE bool Species_is_extant(const Species *s)
+ORIGIN_INLINE int Species_is_extant(const Species *s)
 {
-    for (int i = 0; i < s->subpops; ++i)
+    int i = 0;
+    for (; i < s->subpops; ++i)
     {
         if (s->n[i] > 0)
         {
-            return true;
+            return TRUE;
         }
     }
-    return false;
+    return FALSE;
 }
 
-ORIGIN_INLINE bool Species_is_extinct(const Species *s)
+ORIGIN_INLINE int Species_is_extinct(const Species *s)
 {
-    for (int i = 0; i < s->subpops; ++i)
+    int i = 0;
+    for (; i < s->subpops; ++i)
     {
         if (s->n[i] > 0)
         {
-            return false; 
+            return FALSE;
         }
     }
-    return true;
+    return TRUE;
 }
 
 ORIGIN_INLINE int Species_total(const Species *s)
 {
     int sum = 0;
-
-    for (int i = 0; i < s->subpops; ++i)
+    int i = 0;
+    for (; i < s->subpops; ++i)
     {
         sum += s->n[i];
     }
     return sum;
 }
 
-void Species_printf(const Species *s)
+void Species_printf(const Species *s, FILE *out)
 {
-    printf("  birth: %d\n", s->birth);
-    
-    printf("  populations: ");
-    for (int i = 0; i < s->subpops; ++i)
+    fprintf(out, "  birth: %d\n", s->birth);
+
+    fprintf(out, "  populations: ");
+    int i = 0;
+    for (; i < s->subpops; ++i)
     {
-        printf("%5d ", s->n[i]);
+        fprintf(out, "%5d ", s->n[i]);
     }
-    printf("\n");
-    
-    for (int i = 0; i < s->n_genotypes; ++i)
+    fprintf(out, "\n");
+
+    for (i = 0; i < s->n_genotypes; ++i)
     {
-        printf("  genotype %2d: ", i);
-        for (int j = 0; j < s->subpops; ++j)
+        fprintf(out, "  genotype %2d: ", i);
+        int j = 0;
+        for (; j < s->subpops; ++j)
         {
-            printf("%5d ", s->genotypes[j][i]);
+            fprintf(out, "%5d ", s->genotypes[j][i]);
         }
-        printf("\n");
+        fprintf(out, "\n");
     }
-    printf("\n");
+    fprintf(out, "\n");
 }
 
 void Species_free(Species *s)
 {
     free(s->n);
 
-    for (int i = 0; i < s->n_genotypes; ++i)
+    int i = 0;
+    for (; i < s->n_genotypes; ++i)
     {
         free(s->genotypes[i]);
     }

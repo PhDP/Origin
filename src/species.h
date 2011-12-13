@@ -1,7 +1,7 @@
-#ifndef HON_SPECIES_H
-#define HON_SPECIES_H
+#ifndef SPECIES_H
+#define SPECIES_H
 
-#include <stdbool.h>
+#include <stdio.h>
 
 // For C++ compilers:
 #ifdef __cplusplus
@@ -35,16 +35,16 @@ Species *Species_init0(int subpopulations, int time_of_birth, int n_genotypes);
 Species *Species_init1(int subpopulations, int fill, int time_of_birth, int n_genotypes);
 
 /** Return true if the population has still individuals. */
-bool Species_is_extant(const Species *pop);
+int Species_is_extant(const Species *pop);
 
 /** Return true if the population is extinct. */
-bool Species_is_extinct(const Species *pop);
+int Species_is_extinct(const Species *pop);
 
 /** Return the total population. */
 int Species_total(const Species *pop);
 
 /** Print basic info on the species. */
-void Species_printf(const Species *s);
+void Species_printf(const Species *s, FILE *out);
 
 /** Free the memory. */
 void Species_free(Species *pop);
