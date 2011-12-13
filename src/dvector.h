@@ -50,7 +50,7 @@ void dvector_sub1(dvector *v);
 double *dvector_get_array(dvector *v);
 
 /** Increase the internal storage for the array. */
-void dvector_grow0(dvector *v, int new_capacity);
+void dvector_grow0(dvector *v, unsigned int new_capacity);
 
 /** Double the internal storage for the array. */
 void dvector_grow1(dvector *v);
@@ -61,11 +61,11 @@ void dvector_sort_asc(dvector *v);
 /** Use quicksort to sort the array in descending order. */
 void dvector_sort_des(dvector *v);
 
-/** Free the memory. */
-void dvector_free(dvector *v);
-
 /** Print the array. Set the argument to 'stdout' to print to the console. */
 void dvector_print(dvector *v, FILE *out);
+
+/** Free the memory. */
+void dvector_free(dvector *v);
 
 /** Tests and examples for this file. */
 void dvector_examples();

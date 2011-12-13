@@ -80,22 +80,9 @@ ORIGIN_INLINE double *dvector_get_array(dvector *v)
     return new_array;
 }
 
-ORIGIN_INLINE void dvector_grow0(dvector *v, int new_capacity)
+ORIGIN_INLINE void dvector_grow0(dvector *v, unsigned int new_capacity)
 {
-    // The new array
-    double *new_array = (double*)malloc(new_capacity* sizeof(double));
-
-    // Copy the elements from the old to the new array
-    const int size = v->size;
-    int i = 0;
-    for (; i < size; ++i)
-    {
-        new_array[i] = v->array[i];
-    }
-    v->capacity = new_capacity; // Change the capacity
-    double *swap = v->array; // Used to swap the pointers
-    v->array = new_array; // Set the dynamic a's pointer to the new a
-    free(swap); // Free the memory of the old a
+    v->array = (double*)realloc(v->array, new_capacity * sizeof(double));
 }
 
 ORIGIN_INLINE void dvector_grow1(dvector *v)
@@ -120,12 +107,6 @@ ORIGIN_INLINE void dvector_sort_des(dvector *v)
     qsort((void*)v->array, v->size, sizeof(double), compare_double_des);
 }
 
-ORIGIN_INLINE void dvector_free(dvector *v)
-{
-    free(v->array); // Free the memory of the vector
-    v->array = NULL;
-}
-
 ORIGIN_INLINE void dvector_print(dvector *v, FILE *out)
 {
     const int size = v->size;
@@ -134,6 +115,11 @@ ORIGIN_INLINE void dvector_print(dvector *v, FILE *out)
     {
         fprintf(out, "%.2f ", v->array[i]);
     }
+}
+
+ORIGIN_INLINE void dvector_free(dvector *v)
+{
+    free(v->array);
 }
 
 void dvector_examples()

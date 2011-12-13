@@ -33,22 +33,9 @@ void ivector_init2(ivector *v, int *x, int size, int initial_capacity)
     }
 }
 
-ORIGIN_INLINE void ivector_grow0(ivector *v, int new_capacity)
+ORIGIN_INLINE void ivector_grow0(ivector *v, unsigned int new_capacity)
 {
-    // The new array
-    int *new_array = (int*)malloc(new_capacity * sizeof(int));
-
-    // Copy the elements from the old to the new array
-    const int size = v->size;
-    for (int i = 0; i < size; ++i)
-    {
-        new_array[i] = v->array[i];
-    }
-
-    v->capacity = new_capacity; // Change the max
-    int *swap = v->array; // Used to swap the pointers
-    v->array = new_array; // Set the dynamic a's pointer to the new a
-    free(swap); // Free the memory of the old a
+    v->array = (int*)realloc(v->array, new_capacity * sizeof(int));
 }
 
 ORIGIN_INLINE void ivector_grow1(ivector *v)
@@ -168,7 +155,7 @@ ORIGIN_INLINE int ivector_trim_small(ivector *v, int smallest)
     }	
     const int removed = j - i;
     v->size -= removed;
-    
+
     return removed;
 }
 
@@ -203,41 +190,41 @@ void ivector_print(ivector *v, FILE *out)
 
 ORIGIN_INLINE void ivector_free(ivector *v)
 {
-    free(v->array); // Free the memory of the vector
-    v->array = NULL;
+    free(v->array);
 }
 
 void ivector_examples()
 {
     ivector v;
     ivector_init0(&v);
-    
-    for (int i = 0; i < 20; ++i)
+
+    int i = 0;
+    for (; i < 20; ++i)
     {
         ivector_add(&v, i*i - 7*i);
     }
 
     printf("v (n = %d, capacity = %d): ", v.size, v.capacity);
-    ivector_print(&v, NULL);
+    ivector_print(&v, stdout);
     printf("\n");
 
     ivector_sort_des(&v);
 
     printf("v (n = %d, capacity = %d): ", v.size, v.capacity);
-    ivector_print(&v, NULL);
+    ivector_print(&v, stdout);
     printf("\n");
 
     ivector_sort_asc(&v);
 
     printf("v (n = %d, capacity = %d): ", v.size, v.capacity);
-    ivector_print(&v, NULL);
+    ivector_print(&v, stdout);
     printf("\n");
 
     ivector_trim_small(&v, 0);
     ivector_trim_large(&v, 100);
 
     printf("v (n = %d, capacity = %d): ", v.size, v.capacity);
-    ivector_print(&v, NULL);
+    ivector_print(&v, stdout);
     printf("\n");
 
     printf("Element #4: %d\n", ivector_get(&v, 4));
@@ -246,7 +233,7 @@ void ivector_examples()
     ivector_sub(&v, 3);
     
     printf("v (n = %d, capacity = %d): ", v.size, v.capacity);
-    ivector_print(&v, NULL);
+    ivector_print(&v, stdout);
     printf("\n");
 
     ivector_free(&v);  

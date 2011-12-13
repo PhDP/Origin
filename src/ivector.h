@@ -65,7 +65,7 @@ void ivector_sort_asc(ivector *v);
 void ivector_sort_des(ivector *v);
 
 /** Increase the internal storage for the array. */
-void ivector_grow0(ivector *v, int new_capacity);
+void ivector_grow0(ivector *v, unsigned int new_capacity);
 
 /** Double the internal storage for the array. */
 void ivector_grow1(ivector *v);
