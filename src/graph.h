@@ -82,20 +82,17 @@ double *graph_har_cls_centrality(const graph *g);
 /** Return a scaled array with the harmonic closeness centrality for all vertices. */
 double *graph_har_cls_centrality_scaled(const graph *g);
 
-/** Print the adjacency list. Use NULL for the file pointer to print to the console. */
+/** Print the adjacency list. */
 void graph_print(const graph *g, FILE *out);
 
 /** Print the graph in GraphML format. */
 void graph_graphml(const graph *g, FILE *out, unsigned int id);
 
-/** Print the adjacency list & the weights. Use NULL for the file pointer to print to the console. */
+/** Print the adjacency list & the weights. */
 void graph_print_w(const graph *g, FILE *out);
 
-/** Print in matrix form. Use NULL for the file pointer to print to the console. */
+/** Print in matrix form. */
 void graph_print_mat(const graph *g, FILE *out);
-
-/** Print the weights in matrix form. Use NULL for the file pointer to print to the console. */
-void graph_print_w_mat(const graph *g, FILE *out);
 
 /** Free the memory of the struct. */
 void graph_free(graph *g);

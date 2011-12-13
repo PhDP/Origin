@@ -321,7 +321,6 @@ double *graph_har_cls_centrality(const graph *g)
         }
         har_cls_centrality[i] = sum / (num_v - 1);
     }
-
     // Free the memory of the geodesic distance matrix:
     for (i = 0; i < num_v; ++i)
     {
@@ -466,27 +465,9 @@ void graph_test_cc(const graph *g, int *group, int u)
     }
 }
 
-// Grow the edge list of some vertex v.
 void graph_grow_lists(graph *g, int u)
 {
     g->capacity[u] <<= 1;
-
-    int *tmp_adj = (int*)malloc(g->capacity[u] * sizeof(int));
-    double *tmp_w = (double*)malloc(g->capacity[u] * sizeof(double));
-
-    const int num_e = g->num_e[u];
-    int e = 0;
-    for (; e < num_e; ++e) 
-    {
-        tmp_adj[e] = g->adj_list[u][e];
-        tmp_w[e] = g->w_list[u][e];
-    }
-    int *swap_adj = g->adj_list[u];
-    double *swap_w = g->w_list[u];
-
-    g->adj_list[u] = tmp_adj;
-    g->w_list[u] = tmp_w;
-
-    free(swap_adj);
-    free(swap_w);
+    g->adj_list[u] = (int*)realloc(g->adj_list[u], g->capacity[u] * sizeof(int));
+    g->w_list[u] = (double*)realloc(g->w_list[u], g->capacity[u] * sizeof(double));
 }
