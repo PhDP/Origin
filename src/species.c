@@ -14,14 +14,15 @@ Species *Species_init0(int subpopulations, int time_of_birth, int n_genotypes)
 
     temp->subpops = subpopulations;
     temp->n_genotypes = n_genotypes;
-    temp->birth = time_of_birth;  
+    temp->birth = time_of_birth;
 
     temp->n = (int*)malloc(subpopulations * sizeof(int));
 
     if (n_genotypes > 0)
     {
         temp->genotypes = (int**)malloc(subpopulations * sizeof(int*));
-        for (int i = 0; i < n_genotypes; ++i)
+        int i = 0;
+        for (; i < n_genotypes; ++i)
         {
             temp->genotypes[i] = (int*)malloc(n_genotypes * sizeof(int));
         }
@@ -133,16 +134,15 @@ void Species_printf(const Species *s, FILE *out)
 
 void Species_free(Species *s)
 {
-    free(s->n);
-
-    int i = 0;
-    for (; i < s->n_genotypes; ++i)
-    {
-        free(s->genotypes[i]);
-    }
     if (s->genotypes != NULL)
     {
+        int i = 0;
+        for (; i < s->subpops; ++i)
+        {
+            free(s->genotypes[i]);
+        }
         free(s->genotypes);
     }
+    free(s->n);
     free(s);
 }

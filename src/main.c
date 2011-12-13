@@ -1,13 +1,11 @@
 /**
-* file:      model_ssne.c
+* file:      main,c
 * author:    Philippe Desjardins-Proulx
 * email:     <philippe.d.proulx@gmail.com>
 * website:   http://phdp.huginn.info/
-* date:      2011.12.12
-* version:   2.0 alpha4
 * 
 * description:
-*   Spatially explicit speciation in neutral ecology. Type ssne --help 
+*   Spatially explicit speciation in neutral ecology. Type origin --help 
 * for more information on how to run the program.
 *
 * references:
@@ -20,8 +18,8 @@
 * ...developed and tested on Linux x86_64.
 *****************************************************************************/
 
-#define ORIGIN_DATE       "2011.12.12"
-#define ORIGIN_VERSION    "2.0a4"
+#define ORIGIN_DATE       "2011.12.13"
+#define ORIGIN_VERSION    "2.0a5"
 
 #include <stdlib.h>
 #include <stdio.h>
