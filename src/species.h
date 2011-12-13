@@ -16,13 +16,13 @@ typedef struct
 
     /** Array of individuals per subpopulations. */
     int *n;
-    
+
     /** Number of distinct genotypes. */
     int n_genotypes;
 
     /** Number of individual of each genotype per subpopulations. */
     int **genotypes;
-        
+
     /** Date of birth. */
     int birth;
 }
@@ -54,4 +54,3 @@ void Species_free(Species *pop);
 #endif
 
 #endif
-

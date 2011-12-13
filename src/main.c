@@ -3,25 +3,25 @@
 * author:    Philippe Desjardins-Proulx
 * email:     <philippe.d.proulx@gmail.com>
 * website:   http://phdp.huginn.info/
-* date:      2011.12.05
-* version:   2.0 alpha3
+* date:      2011.12.12
+* version:   2.0 alpha4
 * 
 * description:
 *   Spatially explicit speciation in neutral ecology. Type ssne --help 
 * for more information on how to run the program.
 *
 * references:
-*    Desjardins-Proulx, P. and Gravel, D. How likely is speciation in
-*  neutral ecology ? The American Naturalist.
+*    P. Desjardins-Proulx and D. Gravel. 2012. How likely is speciation in
+*  neutral ecology? The American Naturalist 179(1). doi: 10.1086/663196.
 *
-*    Desjardins-Proulx, P. and Gravel, D. Neutral biodiversity in 
+*    P. Desjardins-Proulx and D. Gravel. Neutral biodiversity in 
 * complex landscapes. In prep.
 *
 * ...developed and tested on Linux x86_64.
 *****************************************************************************/
 
-#define SSNE_DATE       "2011.12.05"
-#define SSNE_VERSION    "2.0a3"
+#define ORIGIN_DATE       "2011.12.12"
+#define ORIGIN_VERSION    "2.0a4"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -98,8 +98,8 @@ int main(int argc, const char *argv[])
         // --help
         if (argv[1][2] == 'h')
         {
-            printf("Usage: ./ssne [options]\n");
-            printf("Example: ./ssne -x=8 -shape=circle -model=1 -s=0.10\n");
+            printf("Usage: ./origin [options]\n");
+            printf("Example: ./origin -x=8 -shape=circle -model=1 -s=0.10\n");
             printf("General options:\n");
             printf("  --help          How you got here...\n");
             printf("  --version       Display version.\n");
@@ -162,19 +162,18 @@ int main(int argc, const char *argv[])
             printf("  -o\n");
             printf("    description:  Name of the output files.\n");
             printf("    values:       Any string.\n");
-            printf("    default:      out\n");
             return EXIT_SUCCESS;
         }
         else if (argv[1][2] == 'v') // --version
         { 
-            printf("ssne v.%s (%s)\n", SSNE_VERSION, SSNE_DATE);
+            printf("ssne v.%s (%s)\n", ORIGIN_VERSION, ORIGIN_DATE);
             printf("Copyright (c) 2010-2011 Philippe Desjardins-Proulx <philippe.d.proulx@gmail.com>\n");
             printf("GPLv2 license  (see LICENSE)\n");
             return EXIT_SUCCESS;
         }
         else if (argv[1][2] == 'r') // --ref
         { 
-            printf("Desjardins-Proulx, P. and Gravel. How likely is speciation in\n  neutral ecology ? arXiv: 1102.2634.\n");
+            printf("P. Desjardins-Proulx and D. 2012. Gravel. How likely is speciation in\n  neutral ecology? The American Naturalist 179(1). doi: 10.1086/663196.\n");
             return EXIT_SUCCESS;
         }
     } // end '--' options
@@ -201,7 +200,7 @@ int main(int argc, const char *argv[])
     }
 
     printf("<?xml version=\"1.0\"?>\n");
-    printf("<origin_ssne>\n");
+    printf("<origin>\n");
     printf("  <model>");
     if (p.m == MODEL_BDM_NEUTRAL)
     {
@@ -255,7 +254,7 @@ int main(int argc, const char *argv[])
     const time_t end_t = time(NULL);
     printf("  <seconds>%lu</seconds>\n", (unsigned long)(end_t - start));
     printf("  <time>%s</time>\n", sec_to_string(end_t - start));
-    printf("</origin_ssne>\n");
+    printf("</origin>\n");
     return EXIT_SUCCESS; // yeppie !
 }
 
