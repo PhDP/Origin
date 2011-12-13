@@ -13,21 +13,22 @@ void ivector_init0(ivector *v)
     ivector_init1(v, VECTOR_INIT_CAPACITY);
 }
 
-void ivector_init1(ivector *v, int initial_capacity)
+void ivector_init1(ivector *v, unsigned int initial_capacity)
 {
     v->array = (int*)malloc(initial_capacity * sizeof(int));
     v->size = 0;
     v->capacity = initial_capacity;
 }
 
-void ivector_init2(ivector *v, int *x, int size, int initial_capacity)
+void ivector_init2(ivector *v, int *x, unsigned int size, unsigned int initial_capacity)
 {
     assert(size <= initial_capacity);
     v->array = (int*)malloc(initial_capacity * sizeof(int));
     v->size = size;
     v->capacity = initial_capacity;
 
-    for (int i = 0; i < size; ++i)
+    int i = 0;
+    for (; i < size; ++i)
     {
         v->array[i] = x[i];
     }
@@ -85,7 +86,8 @@ ORIGIN_INLINE void ivector_add_array(ivector *v, int *a, int size)
     {
         ivector_grow1(v);
     }
-    for (int i = 0; i < size; ++i)
+    int i = 0;
+    for (; i < size; ++i)
     {
         v->array[old_size + i] = a[i];
     }	
@@ -123,7 +125,8 @@ ORIGIN_INLINE int *ivector_get_array(ivector *v)
     int *new_array = (int*)malloc(size * sizeof(int)); // Only allocate memory for the active elements
 
     // Copy the elements to the new array
-    for (int i = 0; i < size; ++i)
+    int i = 0;
+    for (; i < size; ++i)
     {
         new_array[i] = v->array[i];
     }

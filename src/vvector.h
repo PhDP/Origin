@@ -13,10 +13,10 @@ typedef struct
     void **array;
 
     /** Number of elements in the array. */
-    int size;
+    unsigned int size;
 
     /** Max number of elements given the current size of 'a'. */
-    int capacity;
+    unsigned int capacity;
 }
 vvector;
 

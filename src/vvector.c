@@ -12,7 +12,7 @@ void vvector_init0(vvector *v)
     vvector_init1(v, VECTOR_INIT_CAPACITY);
 }
 
-void vvector_init1(vvector *v, int initial_capacity)
+void vvector_init1(vvector *v, unsigned int initial_capacity)
 {
     v->array = (void**)malloc(initial_capacity * sizeof(void*));
     v->size = 0;
@@ -71,7 +71,8 @@ ORIGIN_INLINE void **vvector_get_array(vvector *v)
     void **new_array = (void**)malloc(size * sizeof(void*)); // Only allocate memory for the active elements
 
     // Copy the elements to the new array
-    for (int i = 0; i < size; ++i)
+    int i = 0;
+    for (; i < size; ++i)
     {
         new_array[i] = v->array[i];
     }

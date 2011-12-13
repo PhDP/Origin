@@ -13,7 +13,7 @@ void dvector_init0(dvector *v)
     dvector_init1(v, VECTOR_INIT_CAPACITY);
 }
 
-void dvector_init1(dvector *v, int initial_capacity)
+void dvector_init1(dvector *v, unsigned int initial_capacity)
 {
     v->array = (double*)malloc(initial_capacity * sizeof(double));
     v->size = 0;

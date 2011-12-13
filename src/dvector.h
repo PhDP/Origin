@@ -13,10 +13,10 @@ typedef struct
     double *array;
 
     /** Number of elements in the array. */
-    int size;
+    unsigned int size;
 
     /** Max number of elements given the current size of 'a'. */
-    int capacity;
+    unsigned int capacity;
 }
 dvector;
 
@@ -24,7 +24,7 @@ dvector;
 void dvector_init0(dvector *v);
 
 /** Return a pointer to a dynamic array of a given size. */
-void dvector_init1(dvector *v, int initial_capacity);
+void dvector_init1(dvector *v, unsigned int initial_capacity);
 
 #ifndef NDEBUG
 /** Return the nth value of a vector. */
