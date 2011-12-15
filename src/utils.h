@@ -101,6 +101,9 @@ void **mat_alloc(int nrows, int ncols, size_t size);
 */
 void mat_free(void **mat, int nrows);
 
+////////////////////////////////////////////////////////////////////
+// Simple
+
 /** Find the min and the max values in an array of double. */
 void dmin_max(double *x, int length, double *min, double *max);
 
@@ -158,8 +161,14 @@ int compare_long_des(const void *x, const void *y);
 /** Compute the hypot. without [under|over]flow. */
 double hypot(double a, double b);
 
+////////////////////////////////////////////////////////////////////
+// Ecology
+
 /** Store the octaves in 'octaves', return the length of the array. */
 int biodiversity_octaves(const int *a, int array_size, double **octaves);
+
+////////////////////////////////////////////////////////////////////
+// Simple statistics
 
 /** Naive 'algorithm' to sum the elements of the array. O(n) time and O(1) space but vulnerable to catastrophic cancellation. */
 double dnaivesum(const double *x, int length);

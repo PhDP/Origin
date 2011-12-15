@@ -9,18 +9,23 @@
 
 import os
 import sys
+from optparse import OptionParser
 
-# If the name of the compiler isn't supplied, use gcc:
-if len(sys.argv) is 2:
-    compiler = sys.argv[1]
-else:
-    compiler = 'gcc'
+compiler = 'gcc'
+
+parser = OptionParser()
+parser.add_option('-c', '--compiler', dest = 'compiler', help='select the compiler')
+parser.add_option('-d', '--debug', help='debug mode')
+(options, args) = parser.parse_args()
 
 # Name of the program:
 name = 'origin'
 
 # Flags:
-cflags = '-O3 -DHAVE_INLINE -DOINLINING -std=c99'
+if debug is False:
+	cflags = '-O3 -DHAVE_INLINE -DNDEBUG -DOINLINING -std=c99'
+else:
+	cflags = '-g -DHAVE_INLINE -DOINLINING -std=c99'
 
 # List of files to compile:
 cfiles = 'main.c species.c ivector.c specieslist.c graph.c utils.c'
