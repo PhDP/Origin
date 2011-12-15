@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <math.h>
 #include <float.h>
+#include <gsl/gsl_rng.h>
+#include <gsl/gsl_randist.h>
 #include "common.h"
 #include "graph.h"
 #include "utils.h"
@@ -199,146 +202,6 @@ int graph_strongly_connected(const graph *g)
     return TRUE;
 }
 
-double **graph_get_gdm(const graph *g)
-{
-    const double max = DBL_MAX;
-    const int num_v = g->num_v;
-    double** gdm = (double**)malloc(num_v * sizeof(double*));
-    int i = 0;
-    for (; i < num_v; ++i)
-    {
-        gdm[i] = (double*)malloc(num_v * sizeof(double));
-    }
-    for (i = 0; i < num_v; ++i)
-    {
-        int j = 0;
-        for (; j < num_v; ++j)
-        {
-            gdm[i][j] = max;
-        }
-    }
-    int* visited = (int*)malloc(num_v * sizeof(int));
-
-    int current; // The vertex
-    int u = 0;
-    for (; u < num_v; ++u)
-    {
-        int v = 0;
-        for (; v < num_v; ++v)
-        {
-            visited[v] = FALSE;
-        }
-
-        gdm[u][u] = 0; // By convention
-        current = u;
-        int has_next = TRUE;
-
-        while (has_next)
-        {
-            const int edges = g->num_e[current];
-            int e = 0;
-            for (; e < edges; ++e)
-            {
-                if (g->adj_list[current][e] != current)
-                {
-                    const double w = gdm[u][current] + g->w_list[current][e];
-                    if (gdm[u][g->adj_list[current][e]] > w)
-                    {
-                        gdm[u][g->adj_list[current][e]] = w;
-                    }
-                }
-            }
-            visited[current] = TRUE;
-
-            has_next = FALSE;
-            double tmp = max;
-            for (v = 0; v < num_v; ++v)
-            {
-                if (visited[v] == FALSE && gdm[u][v] < tmp)
-                {
-                    current = v;
-                    tmp = gdm[u][v];
-                    has_next = TRUE;
-                }
-            }
-        }
-    }
-    free(visited);
-    return gdm;
-}
-
-double *graph_cls_centrality(const graph *g)
-{
-    const int num_v = g->num_v;
-    double **gdm = graph_get_gdm(g);
-    double *cls_centrality = (double*)malloc(num_v * sizeof(double));
-
-    int i = 0;
-    for (; i < num_v; ++i)
-    {
-        double sum = 0.0;
-        int j = 0;
-        for (; j < num_v; ++j)
-        {
-            sum += gdm[i][j];
-        }
-        cls_centrality[i] = (num_v - 1) / sum;
-    }
-    // Free the memory of the geodesic distance matrix:
-    for (i = 0; i < num_v; ++i)
-    {
-        free(gdm[i]);
-    }
-    free(gdm);
-
-    return cls_centrality;
-}
-
-double *graph_cls_centrality_scaled(const graph *g)
-{
-    double *cls_centrality_scaled = graph_cls_centrality(g);
-    scale_0_1(cls_centrality_scaled, g->num_v);
-    return cls_centrality_scaled;
-}
-
-double *graph_har_cls_centrality(const graph *g)
-{
-    const int num_v = g->num_v;
-    double **gdm = graph_get_gdm(g);
-    double *har_cls_centrality = (double*)malloc(num_v * sizeof(double));
-
-    int i = 0;
-    for (; i < num_v; ++i)
-    {
-        double sum = 0.0;
-        int j = 0;
-        for (; j < num_v; ++j)
-        {
-            if (i != j)
-            {
-                sum += 1 / gdm[i][j];
-            }
-        }
-        har_cls_centrality[i] = sum / (num_v - 1);
-    }
-
-    // Free the memory of the geodesic distance matrix:
-    for (i = 0; i < num_v; ++i)
-    {
-        free(gdm[i]);
-    }
-    free(gdm);
-
-    return har_cls_centrality;
-}
-
-double *graph_har_cls_centrality_scaled(const graph *g)
-{
-    double *har_cls_centrality_scaled = graph_har_cls_centrality(g);
-    scale_0_1(har_cls_centrality_scaled, g->num_v);
-    return har_cls_centrality_scaled;
-}
-
 void graph_graphml(const graph *g, FILE *out, unsigned int id)
 {
     const int num_v = g->num_v;
@@ -348,14 +211,13 @@ void graph_graphml(const graph *g, FILE *out, unsigned int id)
     fprintf(out, " xsi:schemaLocation=\"http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd\">\n");
 
     fprintf(out, "  <graph id=\"%u\" edgedefault=\"directed\">\n", id);
-    int i, e;
-    for (i = 0; i < num_v; ++i)
+    for (int i = 0; i < num_v; ++i)
     {
         fprintf(out, "    <node id=\"v%d\"/>\n", i);
     }
-    for (i = 0; i < num_v; ++i)
+    for (int i = 0; i < num_v; ++i)
     {
-        for (e = 0; e < g->num_e[i]; ++e) 
+        for (int e = 0; e < g->num_e[i]; ++e) 
         {
             fprintf(out, "    <edge source=\"v%d\" target=\"v%d\"/>\n", i, g->adj_list[i][e]);
         }
@@ -366,64 +228,12 @@ void graph_graphml(const graph *g, FILE *out, unsigned int id)
 
 void graph_print(const graph *g, FILE *out)
 {
-    int i = 0;
-    for (; i < g->num_v; ++i) 
+    for (int i = 0; i < g->num_v; ++i) 
     {
         fprintf(out, "%5d -> ", i);
-        int e = 0;
-        for (; e < g->num_e[i]; ++e) 
+        for (int e = 0; e < g->num_e[i]; ++e) 
         {
             fprintf(out, "%d ", g->adj_list[i][e]);
-        }
-        fprintf(out, "\n");
-    }
-}
-
-void graph_print_w(const graph *g, FILE *out)
-{
-    const int num_v = g->num_v;
-    int i = 0;
-    for (; i < num_v; ++i) 
-    {
-        fprintf(out, "%5d -> ", i);
-        int e = 0;
-        for (; e < g->num_e[i]; ++e) 
-        {
-            fprintf(out, "%d(%8.2f) ", g->adj_list[i][e], g->w_list[i][e]);
-        }
-        fprintf(out, "\n");
-    }
-}
-
-void graph_print_mat(const graph *g, FILE *out) 
-{
-    const int num_v = g->num_v;
-    int row[num_v];
-    int i = 0;
-    for (; i < num_v; ++i) 
-    {
-        row[i] = 0;
-    }
-
-    for (i = 0; i < num_v; ++i) 
-    {
-        const int num_e = g->num_e[i];
-        // Set the edges to 1
-        int e = 0;
-        for (; e < num_e; ++e) 
-        {
-            row[g->adj_list[i][e]] = 1;
-        }
-        // Print the row
-        int j = 0;
-        for (; j < num_v; ++j) 
-        {
-            fprintf(out, "%d ", row[j]);
-        }
-        // Set all edges back to 0
-        for (e = 0; e < num_e; ++e) 
-        {
-            row[g->adj_list[i][e]] = 0;
         }
         fprintf(out, "\n");
     }
@@ -432,8 +242,7 @@ void graph_print_mat(const graph *g, FILE *out)
 void graph_free(graph *g)
 {
     const int num_v = g->num_v;
-    int i = 0;
-    for (; i < num_v; ++i) 
+    for (int i = 0; i < num_v; ++i) 
     {
         free(g->adj_list[i]);
         free(g->w_list[i]);
@@ -446,6 +255,120 @@ void graph_free(graph *g)
     g->num_e = NULL;
     free(g->capacity);
     g->capacity = NULL;
+}
+
+void graph_get_rgg(graph *g, int vertices, double r, double *x, double *y, gsl_rng *rng)
+{
+    graph_init(g, vertices);
+
+    for (int i = 0; i < vertices; ++i)
+    {
+        x[i] = gsl_rng_uniform(rng);
+        y[i] = gsl_rng_uniform(rng);
+    }	
+    double d;
+    for (int i = 0; i < vertices; ++i) 
+    {
+        for (int j = 0; j < vertices; ++j) 
+        {
+            const double a = x[i] - x[j];
+            const double b = y[i] - y[j];
+            d = hypot(a, b);
+            if (d < r) 
+            {
+                graph_add_edge(g, i, j, r - d);
+            }
+        }
+    }
+}
+
+void graph_get_crgg(graph *g, int vertices, double r, double *x, double *y, gsl_rng *rng)
+{
+    graph_init(g, vertices);
+    graph_get_rgg(g, vertices, r, x, y, rng);
+
+    while (graph_strongly_connected(g) == FALSE)
+    {
+        graph_free(g);
+        graph_get_rgg(g, vertices, r, x, y, rng);
+    }
+}
+
+void graph_get_rec_rgg(graph *g, int vertices, double width, double r, double *x, double *y, gsl_rng *rng)
+{
+    graph_init(g, vertices);
+
+    const double length = 1.0 / width; // A = l * w so l = 1 / w
+
+    for (int i = 0; i < vertices; ++i) 
+    {
+        x[i] = gsl_rng_uniform(rng) * length;
+        y[i] = gsl_rng_uniform(rng) * width;
+    }
+    double d;
+    for (int i = 0; i < vertices; ++i) 
+    {
+        for (int j = 0; j < vertices; ++j) 
+        {
+            const double a = x[i] - x[j];
+            const double b = y[i] - y[j];
+            d = hypot(a, b);
+            if (d < r) 
+            {
+                graph_add_edge(g, i, j, r - d);
+            }
+        }
+    }
+}
+
+void graph_get_rec_crgg(graph *g, int vertices, double width, double r, double *x, double *y, gsl_rng *rng)
+{
+    graph_init(g, vertices);
+    graph_get_rec_rgg(g, vertices, width, r, x, y, rng);
+
+    while (graph_strongly_connected(g) == FALSE) 
+    {
+        graph_free(g);
+        graph_get_rec_rgg(g, vertices, width, r, x, y, rng);
+    }
+}
+
+void graph_get_complete(graph *g, int vertices)
+{
+    graph_init(g, vertices);
+
+    for (int i = 0; i < vertices; ++i) 
+    {
+        for (int j = 0; j < vertices; ++j) 
+        {
+            graph_add_edge(g, i, j, 1.0);
+        }
+    }
+}
+
+void graph_get_circle(graph *g, int vertices)
+{
+    graph_init(g, vertices);
+
+    graph_add_edge(g, vertices - 1, vertices - 1, 1.0);
+    graph_add_sym_edges(g, 0, vertices - 1, 1.0);
+
+    for (int u = 0; u < vertices - 1; ++u)
+    {
+        graph_add_edge(g, u, u, 1.0);
+        graph_add_sym_edges(g, u, u + 1, 1.0);
+    }
+}
+
+void graph_get_star(graph *g, int vertices)
+{
+    graph_init(g, vertices);
+
+    for (int u = 0; u < vertices; ++u)
+    {
+        graph_add_edge(g, u, u, 1.0);
+        graph_add_sym_edges(g, u, 0, 1.0);
+    }
 }
 
 ///////////////////////////////////////////////////////////////

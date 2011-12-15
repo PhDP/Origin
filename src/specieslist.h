@@ -1,5 +1,5 @@
-#ifndef HON_SPECIESLIST_H
-#define HON_SPECIESLIST_H
+#ifndef SPECIESLIST_H
+#define SPECIESLIST_H
 
 #include <stdio.h>
 #include <stdlib.h>

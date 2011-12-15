@@ -1,5 +1,5 @@
-#ifndef HON_SPECIES_H
-#define HON_SPECIES_H
+#ifndef SPECIES_H
+#define SPECIES_H
 
 #include <stdbool.h>
 
@@ -44,7 +44,7 @@ bool Species_is_extinct(const Species *pop);
 int Species_total(const Species *pop);
 
 /** Print basic info on the species. */
-void Species_printf(const Species *s);
+void Species_print(const Species *s, FILE *out);
 
 /** Free the memory. */
 void Species_free(Species *pop);

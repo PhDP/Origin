@@ -2,6 +2,8 @@
 #define GRAPH_H_
 
 #include "common.h"
+#include <gsl/gsl_rng.h>
+#include <gsl/gsl_randist.h>
 
 // For C++ compilers:
 #ifdef __cplusplus
@@ -67,38 +69,73 @@ int graph_has_edge(graph *g, int u, int v);
 /** Return true if the graph is strongly connected. */
 int graph_strongly_connected(const graph *g);
 
-/** Get the geodesic distances between all pairs of vertices using Johnson's algorithm. O(V^2 log V + VE). */
-double **graph_get_gdm(const graph *g);
-
-/** Return an array with the closeness centrality for all vertices. */
-double *graph_cls_centrality(const graph *g);
-
-/** Return a scaled array with the closeness centrality for all vertices. */
-double *graph_cls_centrality_scaled(const graph *g);
-
-/** Return an array with the harmonic closeness centrality for all vertices. */
-double *graph_har_cls_centrality(const graph *g);
-
-/** Return a scaled array with the harmonic closeness centrality for all vertices. */
-double *graph_har_cls_centrality_scaled(const graph *g);
-
-/** Print the adjacency list. Use NULL for the file pointer to print to the console. */
-void graph_print(const graph *g, FILE *out);
-
 /** Print the graph in GraphML format. */
 void graph_graphml(const graph *g, FILE *out, unsigned int id);
 
-/** Print the adjacency list & the weights. Use NULL for the file pointer to print to the console. */
-void graph_print_w(const graph *g, FILE *out);
-
-/** Print in matrix form. Use NULL for the file pointer to print to the console. */
-void graph_print_mat(const graph *g, FILE *out);
-
-/** Print the weights in matrix form. Use NULL for the file pointer to print to the console. */
-void graph_print_w_mat(const graph *g, FILE *out);
+/** Print the adjacency list. */
+void graph_print(const graph *g, FILE *out);
 
 /** Free the memory of the struct. */
 void graph_free(graph *g);
+
+/** 
+ * Get a random geometric graph in [0,1]^2 with radius 'r'.
+ * 
+ * 'x' and 'y' must be initialized and the correct amount of space must 
+ * be allocated. The weight of the realized edges is 'r - d', where 'd' 
+ * is the geometric distance between the two vertices (in short the 
+ * weight is always between 0 and 1.0).
+ */
+void graph_get_rgg(graph *g, int vertices, double r, double *x, double *y, gsl_rng *rng);
+
+/** 
+ * Get a connected random geometric graph in [0,1]^2 with radius 'r'.
+ * 
+ * 'x' and 'y' must be initialized and the correct amount of space must 
+ * be allocated. The weight of the realized edges is 'r - d', where 'd' 
+ * is the geometric distance between the two vertices (in short the 
+ * weight is always between 0 and 1.0).
+ */
+void graph_get_crgg(graph *g, int vertices, double r, double *x, double *y, gsl_rng *rng);
+
+/**
+ * Get a random geometric graph in a rectangle with an area of 1 and 
+ * radius 'r'.
+ * 
+ * 'x' and 'y' must be initialized and the correct amount of space must 
+ * be allocated. The weight of the realized edges is 'r - d', where 'd' 
+ * is the geometric distance between the two vertices (in short the 
+ * weight is always between 0 and 1.0).
+ */
+void graph_get_rec_rgg(graph *g, int vertices, double width, double r, double *x, double *y, gsl_rng *rng);
+
+/**
+ * Get a connected random geometric graph in a rectangle with an area of
+ * 1 and radius 'r'.
+ * 
+ * 'x' and 'y' must be initialized and the correct amount of space must 
+ * be allocated. The weight of the realized edges is 'r - d', where 'd' 
+ * is the geometric distance between the two vertices (in short the 
+ * weight is always between 0 and 1.0).
+ */
+void graph_get_rec_crgg(graph *g, int vertices, double width, double r, double *x, double *y, gsl_rng *rng);
+
+/**
+ * Return a complete graph (all vertices linked to each other). Realized
+ * edges have a default weight of 1.0.
+ */
+void graph_get_complete(graph *g, int vertices);
+
+/**
+ * Return a circle. Realized edges have a default weight of 1.0.
+ */
+void graph_get_circle(graph *g, int vertices);
+
+/**
+ * Return a star. Realized edges have a default weight of 1.0.
+ */
+void graph_get_star(graph *g, int vertices);
+
 
 ///////////////////////////////////////////////////////////////
 // 'Private' functions. You shouldn't need those.

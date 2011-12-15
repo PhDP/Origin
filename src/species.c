@@ -104,27 +104,27 @@ ORIGIN_INLINE int Species_total(const Species *s)
     return sum;
 }
 
-void Species_printf(const Species *s)
+void Species_print(const Species *s, FILE *out)
 {
-    printf("  birth: %d\n", s->birth);
+    fprintf(out, "  birth: %d\n", s->birth);
     
-    printf("  populations: ");
+    fprintf(out, "  populations: ");
     for (int i = 0; i < s->subpops; ++i)
     {
-        printf("%5d ", s->n[i]);
+        fprintf(out, "%5d ", s->n[i]);
     }
-    printf("\n");
+    fprintf(out, "\n");
     
     for (int i = 0; i < s->n_genotypes; ++i)
     {
-        printf("  genotype %2d: ", i);
+        fprintf(out, "  genotype %2d: ", i);
         for (int j = 0; j < s->subpops; ++j)
         {
-            printf("%5d ", s->genotypes[j][i]);
+            fprintf(out, "%5d ", s->genotypes[j][i]);
         }
-        printf("\n");
+        fprintf(out, "\n");
     }
-    printf("\n");
+    fprintf(out, "\n");
 }
 
 void Species_free(Species *s)

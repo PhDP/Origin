@@ -82,9 +82,6 @@ void ivector_print(ivector *v, FILE *out);
 /** Free the memory. */
 void ivector_free(ivector *v);
 
-/** Tests and examples for this file. */
-void ivector_examples();
-
 #ifdef __cplusplus
 }
 #endif

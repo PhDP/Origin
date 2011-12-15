@@ -9,17 +9,11 @@
 #include <gsl/gsl_rng.h>
 #include <gsl/gsl_randist.h>
 #include "common.h"
-#include "dvector.h"
 #include "ivector.h"
 #include "species.h"
 #include "specieslist.h"
 #include "graph.h"
-#include "graphgen.h"
 #include "utils.h"
-#include "ecology.h"
-#include "stats.h"
-#include "maths.h"
-#include "str.h"
 
 #define MODEL_BDM_NEUTRAL      0
 #define MODEL_BDM_SELECTION    1
@@ -374,12 +368,6 @@ void *sim(void *parameters)
     // Setup the cumulative jagged array for migration:
     double **cumul = setup_cumulative_list(&g, omega);
 
-    // Closeness centrality arrays
-    double *cls_centrality = graph_cls_centrality(&g);
-    double *cls_centrality_scaled = graph_cls_centrality_scaled(&g);
-    double *har_cls_centrality = graph_har_cls_centrality(&g);
-    double *har_cls_centrality_scaled = graph_har_cls_centrality_scaled(&g);
-
     fprintf(out, "<?xml version=\"1.0\"?>\n");
     fprintf(out, "<simulation>\n");
     fprintf(out, "  <model>");
@@ -627,10 +615,6 @@ void *sim(void *parameters)
             fprintf(out, "    <ycoor>%.4f</ycoor>\n", y[c]);
         }
         fprintf(out, "    <degree>%d</degree>\n", g.num_e[c] + 1);
-        fprintf(out, "    <cls_cen>%.8f</cls_cen>\n", cls_centrality[c]);
-        fprintf(out, "    <scaled_cls_cen>%.8f</scaled_cls_cen>\n", cls_centrality_scaled[c]);
-        fprintf(out, "    <har_cls_cen>%.8f</har_cls_cen>\n", har_cls_centrality[c]);
-        fprintf(out, "    <scaled_har_cls_cen>%.8f</scaled_har_cls_cen>\n", har_cls_centrality_scaled[c]);
         fprintf(out, "    <speciation_events>%d</speciation_events>\n", speciation_per_c[c]);
         fprintf(out, "    <extinction_events>%d</extinction_events>\n", extinction_per_c[c]);
 
@@ -684,10 +668,6 @@ void *sim(void *parameters)
     free(extinction_per_c);
     free(speciation_events);
     free(extinction_events);
-    free(cls_centrality);
-    free(cls_centrality_scaled);
-    free(har_cls_centrality);
-    free(har_cls_centrality_scaled);
     // Free structs;
     SpeciesList_free(list);
     ivector_free(&species_distribution);
@@ -751,7 +731,7 @@ double **setup_cumulative_list(const graph *g, double omega)
         cumul[i][num_e - 1] = 1.0;
     }
     /*
-    graph_print(g, NULL);
+    graph_print(g, stdout);
     for (int i = 0; i < num_v; ++i)
     {
         const int num_e = g->num_e[i];
