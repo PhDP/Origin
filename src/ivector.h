@@ -13,10 +13,10 @@ typedef struct
     int *array;
 
     /** Number of elements in the array. */
-    unsigned int size;
+    int size;
 
     /** Max number of elements given the current size of 'a'. */
-    unsigned int capacity;
+    int capacity;
 }
 ivector;
 
@@ -24,10 +24,10 @@ ivector;
 void ivector_init0(ivector *v);
 
 /** Return a pointer to a dynamic array of a given size. */
-void ivector_init1(ivector *v, unsigned int initial_capacity);
+void ivector_init1(ivector *v, int initial_capacity);
 
 /** Create an ivector object from an existing array of int. */
-void ivector_init2(ivector *v, int *x, unsigned int size, unsigned int initial_capacity);
+void ivector_init2(ivector *v, int *x, int size, int initial_capacity);
 
 #ifndef NDEBUG
 /** Get the nth value of an ivector. */
@@ -65,7 +65,7 @@ void ivector_sort_asc(ivector *v);
 void ivector_sort_des(ivector *v);
 
 /** Increase the internal storage for the array. */
-void ivector_grow0(ivector *v, unsigned int new_capacity);
+void ivector_grow0(ivector *v, int new_capacity);
 
 /** Double the internal storage for the array. */
 void ivector_grow1(ivector *v);

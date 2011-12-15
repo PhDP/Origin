@@ -56,7 +56,7 @@ int SpeciesList_rmv_extinct2(SpeciesList *list, ivector *lifespan, int date);
 /** Return a pointer to the 'nth' node. */
 SLNode *SpeciesList_get(SpeciesList *list, int n);
 
-/** Print the name of the populations with they population vector. Print to the console if out == NULL. */
+/** Print the name of the populations with they population vector. */
 void SpeciesList_print_pop(SpeciesList *list, FILE *out);
 
 /** Free the memory of the list. */

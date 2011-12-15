@@ -1,25 +1,5 @@
-/**
-* file:      main,c
-* author:    Philippe Desjardins-Proulx
-* email:     <philippe.d.proulx@gmail.com>
-* website:   http://phdp.huginn.info/
-* 
-* description:
-*   Spatially explicit speciation in neutral ecology. Type origin --help 
-* for more information on how to run the program.
-*
-* references:
-*    P. Desjardins-Proulx and D. Gravel. 2012. How likely is speciation in
-*  neutral ecology? The American Naturalist 179(1). doi: 10.1086/663196.
-*
-*    P. Desjardins-Proulx and D. Gravel. Neutral biodiversity in 
-* complex landscapes. In prep.
-*
-* ...developed and tested on Linux x86_64.
-*****************************************************************************/
-
-#define ORIGIN_DATE       "2011.12.13"
-#define ORIGIN_VERSION    "2.0a5"
+#define ORIGIN_DATE       "2011.12.15"
+#define ORIGIN_VERSION    "2.0a6"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -164,14 +144,14 @@ int main(int argc, const char *argv[])
         }
         else if (argv[1][2] == 'v') // --version
         { 
-            printf("ssne v.%s (%s)\n", ORIGIN_VERSION, ORIGIN_DATE);
+            printf("origin v.%s (%s)\n", ORIGIN_VERSION, ORIGIN_DATE);
             printf("Copyright (c) 2010-2011 Philippe Desjardins-Proulx <philippe.d.proulx@gmail.com>\n");
             printf("GPLv2 license  (see LICENSE)\n");
             return EXIT_SUCCESS;
         }
         else if (argv[1][2] == 'r') // --ref
         { 
-            printf("P. Desjardins-Proulx and D. 2012. Gravel. How likely is speciation in\n  neutral ecology? The American Naturalist 179(1). doi: 10.1086/663196.\n");
+            printf("P. Desjardins-Proul and D. Gravel. How likely is speciation in\n  neutral ecology? The American Naturalist 179(1).\n");
             return EXIT_SUCCESS;
         }
     } // end '--' options
@@ -198,7 +178,7 @@ int main(int argc, const char *argv[])
     }
 
     printf("<?xml version=\"1.0\"?>\n");
-    printf("<origin>\n");
+    printf("<origin_ssne>\n");
     printf("  <model>");
     if (p.m == MODEL_BDM_NEUTRAL)
     {
@@ -237,14 +217,13 @@ int main(int argc, const char *argv[])
     const time_t start = time(NULL);
 
     // Create the threads:
-    int i = 0;
-    for (; i < n_threads; ++i)
+    for (int i = 0; i < n_threads; ++i)
     {
         pthread_create(&threads[i], NULL, sim, (void*)&p);
     }
 
     // Wait for the threads to end:
-    for (i = 0; i < n_threads; ++i)
+    for (int i = 0; i < n_threads; ++i)
     {
         pthread_join(threads[i], NULL);
     }
@@ -252,7 +231,7 @@ int main(int argc, const char *argv[])
     const time_t end_t = time(NULL);
     printf("  <seconds>%lu</seconds>\n", (unsigned long)(end_t - start));
     printf("  <time>%s</time>\n", sec_to_string(end_t - start));
-    printf("</origin>\n");
+    printf("</origin_ssne>\n");
     return EXIT_SUCCESS; // yeppie !
 }
 
@@ -306,8 +285,7 @@ void *sim(void *parameters)
     // (x, y) coordinates for the spatial graph:
     double *restrict x = (double*)malloc(communities * sizeof(double));
     double *restrict y = (double*)malloc(communities * sizeof(double));
-    int i = 0;
-    for (; i < communities; ++i)
+    for (int i = 0; i < communities; ++i)
     {
         speciation_per_c[i] = 0;
         extinction_per_c[i] = 0;
@@ -315,7 +293,7 @@ void *sim(void *parameters)
     // Initialize an empty list of species:
     SpeciesList *restrict list = SpeciesList_init();
     // Initialize the metacommunity and fill them with the initial species evenly:
-    for (i = 0; i < init_species; ++i)
+    for (int i = 0; i < init_species; ++i)
     {
         // Intialize the species and add it to the list:
         SpeciesList_add(list, Species_init1(communities, 0, 0, 3));
@@ -325,7 +303,7 @@ void *sim(void *parameters)
     // Fill the communities:
     while (it != NULL)
     {
-        for (i = 0; i < communities; ++i)
+        for (int i = 0; i < communities; ++i)
         {
             it->species->n[i] = init_pop_size;
             it->species->genotypes[i][0] = init_pop_size;
@@ -335,11 +313,10 @@ void *sim(void *parameters)
 
     // To iterate the list;
     const int remainder = j_per_c - (init_species * init_pop_size);
-    for (i = 0; i < communities; ++i)
+    for (int i = 0; i < communities; ++i)
     {
-        int j = 0;
         it = list->head;
-        for (; j < remainder; ++j, it = it->next)
+        for (int j = 0; j < remainder; ++j, it = it->next)
         {
             ++(it->species->n[i]);
             ++(it->species->genotypes[i][0]);
@@ -445,8 +422,7 @@ void *sim(void *parameters)
     /////////////////////////////////////////////
     // Groups of 1 000 generations             //
     /////////////////////////////////////////////
-    int k = 0;
-    for (; k < k_gen; ++k)
+    for (int k = 0; k < k_gen; ++k)
     {
         extinction_events[k] = 0;
         speciation_events[k] = 0;
@@ -454,21 +430,18 @@ void *sim(void *parameters)
         /////////////////////////////////////////////
         // 1 000 generations                       //
         /////////////////////////////////////////////
-        int gen = 0;
-        for (; gen < 1000; ++gen)
+        for (int gen = 0; gen < 1000; ++gen)
         {
             const int current_date = (k * 1000) + gen;
             /////////////////////////////////////////////
             // A single generation                     //
             /////////////////////////////////////////////
-            int t = 0;
-            for (; t < j_per_c; ++t)
+            for (int t = 0; t < j_per_c; ++t)
             {
                 /////////////////////////////////////////////
                 // A single time step (for each community) //
                 /////////////////////////////////////////////
-                int c = 0;
-                for (; c < communities; ++c)
+                for (int c = 0; c < communities; ++c)
                 {
                     // Select the species and genotype of the individual to be replaced
                     int position = (int)(gsl_rng_uniform(rng) * j_per_c);
@@ -598,7 +571,8 @@ void *sim(void *parameters)
     fprintf(out, "    <median_pop_size_speciation>%.4f</median_pop_size_speciation>\n", imedian(pop_size.array, pop_size.size));
 
     fprintf(out, "    <speciation_per_k_gen>");
-    for (i = 0; i < k_gen - 1; ++i)
+    int i = 0;
+    for (; i < k_gen - 1; ++i)
     {
         fprintf(out, "%d ", speciation_events[i]);
     }
@@ -643,8 +617,7 @@ void *sim(void *parameters)
     fprintf(out, "  </global>\n");
 
     // Print info on all vertices
-    int c = 0;
-    for (; c < communities; ++c)
+    for (int c = 0; c < communities; ++c)
     {
         fprintf(out, "  <vertex>\n");
         fprintf(out, "    <id>%d</id>\n", c);
@@ -730,23 +703,20 @@ double **setup_cumulative_list(const graph *g, double omega)
 {
     const int num_v = g->num_v;
     double **cumul = (double**)malloc(num_v * sizeof(double*));
-    int i = 0;
-    for (; i < num_v; ++i) 
+    for (int i = 0; i < num_v; ++i) 
     {
         cumul[i] = (double*)malloc(g->num_e[i] * sizeof(double));
     }
-    for (i = 0; i < num_v; ++i)
+    for (int i = 0; i < num_v; ++i)
     {
-        int j = 0;
-        for (; j < g->num_e[i]; ++j)
+        for (int j = 0; j < g->num_e[i]; ++j)
         {
             cumul[i][j] = g->w_list[i][j];
         }
     }
-    for (i = 0; i < num_v; ++i)
+    for (int i = 0; i < num_v; ++i)
     {
-        int j = 0;
-        for (; j < g->num_e[i]; ++j)
+        for (int j = 0; j < g->num_e[i]; ++j)
         {
             if (i != g->adj_list[i][j])
             {
@@ -758,32 +728,30 @@ double **setup_cumulative_list(const graph *g, double omega)
             }
         }
     }
-    for (i = 0; i < num_v; ++i)
+    for (int i = 0; i < num_v; ++i)
     {
         double sum = 0.0;
         const int num_e = g->num_e[i];
-        int j = 0;
-        for (; j < num_e; ++j)
+        for (int j = 0; j < num_e; ++j)
         {
             sum += cumul[i][j];
         }
-        for (j = 0; j < num_e; ++j)
+        for (int j = 0; j < num_e; ++j)
         {
             cumul[i][j] /= sum;
         }
     }
-    for (i = 0; i < num_v; ++i)
+    for (int i = 0; i < num_v; ++i)
     {
         const int num_e = g->num_e[i];
-        int j = 1;
-        for (; j < num_e - 1; ++j)
+        for (int j = 1; j < num_e - 1; ++j)
         {
             cumul[i][j] += cumul[i][j - 1];
         }
         cumul[i][num_e - 1] = 1.0;
     }
     /*
-    graph_print(g, stdout);
+    graph_print(g, NULL);
     for (int i = 0; i < num_v; ++i)
     {
         const int num_e = g->num_e[i];

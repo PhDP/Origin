@@ -13,10 +13,10 @@ typedef struct
     void **array;
 
     /** Number of elements in the array. */
-    unsigned int size;
+    int size;
 
     /** Max number of elements given the current size of 'a'. */
-    unsigned int capacity;
+    int capacity;
 }
 vvector;
 
@@ -50,7 +50,7 @@ void vvector_sub1(vvector *v);
 void **vvector_get_array(vvector *v);
 
 /** Increase the internal storage for the array. */
-void vvector_grow0(vvector *v, unsigned int new_capacity);
+void vvector_grow0(vvector *v, int new_capacity);
 
 /** Double the internal storage for the array. */
 void vvector_grow1(vvector *v);

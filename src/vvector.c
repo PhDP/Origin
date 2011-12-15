@@ -12,7 +12,7 @@ void vvector_init0(vvector *v)
     vvector_init1(v, VECTOR_INIT_CAPACITY);
 }
 
-void vvector_init1(vvector *v, unsigned int initial_capacity)
+void vvector_init1(vvector *v, int initial_capacity)
 {
     v->array = (void**)malloc(initial_capacity * sizeof(void*));
     v->size = 0;
@@ -71,17 +71,28 @@ ORIGIN_INLINE void **vvector_get_array(vvector *v)
     void **new_array = (void**)malloc(size * sizeof(void*)); // Only allocate memory for the active elements
 
     // Copy the elements to the new array
-    int i = 0;
-    for (; i < size; ++i)
+    for (int i = 0; i < size; ++i)
     {
         new_array[i] = v->array[i];
     }
     return new_array;
 }
 
-ORIGIN_INLINE void vvector_grow0(vvector *v, unsigned int new_capacity)
+ORIGIN_INLINE void vvector_grow0(vvector *v, int new_capacity)
 {
-    v->array = (void**)realloc(v->array, new_capacity * sizeof(void*));
+    // The new array
+    void **new_array = (void**)malloc(new_capacity * sizeof(void*));
+
+    // Copy the elements from the old to the new array
+    const int size = v->size;
+    for (int i = 0; i < size; ++i)
+    {
+        new_array[i] = v->array[i];
+    }
+    v->capacity = new_capacity; // Change the capacity
+    void **swap = v->array; // Used to swap the pointers
+    v->array = new_array; // Set the dynamic a's pointer to the new a
+    free(swap); // Free the memory of the old a
 }
 
 ORIGIN_INLINE void vvector_grow1(vvector *v)
@@ -98,5 +109,6 @@ ORIGIN_INLINE void vvector_grow1(vvector *v)
 
 ORIGIN_INLINE void vvector_free(vvector *v)
 {
-    free(v->array);
+    free(v->array); // Free the memory of the vector
+    v->array = NULL;
 }
