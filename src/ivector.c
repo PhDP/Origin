@@ -101,7 +101,7 @@ ORIGIN_INLINE void ivector_add_array(ivector *v, int *a, int size)
     for (int i = 0; i < size; ++i)
     {
         v->array[old_size + i] = a[i];
-    }	
+    }
     v->size += size;
 }
 

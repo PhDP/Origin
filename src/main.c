@@ -285,12 +285,12 @@ void *sim(void *parameters)
         extinction_per_c[i] = 0;
     }
     // Initialize an empty list of species:
-    SpeciesList *restrict list = SpeciesList_init();
+    speciesList *restrict list = speciesList_init();
     // Initialize the metacommunity and fill them with the initial species evenly:
     for (int i = 0; i < init_species; ++i)
     {
         // Intialize the species and add it to the list:
-        SpeciesList_add(list, Species_init1(communities, 0, 0, 3));
+        speciesList_add(list, species_init1(communities, 0, 0, 3));
     }
     // To iterate the list;
     SLNode *it = list->head;
@@ -322,7 +322,7 @@ void *sim(void *parameters)
     it = list->head;
     while (it != NULL)
     {
-        sum += Species_total(it->species);
+        sum += species_total(it->species);
         it = it->next;
     }
     assert(sum == j_per_c * communities);
@@ -401,8 +401,8 @@ void *sim(void *parameters)
         fprintf(out, "  <width>%.4f</width>\n", width);
     }
     // To select the species and genotypes to pick and replace:
-    SLNode *s0 = list->head; // Species0
-    SLNode *s1 = list->head; // Species1
+    SLNode *s0 = list->head; // species0
+    SLNode *s1 = list->head; // species1
     int g0 = 0;
     int g1 = 0;
     int v1 = 0; // Vertex of the individual 1
@@ -461,7 +461,7 @@ void *sim(void *parameters)
                         ++v1;
                     }
                     v1 = g.adj_list[c][v1];
-                    // Species of the new individual
+                    // species of the new individual
                     position = (int)(gsl_rng_uniform(rng) * j_per_c);
                     s1 = list->head;
                     index = s1->species->n[v1];
@@ -518,7 +518,7 @@ void *sim(void *parameters)
                     ////////////////////////////////////////////
                     else if (s0->species->genotypes[c][2] > 0 && s0->species->genotypes[c][0] == 0 && s0->species->genotypes[c][1] == 0)
                     {
-                        SpeciesList_add(list, Species_init1(communities, 0, current_date, 3)); // Add the new species
+                        speciesList_add(list, species_init1(communities, 0, current_date, 3)); // Add the new species
 
                         const int pop = s0->species->n[c];
                         list->tail->species->n[c] = pop;
@@ -537,7 +537,7 @@ void *sim(void *parameters)
             } // End 't'
 
             // Remove extinct species from the list and store the number of extinctions.
-            extinction_events[k] += SpeciesList_rmv_extinct2(list, &lifespan, current_date);
+            extinction_events[k] += speciesList_rmv_extinct2(list, &lifespan, current_date);
 
         } // End 'g'
 
@@ -587,7 +587,7 @@ void *sim(void *parameters)
     it = list->head;
     while (it != NULL)
     {
-        ivector_add(&species_distribution, Species_total(it->species));
+        ivector_add(&species_distribution, species_total(it->species));
         it = it->next;
     }
     ivector_sort_asc(&species_distribution);
@@ -669,7 +669,7 @@ void *sim(void *parameters)
     free(speciation_events);
     free(extinction_events);
     // Free structs;
-    SpeciesList_free(list);
+    speciesList_free(list);
     ivector_free(&species_distribution);
     ivector_free(&lifespan);
     ivector_free(&pop_size);

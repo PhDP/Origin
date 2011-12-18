@@ -9,9 +9,9 @@
 #include "common.h"
 #include "species.h"
 
-Species *Species_init0(int subpopulations, int time_of_birth, int n_genotypes)
+species *species_init0(int subpopulations, int time_of_birth, int n_genotypes)
 {
-    Species *temp = (Species*)malloc(sizeof(Species));
+    species *temp = (species*)malloc(sizeof(species));
 
     temp->subpops = subpopulations;
     temp->n_genotypes = n_genotypes;
@@ -35,9 +35,9 @@ Species *Species_init0(int subpopulations, int time_of_birth, int n_genotypes)
     return temp;
 }
 
-Species *Species_init1(int subpopulations, int fill, int time_of_birth, int n_genotypes)
+species *species_init1(int subpopulations, int fill, int time_of_birth, int n_genotypes)
 {
-    Species *temp = (Species*)malloc(sizeof(Species));
+    species *temp = (species*)malloc(sizeof(species));
 
     temp->subpops = subpopulations;
     temp->n_genotypes = n_genotypes;
@@ -69,7 +69,7 @@ Species *Species_init1(int subpopulations, int fill, int time_of_birth, int n_ge
     return temp;
 }
 
-ORIGIN_INLINE bool Species_is_extant(const Species *s)
+ORIGIN_INLINE bool species_is_extant(const species *s)
 {
     for (int i = 0; i < s->subpops; ++i)
     {
@@ -81,7 +81,7 @@ ORIGIN_INLINE bool Species_is_extant(const Species *s)
     return false;
 }
 
-ORIGIN_INLINE bool Species_is_extinct(const Species *s)
+ORIGIN_INLINE bool species_is_extinct(const species *s)
 {
     for (int i = 0; i < s->subpops; ++i)
     {
@@ -93,7 +93,7 @@ ORIGIN_INLINE bool Species_is_extinct(const Species *s)
     return true;
 }
 
-ORIGIN_INLINE int Species_total(const Species *s)
+ORIGIN_INLINE int species_total(const species *s)
 {
     int sum = 0;
 
@@ -104,7 +104,7 @@ ORIGIN_INLINE int Species_total(const Species *s)
     return sum;
 }
 
-void Species_print(const Species *s, FILE *out)
+void species_print(const species *s, FILE *out)
 {
     fprintf(out, "  birth: %d\n", s->birth);
     
@@ -127,12 +127,11 @@ void Species_print(const Species *s, FILE *out)
     fprintf(out, "\n");
 }
 
-void Species_free(Species *s)
+void species_free(species *s)
 {
     if (s->genotypes != NULL)
     {
-        int i = 0;
-        for (; i < s->subpops; ++i)
+        for (int i = 0; i < s->subpops; ++i)
         {
             free(s->genotypes[i]);
         }

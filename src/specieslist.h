@@ -17,14 +17,14 @@ extern "C" {
 typedef struct SLNode_
 {
     /** The species. */
-    Species *species;
+    species *species;
 
     /** Pointer to the next node. */
     struct SLNode_ *next;
 }
 SLNode;
 
-/** A linked list of Species objects. */
+/** A linked list of species objects. */
 typedef struct
 {
     /** Number of species in the list. */
@@ -36,31 +36,31 @@ typedef struct
     /** Last element of the list. */
     SLNode *tail;
 }
-SpeciesList;
+speciesList;
 
 /** Initialize the list. */
-SpeciesList *SpeciesList_init();
+speciesList *speciesList_init();
 
 /** Insert a new species at the end of the list. */
-void SpeciesList_add(SpeciesList *list, Species *s);
+void speciesList_add(speciesList *list, species *s);
 
 /** Remove the node next to the supplied node. If 'NULL', remove the head of the list. Return 'true' if a node was removed. */
-bool SpeciesList_rmv_next(SpeciesList *list, SLNode *node);
+bool speciesList_rmv_next(speciesList *list, SLNode *node);
 
 /** Remove extinct species from the list and return the number of extinctions. */
-int SpeciesList_rmv_extinct(SpeciesList *list);
+int speciesList_rmv_extinct(speciesList *list);
 
 /** Remove extinct species from the list, add the lifespan of the extinct species to the vector, and return the number of extinctions. */
-int SpeciesList_rmv_extinct2(SpeciesList *list, ivector *lifespan, int date);
+int speciesList_rmv_extinct2(speciesList *list, ivector *lifespan, int date);
 
 /** Return a pointer to the 'nth' node. */
-SLNode *SpeciesList_get(SpeciesList *list, int n);
+SLNode *speciesList_get(speciesList *list, int n);
 
 /** Print the name of the populations with they population vector. */
-void SpeciesList_print_pop(SpeciesList *list, FILE *out);
+void speciesList_print_pop(speciesList *list, FILE *out);
 
 /** Free the memory of the list. */
-void SpeciesList_free(SpeciesList *list);
+void speciesList_free(speciesList *list);
 
 #ifdef __cplusplus
 }
