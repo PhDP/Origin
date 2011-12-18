@@ -1,5 +1,5 @@
-#define ORIGIN_DATE       "2011.12.15"
-#define ORIGIN_VERSION    "2.0a6"
+#define ORIGIN_DATE       "2011.12.17"
+#define ORIGIN_VERSION    "2.0"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -285,22 +285,22 @@ void *sim(void *parameters)
         extinction_per_c[i] = 0;
     }
     // Initialize an empty list of species:
-    speciesList *restrict list = speciesList_init();
+    species_list *restrict list = species_list_init();
     // Initialize the metacommunity and fill them with the initial species evenly:
     for (int i = 0; i < init_species; ++i)
     {
         // Intialize the species and add it to the list:
-        speciesList_add(list, species_init1(communities, 0, 0, 3));
+        species_list_add(list, species_init1(communities, 0, 0, 3));
     }
     // To iterate the list;
-    SLNode *it = list->head;
+    slnode *it = list->head;
     // Fill the communities:
     while (it != NULL)
     {
         for (int i = 0; i < communities; ++i)
         {
-            it->species->n[i] = init_pop_size;
-            it->species->genotypes[i][0] = init_pop_size;
+            it->sp->n[i] = init_pop_size;
+            it->sp->genotypes[i][0] = init_pop_size;
         }
         it = it->next;
     }
@@ -312,8 +312,8 @@ void *sim(void *parameters)
         it = list->head;
         for (int j = 0; j < remainder; ++j, it = it->next)
         {
-            ++(it->species->n[i]);
-            ++(it->species->genotypes[i][0]);
+            ++(it->sp->n[i]);
+            ++(it->sp->genotypes[i][0]);
         }
     }
 
@@ -322,7 +322,7 @@ void *sim(void *parameters)
     it = list->head;
     while (it != NULL)
     {
-        sum += species_total(it->species);
+        sum += species_total(it->sp);
         it = it->next;
     }
     assert(sum == j_per_c * communities);
@@ -401,8 +401,8 @@ void *sim(void *parameters)
         fprintf(out, "  <width>%.4f</width>\n", width);
     }
     // To select the species and genotypes to pick and replace:
-    SLNode *s0 = list->head; // species0
-    SLNode *s1 = list->head; // species1
+    slnode *s0 = list->head; // species0
+    slnode *s1 = list->head; // species1
     int g0 = 0;
     int g1 = 0;
     int v1 = 0; // Vertex of the individual 1
@@ -434,18 +434,18 @@ void *sim(void *parameters)
                     // Select the species and genotype of the individual to be replaced
                     int position = (int)(gsl_rng_uniform(rng) * j_per_c);
                     s0 = list->head;
-                    int index = s0->species->n[c];
+                    int index = s0->sp->n[c];
                     while (index <= position)
                     {
                         s0 = s0->next;
-                        index += s0->species->n[c];
+                        index += s0->sp->n[c];
                     }
-                    position = (int)(gsl_rng_uniform(rng) * s0->species->n[c]);
-                    if (position < s0->species->genotypes[c][0])
+                    position = (int)(gsl_rng_uniform(rng) * s0->sp->n[c]);
+                    if (position < s0->sp->genotypes[c][0])
                     {
                         g0 = 0;
                     }
-                    else if (position < (s0->species->genotypes[c][0] + s0->species->genotypes[c][1]))
+                    else if (position < (s0->sp->genotypes[c][0] + s0->sp->genotypes[c][1]))
                     {
                         g0 = 1;
                     }
@@ -464,18 +464,18 @@ void *sim(void *parameters)
                     // species of the new individual
                     position = (int)(gsl_rng_uniform(rng) * j_per_c);
                     s1 = list->head;
-                    index = s1->species->n[v1];
+                    index = s1->sp->n[v1];
                     while (index <= position)
                     {
                         s1 = s1->next;
-                        index += s1->species->n[v1];
+                        index += s1->sp->n[v1];
                     }
                     if (v1 == c) // local remplacement
                     {
                         const double r = gsl_rng_uniform(rng);
-                        const int aa = s1->species->genotypes[v1][0];
-                        const int Ab = s1->species->genotypes[v1][1];
-                        const int AB = s1->species->genotypes[v1][2];
+                        const int aa = s1->sp->genotypes[v1][0];
+                        const int Ab = s1->sp->genotypes[v1][1];
+                        const int AB = s1->sp->genotypes[v1][2];
 
                         // The total fitness of the population 'W':
                         const double w = aa + Ab * (1.0 + s) + AB * (1.0 + s) * (1.0 + s);
@@ -501,30 +501,30 @@ void *sim(void *parameters)
                         g1 = 0;
                     }
                     // Apply the changes
-                    s0->species->n[c]--;
-                    s0->species->genotypes[c][g0]--;
-                    s1->species->n[c]++;
-                    s1->species->genotypes[c][g1]++;
+                    s0->sp->n[c]--;
+                    s0->sp->genotypes[c][g0]--;
+                    s1->sp->n[c]++;
+                    s1->sp->genotypes[c][g1]++;
 
                     ////////////////////////////////////////////
                     // Check for local extinction             //
                     ////////////////////////////////////////////
-                    if (s0->species->n[c] == 0)
+                    if (s0->sp->n[c] == 0)
                     {
                         extinction_per_c[c]++;
                     }
                     ////////////////////////////////////////////
                     // Check for speciation                   //
                     ////////////////////////////////////////////
-                    else if (s0->species->genotypes[c][2] > 0 && s0->species->genotypes[c][0] == 0 && s0->species->genotypes[c][1] == 0)
+                    else if (s0->sp->genotypes[c][2] > 0 && s0->sp->genotypes[c][0] == 0 && s0->sp->genotypes[c][1] == 0)
                     {
-                        speciesList_add(list, species_init1(communities, 0, current_date, 3)); // Add the new species
+                        species_list_add(list, species_init1(communities, 0, current_date, 3)); // Add the new species
 
-                        const int pop = s0->species->n[c];
-                        list->tail->species->n[c] = pop;
-                        list->tail->species->genotypes[c][0] = pop;
-                        s0->species->n[c] = 0;
-                        s0->species->genotypes[c][2] = 0;
+                        const int pop = s0->sp->n[c];
+                        list->tail->sp->n[c] = pop;
+                        list->tail->sp->genotypes[c][0] = pop;
+                        s0->sp->n[c] = 0;
+                        s0->sp->genotypes[c][2] = 0;
 
                         // To keep info on patterns of speciation...
                         ivector_add(&pop_size, pop);
@@ -537,7 +537,7 @@ void *sim(void *parameters)
             } // End 't'
 
             // Remove extinct species from the list and store the number of extinctions.
-            extinction_events[k] += speciesList_rmv_extinct2(list, &lifespan, current_date);
+            extinction_events[k] += species_list_rmv_extinct2(list, &lifespan, current_date);
 
         } // End 'g'
 
@@ -587,7 +587,7 @@ void *sim(void *parameters)
     it = list->head;
     while (it != NULL)
     {
-        ivector_add(&species_distribution, species_total(it->species));
+        ivector_add(&species_distribution, species_total(it->sp));
         it = it->next;
     }
     ivector_sort_asc(&species_distribution);
@@ -623,7 +623,7 @@ void *sim(void *parameters)
         it = list->head;
         while (it != NULL)
         {
-            ivector_add(&species_distribution, it->species->n[c]);
+            ivector_add(&species_distribution, it->sp->n[c]);
             it = it->next;
         }
         // Sort the species distribution and remove the 0s
@@ -669,7 +669,7 @@ void *sim(void *parameters)
     free(speciation_events);
     free(extinction_events);
     // Free structs;
-    speciesList_free(list);
+    species_list_free(list);
     ivector_free(&species_distribution);
     ivector_free(&lifespan);
     ivector_free(&pop_size);

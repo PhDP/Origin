@@ -5,28 +5,18 @@
 #include <gsl/gsl_rng.h>
 #include <gsl/gsl_randist.h>
 
-// For C++ compilers:
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /** A graph represented by an adjacency list (made of dynamic arrays). */
 typedef struct 
 {
-    /** Number of vertices. */
-    int num_v; 
+    int num_v; /** Number of vertices. */
 
-    /** Number of edges per vertex. */
-    int *num_e;
+    int *num_e; /** Number of edges per vertex. */
 
-    /** Space allocated to each vertex. */
-    int *capacity;
+    int *capacity; /** Space allocated to each vertex. */
+    
+    int **adj_list; /** Adjacency list. */
 
-    /** Adjacency list. */
-    int **adj_list;
-
-    /** Weights. */
-    double **w_list;
+    double **w_list; /** Weights. */
 }
 graph;
 
@@ -145,9 +135,5 @@ void graph_test_cc(const graph *g, int *group, int u);
 
 /** Increse the storage of the lists for vertex 'u'. O(|E|). */
 void graph_grow_lists(graph *g, int u);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif

@@ -3,11 +3,6 @@
 
 #include <stdbool.h>
 
-// For C++ compilers:
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 ////////////////////////////////////////////////////////////////////
 // Read options supplied by the user
 
@@ -208,9 +203,5 @@ double dmedian(const double *x, int length);
 
 /** Return the median. Unlike GSL's function, this function works on unsorted arrays. It will copy the array, sort it, compute the median, and free the memory of the copy before returning the median. */
 double imedian(const int *x, int length);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif

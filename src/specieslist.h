@@ -1,5 +1,5 @@
-#ifndef SPECIESLIST_H
-#define SPECIESLIST_H
+#ifndef species_list_H
+#define species_list_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,21 +8,14 @@
 #include "ivector.h"
 #include "species.h"
 
-// For C++ compilers:
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /** A node of the singly-linked list. */
-typedef struct SLNode_
+typedef struct slnode_
 {
-    /** The species. */
-    species *species;
+    species *sp; /** The species. */
 
-    /** Pointer to the next node. */
-    struct SLNode_ *next;
+    struct slnode_ *next; /** Pointer to the next node. */
 }
-SLNode;
+slnode;
 
 /** A linked list of species objects. */
 typedef struct
@@ -31,40 +24,35 @@ typedef struct
     int size;
 
     /** First element of the list. */
-    SLNode *head;
+    slnode *head;
 
     /** Last element of the list. */
-    SLNode *tail;
+    slnode *tail;
 }
-speciesList;
+species_list;
 
 /** Initialize the list. */
-speciesList *speciesList_init();
+species_list *species_list_init();
 
 /** Insert a new species at the end of the list. */
-void speciesList_add(speciesList *list, species *s);
+void species_list_add(species_list *list, species *s);
 
 /** Remove the node next to the supplied node. If 'NULL', remove the head of the list. Return 'true' if a node was removed. */
-bool speciesList_rmv_next(speciesList *list, SLNode *node);
+bool species_list_rmv_next(species_list *list, slnode *node);
 
 /** Remove extinct species from the list and return the number of extinctions. */
-int speciesList_rmv_extinct(speciesList *list);
+int species_list_rmv_extinct(species_list *list);
 
 /** Remove extinct species from the list, add the lifespan of the extinct species to the vector, and return the number of extinctions. */
-int speciesList_rmv_extinct2(speciesList *list, ivector *lifespan, int date);
+int species_list_rmv_extinct2(species_list *list, ivector *lifespan, int date);
 
 /** Return a pointer to the 'nth' node. */
-SLNode *speciesList_get(speciesList *list, int n);
+slnode *species_list_get(species_list *list, int n);
 
 /** Print the name of the populations with they population vector. */
-void speciesList_print_pop(speciesList *list, FILE *out);
+void species_list_print_pop(species_list *list, FILE *out);
 
 /** Free the memory of the list. */
-void speciesList_free(speciesList *list);
-
-#ifdef __cplusplus
-}
-#endif
+void species_list_free(species_list *list);
 
 #endif
-

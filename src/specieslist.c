@@ -11,9 +11,9 @@
 #include "ivector.h"
 #include "species.h"
 
-ORIGIN_INLINE speciesList *speciesList_init()
+ORIGIN_INLINE species_list *species_list_init()
 {
-    speciesList *temp = (speciesList*)malloc(sizeof(speciesList));
+    species_list *temp = (species_list*)malloc(sizeof(species_list));
 
     temp->size = 0;
     temp->head = NULL;
@@ -23,11 +23,11 @@ ORIGIN_INLINE speciesList *speciesList_init()
 }
 
 // Always add the species at the end;
-ORIGIN_INLINE void speciesList_add(speciesList *list, species *s)
+ORIGIN_INLINE void species_list_add(species_list *list, species *s)
 {
-    // Create the SLNode object to contain the species
-    SLNode *new_node = (SLNode*)malloc(sizeof(SLNode));
-    new_node->species = s;
+    // Create the slnode object to contain the species
+    slnode *new_node = (slnode*)malloc(sizeof(slnode));
+    new_node->sp = s;
     new_node->next = NULL;
 
     // No species in the list;
@@ -44,9 +44,9 @@ ORIGIN_INLINE void speciesList_add(speciesList *list, species *s)
     list->size++;
 }
 
-ORIGIN_INLINE bool speciesList_rmv_next(speciesList *list, SLNode *node)
+ORIGIN_INLINE bool species_list_rmv_next(species_list *list, slnode *node)
 {
-    SLNode *old_node;
+    slnode *old_node;
 
     if (list->size == 0)
     {
@@ -73,32 +73,32 @@ ORIGIN_INLINE bool speciesList_rmv_next(speciesList *list, SLNode *node)
             list->tail = node;
         }
     }
-    species_free(old_node->species);
+    species_free(old_node->sp);
     free(old_node);
 
     list->size--;
     return true;
 }
 
-ORIGIN_INLINE int speciesList_rmv_extinct(speciesList *list)
+ORIGIN_INLINE int species_list_rmv_extinct(species_list *list)
 {
     if (list->size == 0)
     {
         return 0;
     }
     int extinctions = 0; // Number of extinctions
-    SLNode *node = list->head;
+    slnode *node = list->head;
 
-    while (species_is_extant(node->species) == false)
+    while (species_is_extant(node->sp) == false)
     {
-        speciesList_rmv_next(list, NULL);
+        species_list_rmv_next(list, NULL);
         node = list->head;
     }
     while (node->next != NULL)
     {
-        if (species_is_extant(node->next->species) == false)
+        if (species_is_extant(node->next->sp) == false)
         {
-            speciesList_rmv_next(list, node);
+            species_list_rmv_next(list, node);
             ++extinctions;
         }
         else
@@ -109,28 +109,28 @@ ORIGIN_INLINE int speciesList_rmv_extinct(speciesList *list)
     return extinctions;
 }
 
-ORIGIN_INLINE int speciesList_rmv_extinct2(speciesList *list, ivector *lifespan, int date)
+ORIGIN_INLINE int species_list_rmv_extinct2(species_list *list, ivector *lifespan, int date)
 {
     if (list->size == 0)
     {
         return 0;
     }
     int extinctions = 0; // Number of extinctions
-    SLNode *node = list->head;
+    slnode *node = list->head;
 
-    while (species_is_extant(node->species) == false)
+    while (species_is_extant(node->sp) == false)
     {
-        ivector_add(lifespan, date - node->next->species->birth);
-        speciesList_rmv_next(list, NULL);
+        ivector_add(lifespan, date - node->next->sp->birth);
+        species_list_rmv_next(list, NULL);
         ++extinctions;
         node = list->head;
     }
     while (node->next != NULL)
     {
-        if (species_is_extant(node->next->species) == false)
+        if (species_is_extant(node->next->sp) == false)
         {
-            ivector_add(lifespan, date - node->next->species->birth);
-            speciesList_rmv_next(list, node);
+            ivector_add(lifespan, date - node->next->sp->birth);
+            species_list_rmv_next(list, node);
             ++extinctions;
         }
         else
@@ -141,7 +141,7 @@ ORIGIN_INLINE int speciesList_rmv_extinct2(speciesList *list, ivector *lifespan,
     return extinctions;
 }
 
-ORIGIN_INLINE SLNode *speciesList_get(speciesList *list, int n)
+ORIGIN_INLINE slnode *species_list_get(species_list *list, int n)
 {
     if (n < 0 || n >= list->size)
     {
@@ -156,7 +156,7 @@ ORIGIN_INLINE SLNode *speciesList_get(speciesList *list, int n)
         return list->tail;
     }
 
-    SLNode *node = list->head;
+    slnode *node = list->head;
 
     for (int i = 0; i < n; ++i)
     {
@@ -165,30 +165,30 @@ ORIGIN_INLINE SLNode *speciesList_get(speciesList *list, int n)
     return node;
 }
 
-ORIGIN_INLINE void speciesList_print_pop(speciesList *list, FILE *out)
+ORIGIN_INLINE void species_list_print_pop(species_list *list, FILE *out)
 {
-    SLNode *node = list->head;
-    const int subpopulations = node->species->subpops;
+    slnode *node = list->head;
+    const int subpopulations = node->sp->subpops;
 
     while (node != NULL)
     {
         for (int i = 0; i < subpopulations; ++i)
         {
-            fprintf(out, "%d ( ", node->species->n[i]);
-            for (int j = 0; j < node->species->n_genotypes; ++j)
+            fprintf(out, "%d ( ", node->sp->n[i]);
+            for (int j = 0; j < node->sp->n_genotypes; ++j)
             {
-                fprintf(out, "%d ", node->species->genotypes[i][j]);
+                fprintf(out, "%d ", node->sp->genotypes[i][j]);
             }
             fprintf(out, ")");
         }
-        fprintf(out, " = %5d ", species_total(node->species));
+        fprintf(out, " = %5d ", species_total(node->sp));
         fprintf(out, "\n");
         node = node->next;
     }
 }
 
-ORIGIN_INLINE void speciesList_free(speciesList *list)
+ORIGIN_INLINE void species_list_free(species_list *list)
 {
-    while (speciesList_rmv_next(list, NULL));
+    while (species_list_rmv_next(list, NULL));
     free(list);
 }

@@ -35,20 +35,8 @@ void ivector_init2(ivector *v, int *x, int size, int initial_capacity)
 
 ORIGIN_INLINE void ivector_grow0(ivector *v, int new_capacity)
 {
-    // The new array
-    int *new_array = (int*)malloc(new_capacity * sizeof(int));
-
-    // Copy the elements from the old to the new array
-    const int size = v->size;
-    for (int i = 0; i < size; ++i)
-    {
-        new_array[i] = v->array[i];
-    }
-
-    v->capacity = new_capacity; // Change the max
-    int *swap = v->array; // Used to swap the pointers
-    v->array = new_array; // Set the dynamic a's pointer to the new a
-    free(swap); // Free the memory of the old a
+    v->capacity = new_capacity;
+    v->array = (int*)realloc(v->array, new_capacity * sizeof(int));
 }
 
 ORIGIN_INLINE void ivector_grow1(ivector *v)

@@ -1,11 +1,6 @@
 #ifndef IVECTOR_H_
 #define IVECTOR_H_
 
-// For C++ compilers:
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /** A dynamic array of integers. */
 typedef struct
 {
@@ -78,9 +73,5 @@ void ivector_print(ivector *v, FILE *out);
 
 /** Free the memory. */
 void ivector_free(ivector *v);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif
