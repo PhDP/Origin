@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+  <graph id="4071382823" edgedefault="directed">
+    <node id="v0"/>
+    <node id="v1"/>
+    <node id="v2"/>
+    <node id="v3"/>
+    <node id="v4"/>
+    <node id="v5"/>
+    <node id="v6"/>
+    <node id="v7"/>
+    <node id="v8"/>
+    <node id="v9"/>
+    <node id="v10"/>
+    <node id="v11"/>
+    <node id="v12"/>
+    <node id="v13"/>
+    <node id="v14"/>
+    <node id="v15"/>
+    <node id="v16"/>
+    <node id="v17"/>
+    <node id="v18"/>
+    <node id="v19"/>
+    <edge source="v0" target="v0"/>
+    <edge source="v0" target="v10"/>
+    <edge source="v0" target="v12"/>
+    <edge source="v0" target="v13"/>
+    <edge source="v1" target="v1"/>
+    <edge source="v1" target="v4"/>
+    <edge source="v1" target="v6"/>
+    <edge source="v2" target="v2"/>
+    <edge source="v2" target="v3"/>
+    <edge source="v2" target="v15"/>
+    <edge source="v2" target="v17"/>
+    <edge source="v3" target="v2"/>
+    <edge source="v3" target="v3"/>
+    <edge source="v3" target="v16"/>
+    <edge source="v3" target="v17"/>
+    <edge source="v4" target="v1"/>
+    <edge source="v4" target="v4"/>
+    <edge source="v4" target="v6"/>
+    <edge source="v4" target="v7"/>
+    <edge source="v5" target="v5"/>
+    <edge source="v5" target="v13"/>
+    <edge source="v6" target="v1"/>
+    <edge source="v6" target="v4"/>
+    <edge source="v6" target="v6"/>
+    <edge source="v6" target="v7"/>
+    <edge source="v7" target="v4"/>
+    <edge source="v7" target="v6"/>
+    <edge source="v7" target="v7"/>
+    <edge source="v7" target="v11"/>
+    <edge source="v7" target="v15"/>
+    <edge source="v8" target="v8"/>
+    <edge source="v8" target="v9"/>
+    <edge source="v8" target="v10"/>
+    <edge source="v9" target="v8"/>
+    <edge source="v9" target="v9"/>
+    <edge source="v9" target="v10"/>
+    <edge source="v10" target="v0"/>
+    <edge source="v10" target="v8"/>
+    <edge source="v10" target="v9"/>
+    <edge source="v10" target="v10"/>
+    <edge source="v11" target="v7"/>
+    <edge source="v11" target="v11"/>
+    <edge source="v11" target="v15"/>
+    <edge source="v11" target="v18"/>
+    <edge source="v11" target="v19"/>
+    <edge source="v12" target="v0"/>
+    <edge source="v12" target="v12"/>
+    <edge source="v12" target="v13"/>
+    <edge source="v12" target="v19"/>
+    <edge source="v13" target="v0"/>
+    <edge source="v13" target="v5"/>
+    <edge source="v13" target="v12"/>
+    <edge source="v13" target="v13"/>
+    <edge source="v14" target="v14"/>
+    <edge source="v14" target="v16"/>
+    <edge source="v15" target="v2"/>
+    <edge source="v15" target="v7"/>
+    <edge source="v15" target="v11"/>
+    <edge source="v15" target="v15"/>
+    <edge source="v15" target="v17"/>
+    <edge source="v15" target="v19"/>
+    <edge source="v16" target="v3"/>
+    <edge source="v16" target="v14"/>
+    <edge source="v16" target="v16"/>
+    <edge source="v17" target="v2"/>
+    <edge source="v17" target="v3"/>
+    <edge source="v17" target="v15"/>
+    <edge source="v17" target="v17"/>
+    <edge source="v17" target="v19"/>
+    <edge source="v18" target="v11"/>
+    <edge source="v18" target="v18"/>
+    <edge source="v19" target="v11"/>
+    <edge source="v19" target="v12"/>
+    <edge source="v19" target="v15"/>
+    <edge source="v19" target="v17"/>
+    <edge source="v19" target="v19"/>
+  </graph>
+</graphml>

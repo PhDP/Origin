@@ -9,62 +9,27 @@
 #include "common.h"
 #include "species.h"
 
-species *species_init0(int subpopulations, int time_of_birth, int n_genotypes)
+species *species_init(int subpopulations, int time_of_birth, int n_genotypes)
 {
     species *temp = (species*)malloc(sizeof(species));
 
     temp->subpops = subpopulations;
     temp->n_genotypes = n_genotypes;
-    temp->birth = time_of_birth;  
-
-    temp->n = (int*)malloc(subpopulations * sizeof(int));
-
-    if (n_genotypes > 0)
-    {
-        temp->genotypes = (int**)malloc(subpopulations * sizeof(int*));
-        for (int i = 0; i < n_genotypes; ++i)
-        {
-            temp->genotypes[i] = (int*)malloc(n_genotypes * sizeof(int));
-        }
-    }
-    else
-    {
-        temp->genotypes = NULL;
-    }
-
-    return temp;
-}
-
-species *species_init1(int subpopulations, int fill, int time_of_birth, int n_genotypes)
-{
-    species *temp = (species*)malloc(sizeof(species));
-
-    temp->subpops = subpopulations;
-    temp->n_genotypes = n_genotypes;
-    temp->birth = time_of_birth;  
+    temp->birth = time_of_birth;
 
     temp->n = (int*)malloc(subpopulations * sizeof(int));
     for (int i = 0; i < subpopulations; ++i)
     {
-        temp->n[i] = fill;
+        temp->n[i] = 0;
     }
-
-    if (n_genotypes > 0)
+    temp->genotypes = (int**)malloc(n_genotypes * sizeof(int*));
+    for (int i = 0; i < n_genotypes; ++i)
     {
-        temp->genotypes = (int**)malloc(subpopulations * sizeof(int*));
-        for (int i = 0; i < subpopulations; ++i)
+        temp->genotypes[i] = (int*)malloc(subpopulations * sizeof(int));
+        for (int j = 0; j < subpopulations; ++j)
         {
-            temp->genotypes[i] = (int*)malloc(n_genotypes * sizeof(int));
-            temp->genotypes[i][0] = fill;
-            for (int j = 1; j < n_genotypes; ++j)
-            {
-                temp->genotypes[i][j] = 0;
-            }
+            temp->genotypes[i][j] = 0;
         }
-    }
-    else
-    {
-        temp->genotypes = NULL;
     }
     return temp;
 }
@@ -104,39 +69,13 @@ ORIGIN_INLINE int species_total(const species *s)
     return sum;
 }
 
-void species_print(const species *s, FILE *out)
-{
-    fprintf(out, "  birth: %d\n", s->birth);
-    
-    fprintf(out, "  populations: ");
-    for (int i = 0; i < s->subpops; ++i)
-    {
-        fprintf(out, "%5d ", s->n[i]);
-    }
-    fprintf(out, "\n");
-    
-    for (int i = 0; i < s->n_genotypes; ++i)
-    {
-        fprintf(out, "  genotype %2d: ", i);
-        for (int j = 0; j < s->subpops; ++j)
-        {
-            fprintf(out, "%5d ", s->genotypes[j][i]);
-        }
-        fprintf(out, "\n");
-    }
-    fprintf(out, "\n");
-}
-
 void species_free(species *s)
 {
-    if (s->genotypes != NULL)
+    for (int i = 0; i < s->n_genotypes; ++i)
     {
-        for (int i = 0; i < s->subpops; ++i)
-        {
-            free(s->genotypes[i]);
-        }
-        free(s->genotypes);
+        free(s->genotypes[i]);
     }
+    free(s->genotypes);
     free(s->n);
     free(s);
 }

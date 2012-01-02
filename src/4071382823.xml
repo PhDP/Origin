@@ -1,0 +1,248 @@
+<?xml version="1.0"?>
+<simulation>
+  <model>BDM speciation with selection</model>
+  <seed>4071382823</seed>
+  <shape_metacom>random</shape_metacom>
+  <metacom_size>20000</metacom_size>
+  <k_gen>10</k_gen>
+  <num_comm>20</num_comm>
+  <individuals_per_comm>1000</individuals_per_comm>
+  <initial_num_species>20</initial_num_species>
+  <mutation_rate>1.00e-04</mutation_rate>
+  <omega>5.00e-04</omega>
+  <selection>1.50e-01</selection>
+  <radius>0.2500</radius>
+  <global>
+    <proper_edges>76</proper_edges>
+    <links_per_c>3.8000</links_per_c>
+    <avr_lifespan>510.2850</avr_lifespan>
+    <median_lifespan>397.0000</median_lifespan>
+    <avr_pop_size_speciation>497.0440</avr_pop_size_speciation>
+    <median_pop_size_speciation>486.0000</median_pop_size_speciation>
+    <speciation_per_k_gen>63 73 82 86 80 75 73 82 83 75</speciation_per_k_gen>
+    <extinctions_per_k_gen>40 77 84 85 74 80 76 76 78 81</extinctions_per_k_gen>
+    <extant_species_per_k_gen>43 39 37 38 44 39 36 42 47 41</extant_species_per_k_gen>
+    <species_distribution>5 12 53 62 69 90 100 172 177 185 227 237 250 272 272 284 287 322 371 376 395 418 421 535 574 589 677 705 745 753 804 844 847 851 864 915 931 943 1026 1108 1232</species_distribution>
+    <octaves>0.00 0.00 0.00 1.00 1.00 0.00 2.00 3.00 6.00 10.00 15.00 3.00 0.00</octaves>
+  </global>
+  <vertex>
+    <id>0</id>
+    <xcoor>0.8150</xcoor>
+    <ycoor>0.5183</ycoor>
+    <degree>5</degree>
+    <speciation_events>40</speciation_events>
+    <extinction_events>4807</extinction_events>
+    <species_richess>4</species_richess>
+    <species_distribution>32 45 258 665</species_distribution>
+    <octaves>0.00 0.00 0.00 0.00 0.00 0.50 1.50 0.00 0.00 1.00 1.00</octaves>
+  </vertex>
+  <vertex>
+    <id>1</id>
+    <xcoor>0.0305</xcoor>
+    <ycoor>0.0937</ycoor>
+    <degree>4</degree>
+    <speciation_events>41</speciation_events>
+    <extinction_events>2837</extinction_events>
+    <species_richess>4</species_richess>
+    <species_distribution>2 22 278 698</species_distribution>
+    <octaves>0.00 0.50 0.50 0.00 0.00 1.00 0.00 0.00 0.00 1.00 1.00</octaves>
+  </vertex>
+  <vertex>
+    <id>2</id>
+    <xcoor>0.1639</xcoor>
+    <ycoor>0.5056</ycoor>
+    <degree>5</degree>
+    <speciation_events>40</speciation_events>
+    <extinction_events>4911</extinction_events>
+    <species_richess>9</species_richess>
+    <species_distribution>1 2 3 4 5 16 68 172 729</species_distribution>
+    <octaves>0.50 1.00 2.00 1.50 0.50 0.50 0.00 1.00 1.00 0.00 1.00</octaves>
+  </vertex>
+  <vertex>
+    <id>3</id>
+    <xcoor>0.1045</xcoor>
+    <ycoor>0.7262</ycoor>
+    <degree>5</degree>
+    <speciation_events>36</speciation_events>
+    <extinction_events>5362</extinction_events>
+    <species_richess>7</species_richess>
+    <species_distribution>2 34 56 69 79 121 639</species_distribution>
+    <octaves>0.00 0.50 0.50 0.00 0.00 0.00 2.00 3.00 0.00 0.00 1.00</octaves>
+  </vertex>
+  <vertex>
+    <id>4</id>
+    <xcoor>0.1216</xcoor>
+    <ycoor>0.1110</ycoor>
+    <degree>5</degree>
+    <speciation_events>40</speciation_events>
+    <extinction_events>4473</extinction_events>
+    <species_richess>3</species_richess>
+    <species_distribution>11 102 887</species_distribution>
+    <octaves>0.00 0.00 0.00 0.00 1.00 0.00 0.00 1.00 0.00 0.00 1.00</octaves>
+  </vertex>
+  <vertex>
+    <id>5</id>
+    <xcoor>0.6073</xcoor>
+    <ycoor>0.9028</ycoor>
+    <degree>3</degree>
+    <speciation_events>39</speciation_events>
+    <extinction_events>1719</extinction_events>
+    <species_richess>3</species_richess>
+    <species_distribution>14 122 864</species_distribution>
+    <octaves>0.00 0.00 0.00 0.00 1.00 0.00 0.00 1.00 0.00 0.00 1.00</octaves>
+  </vertex>
+  <vertex>
+    <id>6</id>
+    <xcoor>0.1815</xcoor>
+    <ycoor>0.0786</ycoor>
+    <degree>5</degree>
+    <speciation_events>38</speciation_events>
+    <extinction_events>4385</extinction_events>
+    <species_richess>8</species_richess>
+    <species_distribution>2 3 4 9 12 63 185 722</species_distribution>
+    <octaves>0.00 0.50 2.00 0.50 2.00 0.00 1.00 0.00 1.00 0.00 1.00</octaves>
+  </vertex>
+  <vertex>
+    <id>7</id>
+    <xcoor>0.2726</xcoor>
+    <ycoor>0.1686</ycoor>
+    <degree>6</degree>
+    <speciation_events>40</speciation_events>
+    <extinction_events>6084</extinction_events>
+    <species_richess>6</species_richess>
+    <species_distribution>2 20 29 40 88 821</species_distribution>
+    <octaves>0.00 0.50 0.50 0.00 0.00 2.00 1.00 1.00 0.00 0.00 1.00</octaves>
+  </vertex>
+  <vertex>
+    <id>8</id>
+    <xcoor>0.7750</xcoor>
+    <ycoor>0.0900</ycoor>
+    <degree>4</degree>
+    <speciation_events>40</speciation_events>
+    <extinction_events>2611</extinction_events>
+    <species_richess>4</species_richess>
+    <species_distribution>2 5 34 959</species_distribution>
+    <octaves>0.00 0.50 0.50 1.00 0.00 0.00 1.00 0.00 0.00 0.00 1.00</octaves>
+  </vertex>
+  <vertex>
+    <id>9</id>
+    <xcoor>0.9632</xcoor>
+    <ycoor>0.1064</ycoor>
+    <degree>4</degree>
+    <speciation_events>40</speciation_events>
+    <extinction_events>2771</extinction_events>
+    <species_richess>6</species_richess>
+    <species_distribution>5 7 77 93 348 470</species_distribution>
+    <octaves>0.00 0.00 0.00 2.00 0.00 0.00 0.00 2.00 0.00 2.00</octaves>
+  </vertex>
+  <vertex>
+    <id>10</id>
+    <xcoor>0.8176</xcoor>
+    <ycoor>0.2854</ycoor>
+    <degree>5</degree>
+    <speciation_events>37</speciation_events>
+    <extinction_events>4012</extinction_events>
+    <species_richess>7</species_richess>
+    <species_distribution>6 12 13 54 71 180 664</species_distribution>
+    <octaves>0.00 0.00 0.00 1.00 2.00 0.00 1.00 1.00 1.00 0.00 1.00</octaves>
+  </vertex>
+  <vertex>
+    <id>11</id>
+    <xcoor>0.3644</xcoor>
+    <ycoor>0.2722</ycoor>
+    <degree>6</degree>
+    <speciation_events>38</speciation_events>
+    <extinction_events>6263</extinction_events>
+    <species_richess>7</species_richess>
+    <species_distribution>7 50 53 115 123 202 450</species_distribution>
+    <octaves>0.00 0.00 0.00 1.00 0.00 0.00 2.00 2.00 1.00 1.00</octaves>
+  </vertex>
+  <vertex>
+    <id>12</id>
+    <xcoor>0.6547</xcoor>
+    <ycoor>0.5801</ycoor>
+    <degree>5</degree>
+    <speciation_events>41</speciation_events>
+    <extinction_events>4908</extinction_events>
+    <species_richess>9</species_richess>
+    <species_distribution>1 7 17 49 76 78 184 237 351</species_distribution>
+    <octaves>0.50 0.50 0.00 1.00 0.00 1.00 1.00 2.00 2.00 1.00</octaves>
+  </vertex>
+  <vertex>
+    <id>13</id>
+    <xcoor>0.7776</xcoor>
+    <ycoor>0.7450</ycoor>
+    <degree>5</degree>
+    <speciation_events>30</speciation_events>
+    <extinction_events>4328</extinction_events>
+    <species_richess>5</species_richess>
+    <species_distribution>1 20 39 62 878</species_distribution>
+    <octaves>0.50 0.50 0.00 0.00 0.00 1.00 2.00 0.00 0.00 0.00 1.00</octaves>
+  </vertex>
+  <vertex>
+    <id>14</id>
+    <xcoor>0.3383</xcoor>
+    <ycoor>0.9900</ycoor>
+    <degree>3</degree>
+    <speciation_events>40</speciation_events>
+    <extinction_events>1633</extinction_events>
+    <species_richess>4</species_richess>
+    <species_distribution>35 51 100 814</species_distribution>
+    <octaves>0.00 0.00 0.00 0.00 0.00 0.00 2.00 1.00 0.00 0.00 1.00</octaves>
+  </vertex>
+  <vertex>
+    <id>15</id>
+    <xcoor>0.3571</xcoor>
+    <ycoor>0.3967</ycoor>
+    <degree>7</degree>
+    <speciation_events>32</speciation_events>
+    <extinction_events>7682</extinction_events>
+    <species_richess>10</species_richess>
+    <species_distribution>5 14 24 34 42 49 50 54 58 670</species_distribution>
+    <octaves>0.00 0.00 0.00 1.00 1.00 1.00 6.00 0.00 0.00 0.00 1.00</octaves>
+  </vertex>
+  <vertex>
+    <id>16</id>
+    <xcoor>0.1734</xcoor>
+    <ycoor>0.9527</ycoor>
+    <degree>4</degree>
+    <speciation_events>44</speciation_events>
+    <extinction_events>2703</extinction_events>
+    <species_richess>4</species_richess>
+    <species_distribution>30 121 155 694</species_distribution>
+    <octaves>0.00 0.00 0.00 0.00 0.00 1.00 0.00 1.00 1.00 0.00 1.00</octaves>
+  </vertex>
+  <vertex>
+    <id>17</id>
+    <xcoor>0.2059</xcoor>
+    <ycoor>0.5047</ycoor>
+    <degree>6</degree>
+    <speciation_events>35</speciation_events>
+    <extinction_events>5926</extinction_events>
+    <species_richess>9</species_richess>
+    <species_distribution>3 53 56 64 71 84 93 244 332</species_distribution>
+    <octaves>0.00 0.00 1.00 0.00 0.00 0.00 2.50 3.50 1.00 1.00</octaves>
+  </vertex>
+  <vertex>
+    <id>18</id>
+    <xcoor>0.5229</xcoor>
+    <ycoor>0.1743</ycoor>
+    <degree>3</degree>
+    <speciation_events>44</speciation_events>
+    <extinction_events>2034</extinction_events>
+    <species_richess>3</species_richess>
+    <species_distribution>3 54 943</species_distribution>
+    <octaves>0.00 0.00 1.00 0.00 0.00 0.00 1.00 0.00 0.00 0.00 1.00</octaves>
+  </vertex>
+  <vertex>
+    <id>19</id>
+    <xcoor>0.4494</xcoor>
+    <ycoor>0.4766</ycoor>
+    <degree>6</degree>
+    <speciation_events>37</speciation_events>
+    <extinction_events>6794</extinction_events>
+    <species_richess>9</species_richess>
+    <species_distribution>1 1 3 8 22 80 217 324 344</species_distribution>
+    <octaves>1.00 1.00 1.00 0.50 0.50 1.00 0.00 1.00 1.00 2.00</octaves>
+  </vertex>
+</simulation>

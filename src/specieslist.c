@@ -155,7 +155,6 @@ ORIGIN_INLINE slnode *species_list_get(species_list *list, int n)
     {
         return list->tail;
     }
-
     slnode *node = list->head;
 
     for (int i = 0; i < n; ++i)

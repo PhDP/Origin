@@ -290,7 +290,7 @@ void *sim(void *parameters)
     for (int i = 0; i < init_species; ++i)
     {
         // Intialize the species and add it to the list:
-        species_list_add(list, species_init1(communities, 0, 0, 3));
+        species_list_add(list, species_init(communities, 0, 3));
     }
     // To iterate the list;
     slnode *it = list->head;
@@ -300,7 +300,7 @@ void *sim(void *parameters)
         for (int i = 0; i < communities; ++i)
         {
             it->sp->n[i] = init_pop_size;
-            it->sp->genotypes[i][0] = init_pop_size;
+            it->sp->genotypes[0][i] = init_pop_size;
         }
         it = it->next;
     }
@@ -313,7 +313,7 @@ void *sim(void *parameters)
         for (int j = 0; j < remainder; ++j, it = it->next)
         {
             ++(it->sp->n[i]);
-            ++(it->sp->genotypes[i][0]);
+            ++(it->sp->genotypes[0][i]);
         }
     }
 
@@ -441,11 +441,11 @@ void *sim(void *parameters)
                         index += s0->sp->n[c];
                     }
                     position = (int)(gsl_rng_uniform(rng) * s0->sp->n[c]);
-                    if (position < s0->sp->genotypes[c][0])
+                    if (position < s0->sp->genotypes[0][c])
                     {
                         g0 = 0;
                     }
-                    else if (position < (s0->sp->genotypes[c][0] + s0->sp->genotypes[c][1]))
+                    else if (position < (s0->sp->genotypes[0][c] + s0->sp->genotypes[1][c]))
                     {
                         g0 = 1;
                     }
@@ -473,9 +473,9 @@ void *sim(void *parameters)
                     if (v1 == c) // local remplacement
                     {
                         const double r = gsl_rng_uniform(rng);
-                        const int aa = s1->sp->genotypes[v1][0];
-                        const int Ab = s1->sp->genotypes[v1][1];
-                        const int AB = s1->sp->genotypes[v1][2];
+                        const int aa = s1->sp->genotypes[0][v1];
+                        const int Ab = s1->sp->genotypes[1][v1];
+                        const int AB = s1->sp->genotypes[2][v1];
 
                         // The total fitness of the population 'W':
                         const double w = aa + Ab * (1.0 + s) + AB * (1.0 + s) * (1.0 + s);
@@ -502,9 +502,9 @@ void *sim(void *parameters)
                     }
                     // Apply the changes
                     s0->sp->n[c]--;
-                    s0->sp->genotypes[c][g0]--;
+                    s0->sp->genotypes[g0][c]--;
                     s1->sp->n[c]++;
-                    s1->sp->genotypes[c][g1]++;
+                    s1->sp->genotypes[g1][c]++;
 
                     ////////////////////////////////////////////
                     // Check for local extinction             //
@@ -516,15 +516,15 @@ void *sim(void *parameters)
                     ////////////////////////////////////////////
                     // Check for speciation                   //
                     ////////////////////////////////////////////
-                    else if (s0->sp->genotypes[c][2] > 0 && s0->sp->genotypes[c][0] == 0 && s0->sp->genotypes[c][1] == 0)
+                    else if (s0->sp->genotypes[2][c] > 0 && s0->sp->genotypes[0][c] == 0 && s0->sp->genotypes[1][c] == 0)
                     {
-                        species_list_add(list, species_init1(communities, 0, current_date, 3)); // Add the new species
+                        species_list_add(list, species_init(communities, current_date, 3)); // Add the new species
 
                         const int pop = s0->sp->n[c];
                         list->tail->sp->n[c] = pop;
-                        list->tail->sp->genotypes[c][0] = pop;
+                        list->tail->sp->genotypes[0][c] = pop;
                         s0->sp->n[c] = 0;
-                        s0->sp->genotypes[c][2] = 0;
+                        s0->sp->genotypes[2][c] = 0;
 
                         // To keep info on patterns of speciation...
                         ivector_add(&pop_size, pop);
