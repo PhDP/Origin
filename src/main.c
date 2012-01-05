@@ -1,5 +1,5 @@
-#define ORIGIN_DATE       "2011.12.17"
-#define ORIGIN_VERSION    "2.0"
+#define ORIGIN_DATE       "2012.01.05"
+#define ORIGIN_VERSION    "2.1"
 
 #include <stdlib.h>
 #include <stdio.h>
