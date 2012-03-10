@@ -202,6 +202,48 @@ int graph_strongly_connected(const graph *g)
     return TRUE;
 }
 
+void graph_svg(const graph *g, double *x, double *y, double size, double offset, FILE *out)
+{
+    fprintf(out, "<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">");
+    const int num_v = g->num_v;
+    for (int i = 0; i < num_v; ++i)
+    {
+        const int num_e = g->num_e[i];
+        for (int j = 0; j < num_e; ++j)
+        {
+            const int e = g->adj_list[i][j];
+            fprintf(out, "  <line x1=\"%f\" y1=\"%f\" x2=\"%f\" y2=\"%f\" style=\"stroke:rgb(0,0,0);stroke-width:2\"/>\n", offset + x[i] * size, offset + y[i] * size, offset + x[e] * size, offset + y[e] * size);
+        }
+    }
+    for (int i = 0; i < num_v; ++i)
+    {
+        fprintf(out, "  <circle id=\"%d\" cx=\"%f\" cy=\"%f\" r=\"8\" fill=\"rgb(0,0,0)\"/>\n", i, offset + x[i] * size, offset + y[i] * size);
+    }
+    fprintf(out, "</svg>");
+}
+
+void graph_svg_abun(const graph *g, double *x, double *y, double size, double offset, double *abun, int color, FILE *out)
+{
+    fprintf(out, "<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">");
+    const int num_v = g->num_v;
+    for (int i = 0; i < num_v; ++i)
+    {
+        const int num_e = g->num_e[i];
+        for (int j = 0; j < num_e; ++j)
+        {
+            const int e = g->adj_list[i][j];
+            fprintf(out, "  <line x1=\"%f\" y1=\"%f\" x2=\"%f\" y2=\"%f\" style=\"stroke:rgb(0,0,0);stroke-width:2\"/>\n", offset + x[i] * size, offset + y[i] * size, offset + x[e] * size, offset + y[e] * size);
+        }
+    }
+    int clr[3] = {0, 0, 0};
+    for (int i = 0; i < num_v; ++i)
+    {
+        clr[color] = (int)(abun[i] * 255);
+        fprintf(out, "  <circle id=\"%d\" cx=\"%f\" cy=\"%f\" r=\"8\" stroke=\"black\" stroke-width=\"1\" fill=\"rgb(%d,%d,%d)\"/>\n", i, offset + x[i] * size, offset + y[i] * size, clr[0], clr[1], clr[2]);
+    }
+    fprintf(out, "</svg>");
+}
+
 void graph_graphml(const graph *g, FILE *out, unsigned int id)
 {
     const int num_v = g->num_v;

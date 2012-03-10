@@ -605,6 +605,7 @@ void *sim(void *parameters)
     fprintf(out, "  </global>\n");
 
     // Print info on all vertices
+    double *restrict ric_per_c = (double*)malloc(communities * sizeof(double));
     for (int c = 0; c < communities; ++c)
     {
         fprintf(out, "  <vertex>\n");
@@ -630,6 +631,7 @@ void *sim(void *parameters)
         ivector_sort_asc(&species_distribution);
         ivector_trim_small(&species_distribution, 1);
 
+        ric_per_c[c] = (double)species_distribution.size;
         fprintf(out, "    <species_richess>%d</species_richess>\n", species_distribution.size);
         fprintf(out, "    <species_distribution>");
         ivector_print(&species_distribution, out);
@@ -653,6 +655,26 @@ void *sim(void *parameters)
     sprintf(buffer, "%s%u.graphml", P.ofilename, seed);
     FILE *outgml = fopen(buffer, "w");
     graph_graphml(&g, outgml, seed);
+    
+    // Print to SVG files.
+    sprintf(buffer, "%s%u.svg", P.ofilename, seed);
+    FILE *outsvg = fopen(buffer, "w");
+    graph_svg(&g, x, y, 400.0, 20.0, outsvg);
+    
+    sprintf(buffer, "%s%u-speciation.svg", P.ofilename, seed);
+    FILE *outsvgspe = fopen(buffer, "w");
+    double *spe_per_c = (double*)malloc(communities * sizeof(double));
+    for (int c = 0; c < communities; ++c)
+    {
+        spe_per_c[c] = (double)speciation_per_c[c];
+    }
+    scale_0_1(spe_per_c, communities);
+    graph_svg_abun(&g, x, y, 400.0, 20.0, spe_per_c, 2, outsvgspe);
+    
+    sprintf(buffer, "%s%u-richness.svg", P.ofilename, seed);
+    FILE *outsvgric = fopen(buffer, "w");
+    scale_0_1(ric_per_c, communities);
+    graph_svg_abun(&g, x, y, 400.0, 20.0, ric_per_c, 1, outsvgric);
 
     //////////////////////////////////////////////////
     // EPILOGUE...                                  //
@@ -660,7 +682,14 @@ void *sim(void *parameters)
     // Close files;
     fclose(out);
     fclose(outgml);
+    fclose(outsvg);
+    fclose(outsvgspe);
+    fclose(outsvgric);
     // Free arrays;
+    free(x);
+    free(y);
+    free(ric_per_c);
+    free(spe_per_c);
     free(buffer);
     free(total_species);
     free(octaves);

@@ -59,6 +59,15 @@ int graph_has_edge(graph *g, int u, int v);
 /** Return true if the graph is strongly connected. */
 int graph_strongly_connected(const graph *g);
 
+/** Print as a svg file (assumes all points are in the [0, 1) range).*/
+void graph_svg(const graph *g, double *x, double *y, double size, double offset, FILE *out);
+
+/**
+ * Print as a svg file with stronger colors for higher abundances. abun must point to an array
+ * with one double in the [0, 1) range for each vertex. color = 0 (red), 1 (green), 2 (blue).
+ */
+void graph_svg_abun(const graph *g, double *x, double *y, double size, double offset, double *abun, int color, FILE *out);
+
 /** Print the graph in GraphML format. */
 void graph_graphml(const graph *g, FILE *out, unsigned int id);
 
