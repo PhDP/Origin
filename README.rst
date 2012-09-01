@@ -6,9 +6,9 @@ The project is developed and tested on Linux x86_64. Stable versions are tagged.
 
 how-to
 ======
-Compile with python
+Compile with make
 
-    $ python build.py
+    $ make
 
 And then look at the usage and options with
 
